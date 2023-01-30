@@ -16,20 +16,26 @@
     };
 }
 @foreach(var question in questions){
+
 <div class="flex-lg-wrap" style="height:auto">
+
   <label>@question.Text</label>
-        <a asp-action="DeleteQuestion" class="text-danger">Delete</a><br>
+        <a asp-action="CreateAnswer" class="text-info">Add Answer</a>
+        <a asp-action="DeleteQuestion" class="text-danger">Delete Question</a><br>
         @foreach(var answer in question.Answers)
         {
             if(answer.Text == "Yes")
             {
-                <p>Answer: @answer.Text✅</p>
+                <label>Answer: @answer.Text✅</label>
+                <a asp-action="DeleteAnswer" class="text-danger">✗</a><br>
             }
             else
             {
-                <p>Answer: @answer.Text</p>
+                <label>Answer: @answer.Text</label>
+                <a asp-action="DeleteAnswer" class="text-danger">✗</a><br>
             }
         }
 
 </div>
 }
+<a class="btn btn-outline-danger" href="javascript:history.back()">Back</a>

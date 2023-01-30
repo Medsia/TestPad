@@ -19,5 +19,10 @@ namespace LX.TestPad.Controllers
         {
             return View();
         }
+        [Route("Result")]
+        public IActionResult Result()
+        {
+            return View();
+        }
     }
 }

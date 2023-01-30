@@ -9,7 +9,6 @@
     };
     var question = new { Text = "What language do people speak in Australia?", Answers = answers };
 
-
 }
 <div class="text-center">
     <h1 class="display-4">@question.Text</h1>
@@ -22,6 +21,6 @@
   <label>@answer.Name</label>
 </div>
 }
-<form action="/EndTest">
+<form action="/Result">
         <button type="submit" class="btn btn-success">Next</button>
 </form>

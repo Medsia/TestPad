@@ -1,0 +1,35 @@
+﻿@{
+    var answers = new[]
+    {
+    new {Text="Yes"},
+    new {Text="No"},
+    };
+
+    var questions = new[]
+    {
+    new {Text="What language do people speak in Australia?", Answers = answers},
+    new {Text="What?", Answers = answers},
+    new {Text="What language do people speak?", Answers = answers},
+    new {Text="What is Australia?", Answers = answers},
+    new {Text="What people in Australia?", Answers = answers},
+    new {Text="What is australia s form of government?", Answers = answers},
+    };
+}
+@foreach(var question in questions){
+<div class="flex-lg-wrap" style="height:auto">
+  <label>@question.Text</label>
+        <a asp-action="DeleteQuestion" class="text-danger">Delete</a><br>
+        @foreach(var answer in question.Answers)
+        {
+            if(answer.Text == "Yes")
+            {
+                <p>Answer: @answer.Text✅</p>
+            }
+            else
+            {
+                <p>Answer: @answer.Text</p>
+            }
+        }
+
+</div>
+}

@@ -8,9 +8,14 @@ namespace LX.TestPad.Controllers
         {
             return View();
         }
-        public IActionResult Index()
+        public IActionResult TestResults()
         {
             return View();
         }
+        public IActionResult ShowTest()
+        {
+            return View();
+        }
+
     }
 }

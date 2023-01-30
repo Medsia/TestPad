@@ -50,3 +50,13 @@ input[type='checkbox'] {
     border-radius: 5px;
     border: 2px solid #555;
 }
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}

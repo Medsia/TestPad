@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Админ</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-white">
+            <a class="ml-auto" href="@Url.Action("Logout", "Auth")">
+                <span class="col">Exit</span>
+            </a>
+        </nav>
+    </header>
+
+    <div class="dropdown-menu-left sidebar admin-menu-list p-0 m-0 w-100">
+        <span class="d-block admin-menu-item my-2">
+            <a href="@Url.Action("Index", "Admin")">
+                <span class="col-auto"></span>
+                <span class="col">Tests</span>
+            </a>
+        </span>
+        <span class="d-block admin-menu-item my-2">
+            <a href="@Url.Action("ProductList", "Admin")">
+                <span class="col-auto"></span>
+                <span class="col">TestResults</span>
+            </a>
+        </span>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

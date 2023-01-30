@@ -19,11 +19,13 @@
 
 @foreach(var test in tests){
 
-                <div class="test">
-                    <img class="test-img" src="" height="250" width="250"/>
-                    <p class="test-title">@test.Name</p>
-                </div>
+<div class="test">
+    <img class="test-img" src="" height="250" width="250"/>
+    <p class="test-title">@test.Name</p>
+    <form action="/StartTest">
+        <button type="submit" class="btn btn-success">Start</button>
+    </form>
 
-
+</div>
 
 }

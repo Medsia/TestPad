@@ -1,0 +1,58 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{
+    var results = new[]
+    {
+    new {UserName="Guznenok Dmitry", TestName = "C#", Result = 5},
+    new {UserName="Joda Ann", TestName = ".NET", Result = 6},
+    new {UserName="Fada Rek", TestName = "C#", Result = 7},
+    new {UserName="Aloha Han", TestName = ".NET", Result = 2},
+    new {UserName="Yan Bew", TestName = "C#", Result = 3},
+    new {UserName="Sergio Lyk", TestName = ".NET", Result = 6},
+    new {UserName="Fishman Jobs", TestName = "C#", Result = 5},
+    new {UserName="Yellow Submarine", TestName = ".NET", Result = 10},
+    new {UserName="Frank Yot", TestName = "C#", Result = 8},
+    new {UserName="Pavel Bug", TestName = ".NET", Result = 9},
+    };
+
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <div class="text-center">Test Name</div>
+            </th>
+            <th>
+                <div class="text-center">UserName</div>
+            </th>
+            <th>
+                <div class="text-center">Result</div>
+            </th>
+            <th>
+                <div class="text-center"></div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var result in results)
+        {
+
+        <tr class="box-shadow">
+            <td>
+                <div class="text-center">@result.TestName</div>
+            </td>
+            <td>
+                <div class="text-center">@result.UserName</div>
+            </td>
+            <td>
+                <div class="text-center">@result.Result</div>
+            </td>
+
+        <td class="text-center">
+            <a asp-action="ResultDetails" class="text-info">Details</a><br>
+        </td>
+        </tr>
+        }
+    </tbody>
+</table>

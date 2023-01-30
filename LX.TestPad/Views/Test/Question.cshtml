@@ -1,0 +1,27 @@
+﻿@{
+    var answers = new[]
+    {
+    new {Name="C#"},
+    new {Name=".NET"},
+    new {Name="JAVA"},
+    new {Name="JavaScript"},
+    new {Name="English"}
+    };
+    var question = new { Text = "What language do people speak in Australia?", Answers = answers };
+
+
+}
+<div class="text-center">
+    <h1 class="display-4">@question.Text</h1>
+</div>
+
+
+@foreach(var answer in question.Answers){
+<div style="height:auto">
+  <input type="checkbox">
+  <label>@answer.Name</label>
+</div>
+}
+<form action="/EndTest">
+        <button type="submit" class="btn btn-success">Next</button>
+</form>

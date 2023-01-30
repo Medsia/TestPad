@@ -1,12 +1,15 @@
 ﻿<div class="text-center">
     <h1 class="display-4">Please enter your Name</h1>
 </div>
+<form action="/Question">
 <div class="input-group-text flex-column">
         <label>Name</label>
         <input type="text" class="form-control" style="text-align:center;" name="Name" maxlength="50" required/>
+        <span class="text-danger"></span>
         <label>Surname</label>
         <input type="text" class="form-control" style="text-align:center;" name="Surname" maxlength="50" required/>
+        <span class="text-danger"></span>
 </div>
-<form action="/Question">
+
     <button type="submit" class="btn btn-dark">Start Test</button>
 </form>

@@ -36,6 +36,10 @@ namespace LX.TestPad.Controllers
         {
             return View();
         }
+        public IActionResult TestDetails()
+        {
+            return View();
+        }
 
     }
 }

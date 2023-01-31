@@ -1,0 +1,80 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{
+        var answers = new[]
+    {
+    new {Text="Yes"},
+    new {Text="No"},
+    };
+
+    var questions = new[]
+    {
+    new {Text="What language do people speak in Australia?", Answers = answers},
+    new {Text="What?", Answers = answers},
+    new {Text="What language do people speak?", Answers = answers},
+    new {Text="What is Australia?", Answers = answers},
+    new {Text="What people in Australia?", Answers = answers},
+    new {Text="What is australia s form of government?", Answers = answers},
+    };
+    var test = new { Name = "C#",
+    Desc = " good well cool great best good well cool great best good well cool great best description",
+    };
+
+}
+
+<div class="row box-shadow mb-3">   
+    <dl class="row col-sm-6 ">
+        <dt class="col-sm-4">
+            Test Name
+        </dt>
+        <dd class="col-sm-8">
+            @test.Name
+        </dd>
+        <dt class="col-sm-4">
+            Description
+        </dt>
+        <dd class="col-sm-8">
+            @test.Desc
+        </dd>
+    </dl>   
+    <br>
+</div>
+<table class="table" style="width:auto">
+    <thead>
+        <tr>
+            <th>
+                <div class="">Question</div>
+            </th>
+            <th>
+                <div class="" >Answers</div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var question in questions)
+        {
+
+        <tr class="box-shadow">
+            <td>
+                <div class="" style="word-wrap: break-word; width: 250px">@question.Text</div>
+            </td>
+            <td>
+                @foreach(var answer in question.Answers)
+        {
+            if(answer.Text == "Yes")
+            {
+                    <label style="word-wrap: break-word; width: 250px">@answer.Text;✅</label><br>
+                
+            }
+            else
+            {
+                <label>@answer.Text;</label><br>
+            }
+        }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="DeleteTest" class="text-danger">Delete Test</a><br>

@@ -6,6 +6,7 @@ namespace LX.TestPad.DataAccess
     {
         public DbSet<Test> Tests { get; set; }
         public DbSet<Question> Questions { get; set; }
+        public DbSet<TestQuestion> TestQuestion { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Result> Results { get; set; }
         public DbSet<ResultAnswer> ResultAnswers { get; set; }

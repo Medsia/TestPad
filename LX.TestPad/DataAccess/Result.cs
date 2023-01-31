@@ -8,10 +8,10 @@ namespace LX.TestPad.DataAccess
         [Key]
         public int Id { get; set; }
         public int TestId { get; set; }
-
         public string UserName { get; set; }
         public double Score { get; set; }
-
+        public string StartedAt { get; set; }
+        public string FinisedAt { get; set; }
         public virtual Test Test { get; set; }
     }
 }

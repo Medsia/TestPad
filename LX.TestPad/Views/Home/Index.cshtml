@@ -4,11 +4,11 @@
 @{
     var tests = new[]
 {
-    new {Name="C#"},
-    new {Name=".NET"},
-    new {Name="JAVA"},
-    new {Name="JavaScript"},
-    new {Name="English"}
+    new {Name="C#", Desc = " good well cool great best good well cool great best good well cool great best description"},
+    new {Name=".NET", Desc = "good well cool great best good well cool great best good well cool great best description"},
+    new {Name="JAVA", Desc = "good well cool great best good well cool great best good well cool great best description"},
+    new {Name="JavaScript", Desc = "good well cool great bestgood well cool great best description"},
+    new {Name="English", Desc = "good well cool great best good well cool great best good well cool great best description"}
 };
 
 }
@@ -21,7 +21,8 @@
 
 <div class="test">
     <img class="test-img" src="" height="250" width="250"/>
-    <p class="test-title">@test.Name</p>
+    <p class="test-title">@test.Name</p>    
+    <p class="product-desc" style="word-wrap: break-word; width: 300px">@test.Desc</p>
     <form action="/StartTest">
         <button type="submit" class="btn btn-success">Start</button>
     </form>

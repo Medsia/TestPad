@@ -32,6 +32,10 @@ namespace LX.TestPad.Controllers
         {
             return View();
         }
+        public IActionResult DeleteTest()
+        {
+            return View();
+        }
 
     }
 }

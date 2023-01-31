@@ -15,7 +15,10 @@
     new {UserName="Frank Yot", TestName = "C#", Result = 8},
     new {UserName="Pavel Bug", TestName = ".NET", Result = 9},
     };
-
+<form class="m-lg-5 text-lg-center" action="@Url.Action("SearchResult", "Admin")" method="get">
+                <input class="m-lg-0" type="search" style="width: 200px" maxlength="50" name="query" placeholder="Search Result"/>
+                <button class="btn btn-primary" type="submit">Search</button>
+</form>
 }
 <table class="table">
     <thead>

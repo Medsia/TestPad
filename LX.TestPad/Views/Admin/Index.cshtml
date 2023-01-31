@@ -16,7 +16,10 @@
 };
 
 }
-
+<form class="m-lg-5 text-lg-center" action="@Url.Action("SearchTest", "Test")" method="get">
+                <input class="m-lg-0" type="search" style="width: 200px" maxlength="50" name="query" placeholder="Search test"/>
+                <button class="btn btn-primary" type="submit">Search</button>
+</form>
 @foreach(var test in tests){
 
 <div class="test">

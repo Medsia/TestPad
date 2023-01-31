@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "New Test";
+}
+
+
+<h4 class="text-center">@ViewData["Title"]</h4>
+<hr />
+
+
+<form asp-action="Create" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row mb-3">
+        <div class="col-md-5 col-md-auto mx-auto">
+            <div class="form-group">
+                <label class="control-label">Test Name</label>
+                <input class="form-control" required/>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group ml-auto">
+                <label class="control-label">Description</label>
+                <textarea style="min-height: 40px; max-height: 200px;" rows="3" class="form-control"></textarea>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a asp-action="Questions" class="btn btn-outline-info">Add Questions</a>
+            </div>
+            <div class="form-group mt-5">
+                <input type="submit" value="Create" class="btn btn-primary mb-3" /><br>
+                <a class="btn btn-outline-danger" href="javascript:history.back()">Back</a>
+            </div>       
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

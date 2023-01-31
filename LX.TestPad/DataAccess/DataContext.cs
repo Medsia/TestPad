@@ -4,16 +4,18 @@ namespace LX.TestPad.DataAccess
 {
     public class DataContext : DbContext
     {
-        DbSet<Test> Tests { get; set; }
-        DbSet<Question> Questions { get; set; }
-        DbSet<Answer> Answers { get; set; }
-        DbSet<Result> Results { get; set; }
-        DbSet<ResultAnswer> ResultAnswers { get; set; }
+        public DbSet<Test> Tests { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<Result> Results { get; set; }
+        public DbSet<ResultAnswer> ResultAnswers { get; set; }
 
 
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
-        { }
+        {
+            
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

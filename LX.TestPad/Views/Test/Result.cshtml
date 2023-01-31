@@ -1,0 +1,33 @@
+﻿@{
+    var answers = new[]
+    {
+    new {Name="Yes"},
+    new {Name="No"},
+    };
+
+    var questions = new[]
+    {
+    new {Text="What language do people speak in Australia?", Answer = "Yes"},
+    new {Text="What?", Answer = "No"},
+    new {Text="What language do people speak?", Answer = "Yes"},
+    new {Text="What is Australia?", Answer = "No"},
+    new {Text="What people in Australia?", Answer = "Yes"},
+    new {Text="What is australia s form of government?", Answer = "No"},
+    };
+
+
+}
+<div class="text-center">
+    <h1 class="display-4">Test Result</h1>
+    <h4 class="display-4">60%</h4>
+</div>
+
+@foreach(var question in questions){
+<div style="height:auto">
+  <label>@question.Text</label>
+  <p>Your answer: @question.Answer</p>
+</div>
+}
+<p>
+    <a href="@Url.Action("Index", "Home")">Back to tests</a>.
+</p>

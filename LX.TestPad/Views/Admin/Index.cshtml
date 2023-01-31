@@ -1,6 +1,10 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<div>
+    <a asp-action="CreateTest" class="btn btn-outline-info">Create Test</a>
+</div>
+
 @{
     var tests = new[]
 {
@@ -12,11 +16,7 @@
 };
 
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-</div>
-<form class="m-lg-5 text-lg-center" action="@Url.Action("Index", "SearchTest")" method="get">
+<form class="m-lg-5 text-lg-center" action="@Url.Action("SearchTest", "Test")" method="get">
                 <input class="m-lg-0" type="search" style="width: 200px" maxlength="50" name="query" placeholder="Search test"/>
                 <button class="btn btn-primary" type="submit">Search</button>
 </form>
@@ -24,10 +24,10 @@
 
 <div class="test">
     <img class="test-img" src="" height="250" width="250"/>
-    <p class="test-title">@test.Name</p>    
+    <p class="test-title">@test.Name</p>
     <p class="product-desc" style="word-wrap: break-word; width: 250px">@test.Desc</p>
-    <form action="/StartTest">
-        <button type="submit" class="btn btn-success">Start</button>
+    <form action="/ShowTest">
+        <button type="submit" class="btn btn-success">Show</button>
     </form>
 
 </div>

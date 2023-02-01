@@ -3,7 +3,7 @@ using LX.TestPad.Business.Models;
 
 namespace LX.TestPad.Business.Services
 {
-    internal class ResultService : IResultService
+    internal class ResultService : IPrivateResultService
     {
         private readonly IResultRepository _resultRepository;
 

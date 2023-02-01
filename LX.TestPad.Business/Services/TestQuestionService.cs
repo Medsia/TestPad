@@ -4,12 +4,12 @@ using LX.TestPad.DataAccess;
 
 namespace LX.TestPad.Business.Services
 {
-    public class TestQuestionService : ITestQuestionService
+    public class TestQuestionService : IPrivateTestQuestionService
     {
         private readonly ITestQuestionRepository _testQuestionRepository;
-        private readonly IQuestionService _questionService;
+        private readonly IPublicQuestionService _questionService;
 
-        public TestQuestionService(ITestQuestionRepository testQuestionRepository, IQuestionService questionService)
+        public TestQuestionService(ITestQuestionRepository testQuestionRepository, IPublicQuestionService questionService)
         {
             _testQuestionRepository = testQuestionRepository;
             _questionService = questionService;

@@ -3,7 +3,7 @@ using LX.TestPad.Business.Models;
 
 namespace LX.TestPad.Business.Services
 {
-    public class TestService : ITestService
+    public class TestService : IPrivateTestService
     {
         private readonly ITestRepository _testRepository;
 

@@ -3,14 +3,14 @@ using LX.TestPad.Business.Models;
 
 namespace LX.TestPad.Business.Services
 {
-    public class QuestionService : IQuestionService
+    public class QuestionService : IPrivateQuestionService
     {
         private readonly IQuestionRepository _questionRepository;
-        private readonly IAnswerService _answerService;
-        private readonly ITestQuestionService _testQuestionService;
+        private readonly IPrivateAnswerService _answerService;
+        private readonly IPrivateTestQuestionService _testQuestionService;
 
-        public QuestionService(IQuestionRepository questionRepository, IAnswerService answerService, 
-                                ITestQuestionService testQuestionService)
+        public QuestionService(IQuestionRepository questionRepository, IPrivateAnswerService answerService,
+                                IPrivateTestQuestionService testQuestionService)
         {
             _questionRepository = questionRepository;
             _answerService = answerService;

@@ -8,6 +8,6 @@ namespace LX.TestPad.DataAccess
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int TimeSec { get; set; }
+        public int TestDuration { get; set; }
     }
 }

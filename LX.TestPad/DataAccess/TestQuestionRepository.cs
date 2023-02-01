@@ -1,32 +1,37 @@
 ﻿using LX.TestPad.DataAccess.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace LX.TestPad.DataAccess
 {
     public class TestQuestionRepository : ITestQuestionRepository
     {
-        public Task CreateAsync(TestQuestion testQuestion)
+        private DataContext db = new DataContext();
+        public async Task CreateAsync(TestQuestion testQuestion)
         {
-            throw new NotImplementedException();
+            await db.TestQuestion.AddAsync(testQuestion);
+            await db.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(TestQuestion testQuestion)
+        public async Task DeleteAsync(TestQuestion testQuestion)
         {
-            throw new NotImplementedException();
+            db.TestQuestion.Remove(testQuestion);
+            await db.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<TestQuestion>> GetAllByTestIdAsync(int TestId)
+        public async Task<IEnumerable<TestQuestion>> GetAllByTestIdAsync(int testId)
         {
-            throw new NotImplementedException();
+            return await db.TestQuestion.Where(x => x.TestId == testId).ToListAsync();
         }
 
-        public Task<TestQuestion> GetByIdAsync(int id)
+        public async Task<TestQuestion> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await db.TestQuestion.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task UpdateAsync(TestQuestion testQuestion)
+        public async Task UpdateAsync(TestQuestion testQuestion)
         {
-            throw new NotImplementedException();
+            db.Entry(testQuestion).State = EntityState.Modified;
+            await db.SaveChangesAsync();
         }
     }
 }

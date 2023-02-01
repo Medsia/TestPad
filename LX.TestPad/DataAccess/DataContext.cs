@@ -31,7 +31,6 @@ namespace LX.TestPad.DataAccess
         {
             modelBuilder.Entity<Test>(action =>
             {
-                //action.HasData();
             });
         }
 
@@ -39,7 +38,6 @@ namespace LX.TestPad.DataAccess
         {
             modelBuilder.Entity<Question>(action =>
             {
-                //action.HasData();
             });
         }
 
@@ -47,7 +45,6 @@ namespace LX.TestPad.DataAccess
         {
             modelBuilder.Entity<Answer>(action =>
             {
-                //action.HasData();
             });
         }
 
@@ -55,7 +52,6 @@ namespace LX.TestPad.DataAccess
         {
             modelBuilder.Entity<Result>(action =>
             {
-                //action.HasData();
             });
         }
 
@@ -63,7 +59,6 @@ namespace LX.TestPad.DataAccess
         {
             modelBuilder.Entity<ResultAnswer>(action =>
             {
-                //action.HasData();
             });
         }
     }

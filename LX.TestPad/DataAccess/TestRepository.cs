@@ -5,33 +5,47 @@ namespace LX.TestPad.DataAccess
 {
     public class TestRepository : ITestRepository
     {
-        private DataContext db = new DataContext();
+        private readonly DbContextFactory dbContextFactory;
+        public TestRepository(DbContextFactory dbContextFactory)
+        {
+            this.dbContextFactory = dbContextFactory;
+        }
         public async Task CreateAsync(Test test)
         {
-            await db.Tests.AddAsync(test);
-            await db.SaveChangesAsync();
+            var dbContext = dbContextFactory.Create(typeof(TestRepository));
+
+            await dbContext.Tests.AddAsync(test);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Test test)
         {
-            db.Tests.Remove(test);
-            await db.SaveChangesAsync();
+            var dbContext = dbContextFactory.Create(typeof(TestRepository));
+
+            dbContext.Tests.Remove(test);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Test>> GetAllAsync()
         {
-            return await db.Tests.ToListAsync();
+            var dbContext = dbContextFactory.Create(typeof(TestRepository));
+
+            return await dbContext.Tests.ToListAsync();
         }
 
         public async Task<Test> GetByIdAsync(int id)
         {
-            return await db.Tests.FirstOrDefaultAsync(x => x.Id == id);
+            var dbContext = dbContextFactory.Create(typeof(TestRepository));
+
+            return await dbContext.Tests.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task UpdateAsync(Test test)
         {
-            db.Entry(test).State = EntityState.Modified;
-            await db.SaveChangesAsync();
+            var dbContext = dbContextFactory.Create(typeof(TestRepository));
+
+            dbContext.Entry(test).State = EntityState.Modified;
+            await dbContext.SaveChangesAsync();
         }
     }
 }

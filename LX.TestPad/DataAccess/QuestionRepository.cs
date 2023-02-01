@@ -5,33 +5,47 @@ namespace LX.TestPad.DataAccess
 {
     public class QuestionRepository : IQuestionRepository
     {
-        private DataContext db = new DataContext();
+        private readonly DbContextFactory dbContextFactory;
+        public QuestionRepository(DbContextFactory dbContextFactory)
+        {
+            this.dbContextFactory = dbContextFactory;
+        }
         public async Task CreateAsync(Question question)
         {
-            await db.Questions.AddAsync(question);
-            await db.SaveChangesAsync();
+            var dbContext = dbContextFactory.Create(typeof(QuestionRepository));
+
+            await dbContext.Questions.AddAsync(question);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Question question)
         {
-            db.Questions.Remove(question);
-            await db.SaveChangesAsync();
+            var dbContext = dbContextFactory.Create(typeof(QuestionRepository));
+
+            dbContext.Questions.Remove(question);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Question>> GetAllAsync()
         {
-            return await db.Questions.ToListAsync();
+            var dbContext = dbContextFactory.Create(typeof(QuestionRepository));
+
+            return await dbContext.Questions.ToListAsync();
         }
 
         public async Task<Question> GetByIdAsync(int id)
         {
-            return await db.Questions.FirstOrDefaultAsync(x => x.Id == id);
+            var dbContext = dbContextFactory.Create(typeof(QuestionRepository));
+
+            return await dbContext.Questions.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task UpdateAsync(Question question)
         {
-            db.Entry(question).State = EntityState.Modified;
-            await db.SaveChangesAsync();
+            var dbContext = dbContextFactory.Create(typeof(QuestionRepository));
+
+            dbContext.Entry(question).State = EntityState.Modified;
+            await dbContext.SaveChangesAsync();
         }
     }
 }

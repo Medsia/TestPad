@@ -5,37 +5,53 @@ namespace LX.TestPad.DataAccess
 {
     public class ResultRepository : IResultRepository
     {
-        private DataContext db = new DataContext();
+        private readonly DbContextFactory dbContextFactory;
+        public ResultRepository(DbContextFactory dbContextFactory)
+        {
+            this.dbContextFactory = dbContextFactory;
+        }
         public async Task CreateAsync(Result result)
         {
-            await db.Results.AddAsync(result);
-            await db.SaveChangesAsync();
+            var dbContext = dbContextFactory.Create(typeof(ResultRepository));
+
+            await dbContext.Results.AddAsync(result);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Result result)
         {
-            db.Results.Remove(result);
-            await db.SaveChangesAsync();
+            var dbContext = dbContextFactory.Create(typeof(ResultRepository));
+
+            dbContext.Results.Remove(result);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Result>> GetAllAsync()
         {
-            return await db.Results.ToListAsync();
+            var dbContext = dbContextFactory.Create(typeof(ResultRepository));
+
+            return await dbContext.Results.ToListAsync();
         }
         public async Task<IEnumerable<Result>> GetAllByTestIdAsync(int testId)
         {
-            return await db.Results.Where(x => x.TestId == testId).ToListAsync();
+            var dbContext = dbContextFactory.Create(typeof(ResultRepository));
+
+            return await dbContext.Results.Where(x => x.TestId == testId).ToListAsync();
         }
 
         public async Task<Result> GetByIdAsync(int id)
         {
-            return await db.Results.FirstOrDefaultAsync(x => x.Id == id);
+            var dbContext = dbContextFactory.Create(typeof(ResultRepository));
+
+            return await dbContext.Results.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task UpdateAsync(Result result)
         {
-            db.Entry(result).State = EntityState.Modified;
-            await db.SaveChangesAsync();
+            var dbContext = dbContextFactory.Create(typeof(ResultRepository));
+
+            dbContext.Entry(result).State = EntityState.Modified;
+            await dbContext.SaveChangesAsync();
         }
     }
 }

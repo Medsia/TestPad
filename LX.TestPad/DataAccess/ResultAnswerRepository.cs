@@ -1,32 +1,37 @@
 ﻿using LX.TestPad.DataAccess.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace LX.TestPad.DataAccess
 {
     public class ResultAnswerRepository : IResultAnswerRepository
     {
-        public Task CreateAsync(ResultAnswer resultAnswer)
+        private DataContext db = new DataContext();
+        public async Task CreateAsync(ResultAnswer resultAnswer)
         {
-            throw new NotImplementedException();
+            await db.ResultAnswers.AddAsync(resultAnswer);
+            await db.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(ResultAnswer resultAnswer)
+        public async Task DeleteAsync(ResultAnswer resultAnswer)
         {
-            throw new NotImplementedException();
+            db.ResultAnswers.Remove(resultAnswer);
+            await db.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<ResultAnswer>> GetAllByResultIdAsync(int resultId)
+        public async Task<IEnumerable<ResultAnswer>> GetAllByResultIdAsync(int resultId)
         {
-            throw new NotImplementedException();
+            return await db.ResultAnswers.Where(x => x.ResultId == resultId).ToListAsync();
         }
 
-        public Task<ResultAnswer> GetByIdAsync(int id)
+        public async Task<ResultAnswer> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await db.ResultAnswers.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task UpdateAsync(ResultAnswer resultAnswer)
+        public async Task UpdateAsync(ResultAnswer resultAnswer)
         {
-            throw new NotImplementedException();
+            db.Entry(resultAnswer).State = EntityState.Modified;
+            await db.SaveChangesAsync();
         }
     }
 }

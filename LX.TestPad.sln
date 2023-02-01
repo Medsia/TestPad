@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LX.TestPad", "LX.TestPad\LX.TestPad.csproj", "{7736AC4D-6EAB-4B87-9C6B-BEBC495D689C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LX.TestPad", "LX.TestPad\LX.TestPad.csproj", "{7736AC4D-6EAB-4B87-9C6B-BEBC495D689C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LX.TestPad.Business", "LX.TestPad.Business\LX.TestPad.Business.csproj", "{040AEAD2-384F-4923-9844-A878DC31CE7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7736AC4D-6EAB-4B87-9C6B-BEBC495D689C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7736AC4D-6EAB-4B87-9C6B-BEBC495D689C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7736AC4D-6EAB-4B87-9C6B-BEBC495D689C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{040AEAD2-384F-4923-9844-A878DC31CE7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{040AEAD2-384F-4923-9844-A878DC31CE7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{040AEAD2-384F-4923-9844-A878DC31CE7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{040AEAD2-384F-4923-9844-A878DC31CE7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

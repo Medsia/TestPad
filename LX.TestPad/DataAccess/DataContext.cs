@@ -17,49 +17,5 @@ namespace LX.TestPad.DataAccess
         {
 
         }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            BuildTests(modelBuilder);
-            BuildQuestions(modelBuilder);
-            BuildAnswers(modelBuilder);
-            BuildResults(modelBuilder);
-            BuildResultAnswers(modelBuilder);
-        }
-
-        private void BuildTests(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Test>(action =>
-            {
-            });
-        }
-
-        private void BuildQuestions(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Question>(action =>
-            {
-            });
-        }
-
-        private void BuildAnswers(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Answer>(action =>
-            {
-            });
-        }
-
-        private void BuildResults(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Result>(action =>
-            {
-            });
-        }
-
-        private void BuildResultAnswers(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<ResultAnswer>(action =>
-            {
-            });
-        }
     }
 }

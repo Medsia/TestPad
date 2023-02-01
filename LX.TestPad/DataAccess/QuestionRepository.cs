@@ -18,9 +18,9 @@ namespace LX.TestPad.DataAccess
             await db.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Question>> GetAllByTestIdAsync(int testId)
+        public async Task<IEnumerable<Question>> GetAllAsync()
         {
-            return await db.Questions.Where(x => x.TestId == testId).ToListAsync();
+            return await db.Questions.ToListAsync();
         }
 
         public async Task<Question> GetByIdAsync(int id)

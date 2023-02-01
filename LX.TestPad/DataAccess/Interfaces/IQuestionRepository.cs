@@ -3,7 +3,7 @@
     public interface IQuestionRepository
     {
         Task<Question> GetByIdAsync(int id);
-        Task<IEnumerable<Question>> GetAllByTestIdAsync(int TestId);
+        Task<IEnumerable<Question>> GetAllAsync();
         Task CreateAsync(Question question);
         Task UpdateAsync(Question question);
         Task DeleteAsync(Question question);

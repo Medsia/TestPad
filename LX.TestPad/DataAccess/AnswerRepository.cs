@@ -1,32 +1,37 @@
 ﻿using LX.TestPad.DataAccess.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace LX.TestPad.DataAccess
 {
     public class AnswerRepository : IAnswerRepository
     {
-        public Task CreateAsync(Answer answer)
+        private DataContext db = new DataContext();
+        public async Task CreateAsync(Answer answer)
         {
-            throw new NotImplementedException();
+            await db.Answers.AddAsync(answer);
+            await db.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(Answer answer)
+        public async Task DeleteAsync(Answer answer)
         {
-            throw new NotImplementedException();
+            db.Answers.Remove(answer);
+            await db.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Answer>> GetAllAsync()
+        public async Task<IEnumerable<Answer>> GetAllByQuestionIdAsync(int questionId)
         {
-            throw new NotImplementedException();
+            return await db.Answers.Where(x => x.QuestionId == questionId).ToListAsync();
         }
 
-        public Task<Answer> GetByIdAsync(int id)
+        public async Task<Answer> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await db.Answers.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task UpdateAsync(Answer answer)
+        public async Task UpdateAsync(Answer answer)
         {
-            throw new NotImplementedException();
+            db.Entry(answer).State = EntityState.Modified;
+            await db.SaveChangesAsync();
         }
     }
 }

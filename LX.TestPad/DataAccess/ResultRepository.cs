@@ -45,6 +45,25 @@ namespace LX.TestPad.DataAccess
 
             return await dbContext.Results.FirstOrDefaultAsync(x => x.Id == id);
         }
+        public async Task<IEnumerable<Result>> GetAllIncludingAsync()
+        {
+            var dbContext = dbContextFactory.Create(typeof(ResultRepository));
+
+            return await dbContext.Results.Include(x => x.Test).ToListAsync();
+        }
+        public async Task<IEnumerable<Result>> GetAllByTestIdIncludingAsync(int testId)
+        {
+            var dbContext = dbContextFactory.Create(typeof(ResultRepository));
+
+            return await dbContext.Results.Where(x => x.TestId == testId).Include(x => x.Test).ToListAsync();
+        }
+
+        public async Task<Result> GetByIdIncludingAsync(int id)
+        {
+            var dbContext = dbContextFactory.Create(typeof(ResultRepository));
+
+            return await dbContext.Results.Include(x => x.Test).FirstOrDefaultAsync(x => x.Id == id);
+        }
 
         public async Task UpdateAsync(Result result)
         {

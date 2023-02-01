@@ -17,7 +17,10 @@ namespace LX.TestPad.DataAccess
         {
 
         }
+        public DataContext()
+        {
 
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             BuildTests(modelBuilder);

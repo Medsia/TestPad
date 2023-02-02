@@ -7,6 +7,7 @@ namespace LX.TestPad.Business.Interfaces
     {
         Task<QuestionModel> GetByIdAsync(int id);
         Task<IEnumerable<int>> GetAllQuestionIdsByTestId(int testId);
+        Task<QuestionWithAnswersModel> GetByIdWithAnswersAsync(int id);
 
         Task CreateAsync(QuestionModel testModel);
         Task UpdateAsync(QuestionModel testModel);

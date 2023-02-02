@@ -145,11 +145,24 @@ namespace LX.TestPad.Tests.ServiceTests
         }
 
         [Fact]
-        public void ResultAnswer_MappedFromesultAnswerModel_IsCorrect()
+        public void ResultAnswer_MappedFromeResultAnswerModel_IsCorrect()
         {
             var actualEntity = Mapper.Map(resultAnswerModel);
 
             Assert.Equal(resultAnswerEntity, actualEntity);
+        }
+
+
+        [Fact]
+        public void QuestionWithAnswers_MappedFromQuestionEntityAndListOfAnswerEntities_IsCorrect()
+        {
+            var testList = new List<Answer> { answerEntity };
+            var actualResult = Mapper.Map(questionEntity, testList);
+
+            var expectedAnswers = new List<AnswerModel> { answerModel };
+            var expectedResult = new QuestionWithAnswersModel { Id = questionEntity.Id, Text = questionEntity.Text, Answers = expectedAnswers };
+
+            Assert.Equal(expectedResult, actualResult);
         }
     }
 }

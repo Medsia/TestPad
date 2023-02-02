@@ -29,6 +29,19 @@ namespace LX.TestPad.Business.Services
             return Mapper.Map(item);
         }
 
+        public async Task<QuestionWithAnswersModel> GetByIdWithAnswersAsync(int id)
+        {
+            if (id < 1)
+                throw new ArgumentOutOfRangeException("id");
+
+            var question = await _questionRepository.GetByIdAsync(id);
+            var answers = await _answerService.GetAllByQuestionIdAsync(question.Id);
+            
+            var item = Mapper.Map(question, answers);
+
+            return Mapper.Map(item);
+        }
+
         public async Task<IEnumerable<int>> GetAllQuestionIdsByTestId(int testId)
         {
             if (testId < 1)

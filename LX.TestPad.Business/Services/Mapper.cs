@@ -6,61 +6,61 @@ namespace LX.TestPad.Business.Services
     public static class Mapper
     {
         // Mapping from viewmodel to data object
-        public static TestModel Map(Test obj)
+        public static TestModel Map(Test entity)
         {
             return new TestModel
             {
-                Id = obj.Id,
-                Name = obj.Name,
-                Description = obj.Description,
-                TestDuration = obj.TestDuration,
+                Id = entity.Id,
+                Name = entity.Name,
+                Description = entity.Description,
+                TestDuration = entity.TestDuration,
             };
         }
-        public static TestQuestionModel Map(TestQuestion obj)
+        public static TestQuestionModel Map(TestQuestion entity)
         {
             return new TestQuestionModel
             {
-                Id = obj.Id,
-                TestId = obj.TestId,
-                QuestionId = obj.QuestionId,
+                Id = entity.Id,
+                TestId = entity.TestId,
+                QuestionId = entity.QuestionId,
             };
         }
-        public static QuestionModel Map(Question obj)
+        public static QuestionModel Map(Question entity)
         {
             return new QuestionModel
             {
-                Id = obj.Id,
-                Text = obj.Text,
+                Id = entity.Id,
+                Text = entity.Text,
             };
         }
-        public static AnswerModel Map(Answer obj)
+        public static AnswerModel Map(Answer entity)
         {
             return new AnswerModel
             {
-                Id = obj.Id,
-                Text = obj.Text,
-                IsCorrect = obj.IsCorrect,
-                QuestionId = obj.QuestionId,
+                Id = entity.Id,
+                Text = entity.Text,
+                IsCorrect = entity.IsCorrect,
+                QuestionId = entity.QuestionId,
             };
         }
-        public static ResultModel Map(Result obj)
+        public static ResultModel Map(Result entity)
         {
             return new ResultModel
             {
-                Id = obj.Id,
-                UserName = obj.UserName,
-                Score = obj.Score,
-                TestId = obj.TestId,
+                Id = entity.Id,
+                UserName = entity.UserName,
+                Score = entity.Score,
+                TestId = entity.TestId,
             };
         }
-        public static ResultAnswerModel Map(ResultAnswer obj)
+        public static ResultAnswerModel Map(ResultAnswer entity)
         {
             return new ResultAnswerModel
             {
-                Id = obj.Id,
-                AnswerText = obj.AnswerText,
-                QuestionText = obj.QuestionText,
-                ResultId = obj.ResultId,
+                Id = entity.Id,
+                AnswerText = entity.AnswerText,
+                QuestionText = entity.QuestionText,
+                ResultId = entity.ResultId,
             };
         }
 
@@ -121,6 +121,18 @@ namespace LX.TestPad.Business.Services
                 AnswerText = model.AnswerText,
                 QuestionText = model.QuestionText,
                 ResultId = model.ResultId,
+            };
+        }
+
+
+        // One way mappers
+        public static QuestionWithAnswersModel Map (Question questionEntity, IEnumerable<Answer> answerEntities )
+        {
+            return new QuestionWithAnswersModel
+            {
+                Id = questionEntity.Id,
+                Text = questionEntity.Text,
+                Answers = answerEntities.Select(Map).ToList(),
             };
         }
     }

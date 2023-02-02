@@ -4,7 +4,7 @@ using LX.TestPad.DataAccess;
 
 namespace LX.TestPad.Business.Services
 {
-    public class TestQuestionService : IPrivateTestQuestionService
+    public class TestQuestionService : ITestQuestionService
     {
         private readonly ITestQuestionRepository _testQuestionRepository;
         private readonly IPublicQuestionService _questionService;
@@ -15,6 +15,17 @@ namespace LX.TestPad.Business.Services
             _questionService = questionService;
         }
 
+        
+        public async Task<IEnumerable<TestQuestionModel>> GetAllByTestIdAsync(int testId)
+        {
+            if (testId < 1)
+                throw new ArgumentOutOfRangeException("testId");
+
+            var items = await _testQuestionRepository.GetAllByTestIdAsync(testId);
+
+            return items.Select(Mapper.Map)
+                        .ToArray();
+        }
 
         public async Task<IEnumerable<QuestionModel>> GetAllQuestionsByTestIdAsync(int testId)
         {

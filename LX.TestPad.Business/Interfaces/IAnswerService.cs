@@ -2,19 +2,7 @@
 
 namespace LX.TestPad.Business.Interfaces
 {
-    /// <summary>
-    /// Gives limited access to service functionality.
-    /// </summary>
-    public interface IPublicAnswerService
-    {
-        Task<AnswerModel> GetByIdAsync(int id);
-        Task<IReadOnlyCollection<AnswerModel>> GetAllByQuestionIdAsync(int testId);
-    }
-
-    /// <summary>
-    /// Gives full access to service functionality.
-    /// </summary>
-    public interface IPrivateAnswerService
+    public interface IAnswerService
     {
         Task<AnswerModel> GetByIdAsync(int id);
         Task<IReadOnlyCollection<AnswerModel>> GetAllByQuestionIdAsync(int testId);

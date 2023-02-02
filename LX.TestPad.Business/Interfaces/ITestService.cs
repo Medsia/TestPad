@@ -2,20 +2,7 @@
 
 namespace LX.TestPad.Business.Interfaces
 {
-    /// <summary>
-    /// Gives limited access to service functionality.
-    /// </summary>
-    public interface IPublicTestService
-    {
-        Task<TestModel> GetByIdAsync(int id);
-        Task<IEnumerable<TestModel>> GetAllAsync();
-        Task<IEnumerable<TestModel>> GetAllByPageNumberAsync(int pageNumber, int count);
-    }
-
-    /// <summary>
-    /// Gives full access to service functionality.
-    /// </summary>
-    public interface IPrivateTestService
+    public interface ITestService
     {
         Task<TestModel> GetByIdAsync(int id);
         Task<IEnumerable<TestModel>> GetAllAsync();

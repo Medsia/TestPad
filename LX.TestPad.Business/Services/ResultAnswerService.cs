@@ -4,7 +4,7 @@ using LX.TestPad.DataAccess;
 
 namespace LX.TestPad.Business.Services
 {
-    public class ResultAnswerService : IPrivateResultAnswerService
+    public class ResultAnswerService : IResultAnswerService
     {
         private readonly IResultAnswerRepository _resultAnswerRepository;
         private readonly IPublicAnswerService _answerService;

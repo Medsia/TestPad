@@ -13,7 +13,7 @@ namespace LX.TestPad.Business.Services
                 Id = obj.Id,
                 Name = obj.Name,
                 Description = obj.Description,
-                TimeSec = obj.TestDuration,
+                TestDuration = obj.TestDuration,
             };
         }
         public static TestQuestionModel Map(TestQuestion obj)
@@ -76,7 +76,6 @@ namespace LX.TestPad.Business.Services
                 TestDuration = model.TestDuration
             };
         }
-
         public static TestQuestion Map(TestQuestionModel model)
         {
             return new TestQuestion
@@ -86,7 +85,6 @@ namespace LX.TestPad.Business.Services
                 QuestionId = model.QuestionId,
             };
         }
-
         public static Question Map(QuestionModel model)
         {
             return new Question
@@ -95,7 +93,6 @@ namespace LX.TestPad.Business.Services
                 Text = model.Text,
             };
         }
-
         public static Answer Map(AnswerModel model)
         {
             return new Answer
@@ -106,7 +103,6 @@ namespace LX.TestPad.Business.Services
                 QuestionId = model.QuestionId,
             };
         }
-
         public static Result Map(ResultModel model)
         {
             return new Result
@@ -117,7 +113,6 @@ namespace LX.TestPad.Business.Services
                 TestId = model.TestId,
             };
         }
-
         public static ResultAnswer Map(ResultAnswerModel model)
         {
             return new ResultAnswer

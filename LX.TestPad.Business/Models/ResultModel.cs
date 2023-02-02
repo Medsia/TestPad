@@ -7,6 +7,6 @@
         public string UserName { get; set; }
         public double Score { get; set; }
         public DateTime StartedAt { get; set; }
-        public DateTime FinisedAt { get; set; }
+        public DateTime FinishedAt { get; set; }
     }
 }

@@ -7,11 +7,11 @@ namespace LX.TestPad.Business.Services
     public class ResultAnswerService : IResultAnswerService
     {
         private readonly IResultAnswerRepository _resultAnswerRepository;
-        private readonly IPublicAnswerService _answerService;
-        private readonly IPublicQuestionService _questionService;
+        private readonly IAnswerService _answerService;
+        private readonly IQuestionService _questionService;
 
-        public ResultAnswerService(IResultAnswerRepository resultAnswerRepository, IPublicAnswerService answerService,
-                                    IPublicQuestionService questionService)
+        public ResultAnswerService(IResultAnswerRepository resultAnswerRepository, IAnswerService answerService,
+                                    IQuestionService questionService)
         {
             _resultAnswerRepository = resultAnswerRepository;
             _answerService = answerService;

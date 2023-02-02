@@ -7,6 +7,11 @@ namespace LX.TestPad.Business.Interfaces
         Task<AnswerModel> GetByIdAsync(int id);
         Task<IReadOnlyCollection<AnswerModel>> GetAllByQuestionIdAsync(int testId);
 
+        // <<summary>>
+        // Changes IsCorrect field to false to all selected questions
+        // <<\summary>>
+        Task<IReadOnlyCollection<AnswerModel>> GetAllForClientByQuestionIdAsync(int testId);
+
         Task CreateAsync(AnswerModel testModel);
         Task UpdateAsync(AnswerModel testModel);
         Task DeleteAsync(int id);

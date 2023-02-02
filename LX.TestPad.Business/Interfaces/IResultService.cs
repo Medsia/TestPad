@@ -1,4 +1,5 @@
 ﻿using LX.TestPad.Business.Models;
+using System.Threading.Tasks;
 
 namespace LX.TestPad.Business.Interfaces
 {
@@ -6,7 +7,7 @@ namespace LX.TestPad.Business.Interfaces
     {
         Task<ResultModel> GetByIdAsync(int id);
         Task<IReadOnlyCollection<ResultModel>> GetAllByTestIdAsync(int testId);
-        Task CreateAsync(ResultModel testModel);
+        Task<int> CreateAsync(ResultModel testModel);
         Task UpdateAsync(ResultModel testModel);
 
         Task DeleteAsync(int id);

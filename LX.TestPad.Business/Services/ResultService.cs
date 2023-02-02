@@ -36,11 +36,11 @@ namespace LX.TestPad.Business.Services
         }
 
 
-        public async Task CreateAsync(ResultModel testModel)
+        public async Task<int> CreateAsync(ResultModel testModel)
         {
             var item = Mapper.Map(testModel);
 
-            await _resultRepository.CreateAsync(item);
+            return await _resultRepository.CreateAsync(item);
         }
 
         public async Task UpdateAsync(ResultModel testModel)

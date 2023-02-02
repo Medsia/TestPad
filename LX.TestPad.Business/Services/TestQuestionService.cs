@@ -7,9 +7,9 @@ namespace LX.TestPad.Business.Services
     public class TestQuestionService : ITestQuestionService
     {
         private readonly ITestQuestionRepository _testQuestionRepository;
-        private readonly IPublicQuestionService _questionService;
+        private readonly IQuestionService _questionService;
 
-        public TestQuestionService(ITestQuestionRepository testQuestionRepository, IPublicQuestionService questionService)
+        public TestQuestionService(ITestQuestionRepository testQuestionRepository, IQuestionService questionService)
         {
             _testQuestionRepository = testQuestionRepository;
             _questionService = questionService;

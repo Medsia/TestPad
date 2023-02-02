@@ -35,6 +35,18 @@ namespace LX.TestPad.Business.Services
                         .ToArray();
         }
 
+        public async Task<IReadOnlyCollection<AnswerModel>> GetAllForClientByQuestionIdAsync(int testId)
+        {
+            if (testId < 1)
+                throw new ArgumentOutOfRangeException("testId");
+
+            var items = await _answerRepository.GetAllByQuestionIdAsync(testId);
+
+            return items.Select(Mapper.Map)
+                        .ForEach(item => item.IsCorrect = false)
+                        .ToArray();
+        }
+
 
         public async Task CreateAsync(AnswerModel testModel)
         {

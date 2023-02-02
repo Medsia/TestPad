@@ -5,14 +5,13 @@ namespace LX.TestPad.DataAccess
 {
     public class TestQuestionRepository : ITestQuestionRepository
     {
-        private readonly DbContextFactory dbContextFactory;
-        public TestQuestionRepository(DbContextFactory dbContextFactory)
+        private readonly DataContext dbContext;
+        public TestQuestionRepository(DataContext dbContext)
         {
-            this.dbContextFactory = dbContextFactory;
+            this.dbContext = dbContext;
         }
         public async Task CreateAsync(TestQuestion testQuestion)
         {
-            var dbContext = dbContextFactory.Create(typeof(TestQuestionRepository));
 
             await dbContext.TestQuestion.AddAsync(testQuestion);
             await dbContext.SaveChangesAsync();
@@ -20,7 +19,6 @@ namespace LX.TestPad.DataAccess
 
         public async Task DeleteAsync(TestQuestion testQuestion)
         {
-            var dbContext = dbContextFactory.Create(typeof(TestQuestionRepository));
 
             dbContext.TestQuestion.Remove(testQuestion);
             await dbContext.SaveChangesAsync();
@@ -28,20 +26,22 @@ namespace LX.TestPad.DataAccess
 
         public async Task<IEnumerable<TestQuestion>> GetAllByTestIdAsync(int testId)
         {
-            var dbContext = dbContextFactory.Create(typeof(TestQuestionRepository));
 
             return await dbContext.TestQuestion.Where(x => x.TestId == testId).ToListAsync();
+        }
+        public async Task<IEnumerable<TestQuestion>> GetAllAsync()
+        {
+
+            return await dbContext.TestQuestion.ToListAsync();
         }
 
         public async Task<TestQuestion> GetByIdAsync(int id)
         {
-            var dbContext = dbContextFactory.Create(typeof(TestQuestionRepository));
 
             return await dbContext.TestQuestion.FirstOrDefaultAsync(x => x.Id == id);
         }
         public async Task<IEnumerable<TestQuestion>> GetAllByTestIdIncludingAsync(int testId)
         {
-            var dbContext = dbContextFactory.Create(typeof(TestQuestionRepository));
 
             return await dbContext.TestQuestion
                 .Where(x => x.TestId == testId)
@@ -52,7 +52,6 @@ namespace LX.TestPad.DataAccess
 
         public async Task<TestQuestion> GetByIdIncludingAsync(int id)
         {
-            var dbContext = dbContextFactory.Create(typeof(TestQuestionRepository));
 
             return await dbContext.TestQuestion
                 .Include(x => x.Question)
@@ -62,9 +61,8 @@ namespace LX.TestPad.DataAccess
 
         public async Task UpdateAsync(TestQuestion testQuestion)
         {
-            var dbContext = dbContextFactory.Create(typeof(TestQuestionRepository));
 
-            dbContext.Entry(testQuestion).State = EntityState.Modified;
+            dbContext.TestQuestion.Update(testQuestion);
             await dbContext.SaveChangesAsync();
         }
     }

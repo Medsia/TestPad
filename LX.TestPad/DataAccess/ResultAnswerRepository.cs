@@ -5,14 +5,13 @@ namespace LX.TestPad.DataAccess
 {
     public class ResultAnswerRepository : IResultAnswerRepository
     {
-        private readonly DbContextFactory dbContextFactory;
-        public ResultAnswerRepository(DbContextFactory dbContextFactory)
+        private readonly DataContext dbContext;
+        public ResultAnswerRepository(DataContext dbContext)
         {
-            this.dbContextFactory = dbContextFactory;
+            this.dbContext = dbContext;
         }
         public async Task CreateAsync(ResultAnswer resultAnswer)
         {
-            var dbContext = dbContextFactory.Create(typeof(ResultAnswerRepository));
 
             await dbContext.ResultAnswers.AddAsync(resultAnswer);
             await dbContext.SaveChangesAsync();
@@ -20,7 +19,6 @@ namespace LX.TestPad.DataAccess
 
         public async Task DeleteAsync(ResultAnswer resultAnswer)
         {
-            var dbContext = dbContextFactory.Create(typeof(ResultAnswerRepository));
 
             dbContext.ResultAnswers.Remove(resultAnswer);
             await dbContext.SaveChangesAsync();
@@ -28,26 +26,22 @@ namespace LX.TestPad.DataAccess
 
         public async Task<IEnumerable<ResultAnswer>> GetAllByResultIdAsync(int resultId)
         {
-            var dbContext = dbContextFactory.Create(typeof(ResultAnswerRepository));
 
             return await dbContext.ResultAnswers.Where(x => x.ResultId == resultId).ToListAsync();
         }
         public async Task<IEnumerable<ResultAnswer>> GetAllAsync()
         {
-            var dbContext = dbContextFactory.Create(typeof(ResultAnswerRepository));
 
             return await dbContext.ResultAnswers.ToListAsync();
         }
 
         public async Task<ResultAnswer> GetByIdAsync(int id)
         {
-            var dbContext = dbContextFactory.Create(typeof(ResultAnswerRepository));
 
             return await dbContext.ResultAnswers.FirstOrDefaultAsync(x => x.Id == id);
         }
         public async Task<IEnumerable<ResultAnswer>> GetAllByResultIdIncludingAsync(int resultId)
         {
-            var dbContext = dbContextFactory.Create(typeof(ResultAnswerRepository));
 
             return await dbContext.ResultAnswers
                 .Where(x => x.ResultId == resultId)
@@ -57,7 +51,6 @@ namespace LX.TestPad.DataAccess
 
         public async Task<ResultAnswer> GetByIdIncludingAsync(int id)
         {
-            var dbContext = dbContextFactory.Create(typeof(ResultAnswerRepository));
 
             return await dbContext.ResultAnswers
                 .Include(x => x.Result)
@@ -66,9 +59,9 @@ namespace LX.TestPad.DataAccess
 
         public async Task UpdateAsync(ResultAnswer resultAnswer)
         {
-            var dbContext = dbContextFactory.Create(typeof(ResultAnswerRepository));
 
-            dbContext.Entry(resultAnswer).State = EntityState.Modified;
+            dbContext.ResultAnswers.Update(resultAnswer);
+
             await dbContext.SaveChangesAsync();
         }
     }

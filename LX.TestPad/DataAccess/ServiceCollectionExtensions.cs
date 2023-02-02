@@ -15,14 +15,12 @@ namespace LX.TestPad.DataAccess
                 ServiceLifetime.Transient
             );
 
-            services.AddScoped<Dictionary<Type, DataContext>>();
-            services.AddSingleton<DbContextFactory>();
-            services.AddSingleton<IAnswerRepository, AnswerRepository>();
-            services.AddSingleton<IQuestionRepository, QuestionRepository>();
-            services.AddSingleton<IResultAnswerRepository, ResultAnswerRepository>();
-            services.AddSingleton<IResultRepository, ResultRepository>();
-            services.AddSingleton<ITestQuestionRepository, TestQuestionRepository>();
-            services.AddSingleton<ITestRepository, TestRepository>();
+            services.AddScoped<IAnswerRepository, AnswerRepository>();
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped<IResultAnswerRepository, ResultAnswerRepository>();
+            services.AddScoped<IResultRepository, ResultRepository>();
+            services.AddScoped<ITestQuestionRepository, TestQuestionRepository>();
+            services.AddScoped<ITestRepository, TestRepository>();
 
             return services;
         }

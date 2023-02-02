@@ -5,14 +5,13 @@ namespace LX.TestPad.DataAccess
 {
     public class QuestionRepository : IQuestionRepository
     {
-        private readonly DbContextFactory dbContextFactory;
-        public QuestionRepository(DbContextFactory dbContextFactory)
+        private readonly DataContext dbContext;
+        public QuestionRepository(DataContext dbContext)
         {
-            this.dbContextFactory = dbContextFactory;
+            this.dbContext = dbContext;
         }
         public async Task CreateAsync(Question question)
         {
-            var dbContext = dbContextFactory.Create(typeof(QuestionRepository));
 
             await dbContext.Questions.AddAsync(question);
             await dbContext.SaveChangesAsync();
@@ -20,7 +19,6 @@ namespace LX.TestPad.DataAccess
 
         public async Task DeleteAsync(Question question)
         {
-            var dbContext = dbContextFactory.Create(typeof(QuestionRepository));
 
             dbContext.Questions.Remove(question);
             await dbContext.SaveChangesAsync();
@@ -28,23 +26,20 @@ namespace LX.TestPad.DataAccess
 
         public async Task<IEnumerable<Question>> GetAllAsync()
         {
-            var dbContext = dbContextFactory.Create(typeof(QuestionRepository));
 
             return await dbContext.Questions.ToListAsync();
         }
 
         public async Task<Question> GetByIdAsync(int id)
         {
-            var dbContext = dbContextFactory.Create(typeof(QuestionRepository));
 
             return await dbContext.Questions.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task UpdateAsync(Question question)
         {
-            var dbContext = dbContextFactory.Create(typeof(QuestionRepository));
 
-            dbContext.Entry(question).State = EntityState.Modified;
+            dbContext.Questions.Update(question);
             await dbContext.SaveChangesAsync();
         }
     }

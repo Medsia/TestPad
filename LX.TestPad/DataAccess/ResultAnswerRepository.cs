@@ -32,6 +32,12 @@ namespace LX.TestPad.DataAccess
 
             return await dbContext.ResultAnswers.Where(x => x.ResultId == resultId).ToListAsync();
         }
+        public async Task<IEnumerable<ResultAnswer>> GetAllAsync()
+        {
+            var dbContext = dbContextFactory.Create(typeof(ResultAnswerRepository));
+
+            return await dbContext.ResultAnswers.ToListAsync();
+        }
 
         public async Task<ResultAnswer> GetByIdAsync(int id)
         {

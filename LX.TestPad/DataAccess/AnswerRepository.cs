@@ -26,6 +26,11 @@ namespace LX.TestPad.DataAccess
             await dbContext.SaveChangesAsync();
         }
 
+        public Task<IEnumerable<Answer>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<Answer>> GetAllByQuestionIdAsync(int questionId)
         {
             var dbContext = dbContextFactory.Create(typeof(AnswerRepository));

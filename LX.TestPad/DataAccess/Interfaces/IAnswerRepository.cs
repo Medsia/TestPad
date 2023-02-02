@@ -1,13 +1,10 @@
 ﻿namespace LX.TestPad.DataAccess.Interfaces
 {
-    public interface IAnswerRepository
+    public interface IAnswerRepository : IRepository<Answer>
     {
-        Task<Answer> GetByIdAsync(int id);
         Task<IEnumerable<Answer>> GetAllByQuestionIdAsync(int questionId);
         Task<Answer> GetByIdIncludingAsync(int id);
         Task<IEnumerable<Answer>> GetAllByQuestionIdIncludingAsync(int questionId);
-        Task CreateAsync(Answer answer);
-        Task UpdateAsync(Answer answer);
-        Task DeleteAsync(Answer answer);
+
     }
 }

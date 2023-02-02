@@ -1,5 +1,6 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
+using LX.TestPad.DataAccess;
 
 namespace LX.TestPad.Business.Services
 {
@@ -31,17 +32,18 @@ namespace LX.TestPad.Business.Services
                         .ToArray();
         }
 
-        public async Task<IEnumerable<TestModel>> GetPartAsync(int startId, int count)
+        public async Task<IEnumerable<TestModel>> GetAllByPageNumberAsync(int pageNumber, int count)
         {
-            if (startId < 1)
-                throw new ArgumentOutOfRangeException("startId");
+            if (pageNumber < 1)
+                throw new ArgumentOutOfRangeException("pageNumber");
 
             if(count == 0)
                 throw new ArgumentOutOfRangeException("count");
 
             var items = await _testRepository.GetAllAsync();
+            var prevPages = (pageNumber - 1) * count;
 
-            return items.Skip(startId).Take(count)
+            return items.Skip(prevPages).Take(count)
                         .Select(Mapper.Map)
                         .ToArray();
         }

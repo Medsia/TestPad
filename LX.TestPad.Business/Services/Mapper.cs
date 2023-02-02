@@ -13,7 +13,7 @@ namespace LX.TestPad.Business.Services
                 Id = obj.Id,
                 Name = obj.Name,
                 Description = obj.Description,
-                TimeSec = obj.TimeSec,
+                TimeSec = obj.TestDuration,
             };
         }
         public static TestQuestionModel Map(TestQuestion obj)
@@ -73,6 +73,7 @@ namespace LX.TestPad.Business.Services
                 Id = model.Id,
                 Name = model.Name,
                 Description = model.Description,
+                TestDuration = model.TestDuration
             };
         }
 

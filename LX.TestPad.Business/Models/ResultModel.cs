@@ -1,6 +1,4 @@
-﻿using LX.TestPad.DataAccess;
-
-namespace LX.TestPad.Business.Models
+﻿namespace LX.TestPad.Business.Models
 {
     public class ResultModel
     {

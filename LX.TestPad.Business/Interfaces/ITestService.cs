@@ -1,5 +1,4 @@
 ﻿using LX.TestPad.Business.Models;
-using LX.TestPad.Business.Services;
 
 namespace LX.TestPad.Business.Interfaces
 {
@@ -10,7 +9,7 @@ namespace LX.TestPad.Business.Interfaces
     {
         Task<TestModel> GetByIdAsync(int id);
         Task<IEnumerable<TestModel>> GetAllAsync();
-        Task<IEnumerable<TestModel>> GetPartAsync(int startId, int count);
+        Task<IEnumerable<TestModel>> GetAllByPageNumberAsync(int pageNumber, int count);
     }
 
     /// <summary>
@@ -20,7 +19,7 @@ namespace LX.TestPad.Business.Interfaces
     {
         Task<TestModel> GetByIdAsync(int id);
         Task<IEnumerable<TestModel>> GetAllAsync();
-        Task<IEnumerable<TestModel>> GetPartAsync(int startId, int count);
+        Task<IEnumerable<TestModel>> GetAllByPageNumberAsync(int pageNumber, int count);
 
         Task CreateAsync(TestModel testModel);
         Task UpdateAsync(TestModel testModel);

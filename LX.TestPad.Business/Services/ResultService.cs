@@ -4,7 +4,7 @@ using LX.TestPad.DataAccess.Interfaces;
 
 namespace LX.TestPad.Business.Services
 {
-    internal class ResultService : IResultService
+    public class ResultService : IResultService
     {
         private readonly IResultRepository _resultRepository;
 

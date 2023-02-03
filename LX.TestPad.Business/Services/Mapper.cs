@@ -1,5 +1,6 @@
 ﻿using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess;
+using LX.TestPad.DataAccess.Entities;
 
 namespace LX.TestPad.Business.Services
 {

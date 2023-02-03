@@ -1,6 +1,7 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess;
+using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
 
 namespace LX.TestPad.Business.Services
@@ -8,12 +9,23 @@ namespace LX.TestPad.Business.Services
     public class TestQuestionService : ITestQuestionService
     {
         private readonly ITestQuestionRepository _testQuestionRepository;
-        private readonly IQuestionService _questionService;
+        private readonly IQuestionRepository _questionRepository;
 
-        public TestQuestionService(ITestQuestionRepository testQuestionRepository, IQuestionService questionService)
+        public TestQuestionService(ITestQuestionRepository testQuestionRepository, IQuestionRepository questionRepository)
         {
             _testQuestionRepository = testQuestionRepository;
-            _questionService = questionService;
+            _questionRepository = questionRepository;
+        }
+
+
+        public async Task<QuestionModel> GetQuestionByIdAsync(int id)
+        {
+            if (id < 1)
+                throw new ArgumentOutOfRangeException("id");
+
+            var item = await _questionRepository.GetByIdAsync(id);
+
+            return Mapper.Map(item);
         }
 
 
@@ -38,7 +50,7 @@ namespace LX.TestPad.Business.Services
             List<QuestionModel> result = new List<QuestionModel>();
             foreach (var item in items)
             {
-                var resultItem = await _questionService.GetByIdAsync(item.Id);
+                var resultItem = await GetQuestionByIdAsync(item.Id);
                 result.Add(resultItem);
             }
 
@@ -55,7 +67,7 @@ namespace LX.TestPad.Business.Services
             List<QuestionModel> result = new List<QuestionModel>();
             foreach (var item in items)
             {
-                var resultItem = await _questionService.GetByIdAsync(item.Id);
+                var resultItem = await GetQuestionByIdAsync(item.Id);
                 result.Add(resultItem);
             }
 

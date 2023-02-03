@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LX.TestPad", "LX.TestPad\LX
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LX.TestPad.Business", "LX.TestPad.Business\LX.TestPad.Business.csproj", "{040AEAD2-384F-4923-9844-A878DC31CE7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LX.TestPad.Tests", "LX.TestPad.Tests\LX.TestPad.Tests.csproj", "{BAF9DECB-3A18-45FD-A9D9-04F4DC0E3790}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LX.TestPad.Tests", "LX.TestPad.Tests\LX.TestPad.Tests.csproj", "{BAF9DECB-3A18-45FD-A9D9-04F4DC0E3790}"
+	ProjectSection(ProjectDependencies) = postProject
+		{55CF611D-F8A8-4D99-99D4-6940C93C54CA} = {55CF611D-F8A8-4D99-99D4-6940C93C54CA}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LX.TestPad.DataAccess", "LX.TestPad.DataAccess\LX.TestPad.DataAccess.csproj", "{55CF611D-F8A8-4D99-99D4-6940C93C54CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +32,10 @@ Global
 		{BAF9DECB-3A18-45FD-A9D9-04F4DC0E3790}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAF9DECB-3A18-45FD-A9D9-04F4DC0E3790}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAF9DECB-3A18-45FD-A9D9-04F4DC0E3790}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55CF611D-F8A8-4D99-99D4-6940C93C54CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55CF611D-F8A8-4D99-99D4-6940C93C54CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55CF611D-F8A8-4D99-99D4-6940C93C54CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55CF611D-F8A8-4D99-99D4-6940C93C54CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

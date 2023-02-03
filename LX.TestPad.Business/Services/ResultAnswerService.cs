@@ -1,6 +1,7 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess;
+using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
 
 namespace LX.TestPad.Business.Services
@@ -8,15 +9,37 @@ namespace LX.TestPad.Business.Services
     public class ResultAnswerService : IResultAnswerService
     {
         private readonly IResultAnswerRepository _resultAnswerRepository;
-        private readonly IAnswerService _answerService;
-        private readonly IQuestionService _questionService;
+        private readonly IQuestionRepository _questionRepository;
+        private readonly IAnswerRepository _answerRepository;
 
-        public ResultAnswerService(IResultAnswerRepository resultAnswerRepository, IAnswerService answerService,
-                                    IQuestionService questionService)
+        public ResultAnswerService(IResultAnswerRepository resultAnswerRepository, IAnswerRepository answerRepository,
+                                    IQuestionRepository questionRepository)
         {
             _resultAnswerRepository = resultAnswerRepository;
-            _answerService = answerService;
-            _questionService = questionService;
+            _answerRepository = answerRepository;
+            _questionRepository = questionRepository;
+        }
+
+
+        public async Task<QuestionModel> GetQuestionByIdAsync(int id)
+        {
+            if (id < 1)
+                throw new ArgumentOutOfRangeException("id");
+
+            var item = await _questionRepository.GetByIdAsync(id);
+
+            return Mapper.Map(item);
+        }
+
+
+        public async Task<AnswerModel> GetAnswerByIdAsync(int id)
+        {
+            if (id < 1)
+                throw new ArgumentOutOfRangeException("id");
+
+            var item = await _answerRepository.GetByIdAsync(id);
+
+            return Mapper.Map(item);
         }
 
 
@@ -44,8 +67,8 @@ namespace LX.TestPad.Business.Services
 
         public async Task CreateAsync(int resultId, int answerId)
         {
-            var answer = await _answerService.GetByIdAsync(answerId);
-            var question = await _questionService.GetByIdAsync(answer.QuestionId);
+            var answer = await GetAnswerByIdAsync(answerId);
+            var question = await GetQuestionByIdAsync(answer.QuestionId);
 
             var item = new ResultAnswer
             {

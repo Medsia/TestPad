@@ -1,22 +1,69 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess.Interfaces;
+using LX.TestPad.DataAccess.Repositories;
 
 namespace LX.TestPad.Business.Services
 {
     public class QuestionService : IQuestionService
     {
         private readonly IQuestionRepository _questionRepository;
-        private readonly IAnswerService _answerService;
-        private readonly ITestQuestionService _testQuestionService;
-
-        public QuestionService(IQuestionRepository questionRepository, IAnswerService answerService,
-                                ITestQuestionService testQuestionService)
+        private readonly IAnswerRepository _answerRepository;
+        private readonly ITestQuestionRepository _testQuestionRepository;
+        
+        public QuestionService(IQuestionRepository questionRepository, IAnswerRepository answerRepository,
+                                ITestQuestionRepository testQuestionRepository)
         {
             _questionRepository = questionRepository;
-            _answerService = answerService;
-            _testQuestionService = testQuestionService;
+            _answerRepository = answerRepository;
+            _testQuestionRepository = testQuestionRepository;
         }
+
+
+        public async Task<List<AnswerModel>> GetAllAnswersByQuestionIdAsync(int testId)
+        {
+            if (testId < 1)
+                throw new ArgumentOutOfRangeException("testId");
+
+            var items = await _answerRepository.GetAllByQuestionIdAsync(testId);
+
+            return items.Select(Mapper.Map)
+                        .ToList();
+        }
+
+        public async Task DeleteAllAsnwersByQuestionIdAsync(int questionId)
+        {
+            if (questionId < 1)
+                throw new ArgumentOutOfRangeException("questionId");
+
+            var items = await _answerRepository.GetAllByQuestionIdAsync(questionId);
+
+            foreach (var item in items) await _answerRepository.DeleteAsync(item);
+        }
+
+
+
+        public async Task<List<TestQuestionModel>> GetAllTestQuestionsByTestIdAsync(int testId)
+        {
+            if (testId < 1)
+                throw new ArgumentOutOfRangeException("testId");
+
+            var items = await _testQuestionRepository.GetAllByTestIdAsync(testId);
+
+            return items.Select(Mapper.Map)
+                        .ToList();
+        }
+
+        public async Task DeleteTestQuestionByQuestionIdAsync(int questionId)
+        {
+            if (questionId < 1)
+                throw new ArgumentOutOfRangeException("questionId");
+
+            var items = await _testQuestionRepository.GetAllByQuestionIdAsync(questionId);
+
+            foreach (var item in items) await _testQuestionRepository.DeleteAsync(item);
+        }
+
 
 
         public async Task<QuestionModel> GetByIdAsync(int id)
@@ -35,7 +82,7 @@ namespace LX.TestPad.Business.Services
                 throw new ArgumentOutOfRangeException("id");
 
             var question = await _questionRepository.GetByIdAsync(id);
-            var answers = await _answerService.GetAllByQuestionIdAsync(question.Id);
+            var answers = await GetAllAnswersByQuestionIdAsync(question.Id);
 
             return Mapper.Map(question, answers);
         }
@@ -45,7 +92,7 @@ namespace LX.TestPad.Business.Services
             if (testId < 1)
                 throw new ArgumentOutOfRangeException("testId");
 
-            var items = await _testQuestionService.GetAllByTestIdAsync(testId);
+            var items = await GetAllTestQuestionsByTestIdAsync(testId);
             var result = items.Select(x => x.QuestionId).ToList();
 
             return result;
@@ -68,8 +115,8 @@ namespace LX.TestPad.Business.Services
 
         public async Task DeleteAsync(int id)
         {
-            await _testQuestionService.DeleteByQuestionIdAsync(id);
-            await _answerService.DeleteAllByQuestionIdAsync(id);
+            await DeleteTestQuestionByQuestionIdAsync(id);
+            await DeleteAllAsnwersByQuestionIdAsync(id);
 
             var item = await _questionRepository.GetByIdAsync(id);
             await _questionRepository.DeleteAsync(item);

@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LX.TestPad.Business\LX.TestPad.Business.csproj" />
-    <ProjectReference Include="..\LX.TestPad\LX.TestPad.csproj" />
   </ItemGroup>
 
 </Project>

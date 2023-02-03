@@ -28,6 +28,11 @@ namespace LX.TestPad.DataAccess
             return await dbContext.TestQuestion.Where(x => x.TestId == testId).ToListAsync();
         }
 
+        public async Task<List<TestQuestion>> GetAllByQuestionIdAsync(int QuestionId)
+        {
+            return await dbContext.TestQuestion.Where(x => x.QuestionId == QuestionId).ToListAsync();
+        }
+
         public async Task<List<TestQuestion>> GetAllAsync()
         {
             return await dbContext.TestQuestion.ToListAsync();

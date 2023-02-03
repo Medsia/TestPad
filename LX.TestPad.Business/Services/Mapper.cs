@@ -123,7 +123,7 @@ namespace LX.TestPad.Business.Services
                 QuestionId = entity.QuestionId,
             };
         }
-        public static QuestionWithAnswersModel Map (Question questionEntity, List<AnswerModel> answerEntities )
+        public static QuestionWithAnswersModel Map(Question questionEntity, List<AnswerModel> answerEntities)
         {
             return new QuestionWithAnswersModel
             {

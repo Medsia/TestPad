@@ -1,5 +1,4 @@
 ﻿using LX.TestPad.Business.Models;
-using System.Threading.Tasks;
 
 namespace LX.TestPad.Business.Interfaces
 {

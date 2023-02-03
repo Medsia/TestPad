@@ -16,7 +16,7 @@ namespace LX.TestPad.Business.Services
             _questionService = questionService;
         }
 
-        
+
         public async Task<List<TestQuestionModel>> GetAllByTestIdAsync(int testId)
         {
             if (testId < 1)
@@ -71,7 +71,7 @@ namespace LX.TestPad.Business.Services
             else newNumber = 1;
 
             return newNumber;
-        } 
+        }
 
         public async Task LinkQuestionToTest(int questionId, int testId)
         {

@@ -37,7 +37,7 @@ namespace LX.TestPad.Business.Services
             if (pageNumber < 1)
                 throw new ArgumentOutOfRangeException("pageNumber");
 
-            if(count == 0)
+            if (count == 0)
                 throw new ArgumentOutOfRangeException("count");
 
             var items = await _testRepository.GetAllAsync();

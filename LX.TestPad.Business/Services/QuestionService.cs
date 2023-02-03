@@ -36,7 +36,7 @@ namespace LX.TestPad.Business.Services
 
             var question = await _questionRepository.GetByIdAsync(id);
             var answers = await _answerService.GetAllByQuestionIdAsync(question.Id);
-            
+
             return Mapper.Map(question, answers);
         }
 

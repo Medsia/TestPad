@@ -52,6 +52,7 @@ namespace LX.TestPad.Business.Services
                 ResultId = resultId,
                 QuestionText = question.Text,
                 AnswerText = answer.Text,
+                IsCorrect = answer.IsCorrect,
             };
 
             await _resultAnswerRepository.CreateAsync(item);

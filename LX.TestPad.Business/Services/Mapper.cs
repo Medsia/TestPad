@@ -61,6 +61,7 @@ namespace LX.TestPad.Business.Services
                 AnswerText = entity.AnswerText,
                 QuestionText = entity.QuestionText,
                 ResultId = entity.ResultId,
+                IsCorrect = entity.IsCorrect,
             };
         }
 
@@ -121,6 +122,7 @@ namespace LX.TestPad.Business.Services
                 AnswerText = model.AnswerText,
                 QuestionText = model.QuestionText,
                 ResultId = model.ResultId,
+                IsCorrect = model.IsCorrect,
             };
         }
 

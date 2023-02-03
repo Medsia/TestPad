@@ -1,6 +1,6 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
-using LX.TestPad.DataAccess;
+using LX.TestPad.DataAccess.Interfaces;
 
 namespace LX.TestPad.Business.Services
 {
@@ -42,9 +42,10 @@ namespace LX.TestPad.Business.Services
 
             var items = await _answerRepository.GetAllByQuestionIdAsync(testId);
 
-            return items.Select(Mapper.Map)
-                        .ForEach(item => item.IsCorrect = false)
-                        .ToList();
+            var result = items.Select(Mapper.Map).ToList();
+            result.ForEach(item => item.IsCorrect = false);
+
+            return result;
         }
 
 
@@ -67,7 +68,7 @@ namespace LX.TestPad.Business.Services
             if (id < 1)
                 throw new ArgumentOutOfRangeException("id");
 
-            var item = _answerRepository.GetByIdAsync(id);
+            var item = await _answerRepository.GetByIdAsync(id);
 
             await _answerRepository.DeleteAsync(item);
         }

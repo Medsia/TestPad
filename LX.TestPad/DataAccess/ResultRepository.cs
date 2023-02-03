@@ -18,6 +18,14 @@ namespace LX.TestPad.DataAccess
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task<int> CreateAndGetNewItemIdAsync(Result result)
+        {
+            await dbContext.Results.AddAsync(result);
+            await dbContext.SaveChangesAsync();
+            return result.Id;
+        }
+
+
         public async Task DeleteAsync(Result result)
         {
             dbContext.Results.Remove(result);

@@ -10,7 +10,6 @@ namespace LX.TestPad.Business.Interfaces
         Task UpdateAsync(ResultAnswerModel model);
 
         Task DeleteAsync(int id);
-        Task DeleteAsync(ResultAnswerModel model);
         Task DeleteAllByResultIdAsync(int resultId);
     }
 }

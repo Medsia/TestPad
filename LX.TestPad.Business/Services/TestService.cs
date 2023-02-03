@@ -1,6 +1,6 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
-using LX.TestPad.DataAccess;
+using LX.TestPad.DataAccess.Interfaces;
 
 namespace LX.TestPad.Business.Services
 {
@@ -28,8 +28,8 @@ namespace LX.TestPad.Business.Services
         {
             var items = await _testRepository.GetAllAsync();
 
-            return await items.Select(Mapper.Map)
-                              .ToList();
+            return items.Select(Mapper.Map)
+                        .ToList();
         }
 
         public async Task<List<TestModel>> GetAllByPageNumberAsync(int pageNumber, int count)
@@ -43,9 +43,9 @@ namespace LX.TestPad.Business.Services
             var items = await _testRepository.GetAllAsync();
             var prevPages = (pageNumber - 1) * count;
 
-            return await items.Skip(prevPages).Take(count)
-                              .Select(Mapper.Map)
-                              .ToList();
+            return items.Skip(prevPages).Take(count)
+                        .Select(Mapper.Map)
+                        .ToList();
         }
 
 
@@ -65,7 +65,7 @@ namespace LX.TestPad.Business.Services
 
         public async Task DeleteAsync(int id)
         {
-            var item = _testRepository.GetByIdAsync(id);
+            var item = await _testRepository.GetByIdAsync(id);
 
             await _testRepository.DeleteAsync(item);
         }

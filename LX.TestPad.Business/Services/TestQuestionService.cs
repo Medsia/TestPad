@@ -1,6 +1,7 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess;
+using LX.TestPad.DataAccess.Interfaces;
 
 namespace LX.TestPad.Business.Services
 {
@@ -23,8 +24,8 @@ namespace LX.TestPad.Business.Services
 
             var items = await _testQuestionRepository.GetAllByTestIdAsync(testId);
 
-            return await items.Select(Mapper.Map)
-                              .ToList();
+            return items.Select(Mapper.Map)
+                        .ToList();
         }
 
         public async Task<List<QuestionModel>> GetAllQuestionsByTestIdAsync(int testId)
@@ -62,6 +63,16 @@ namespace LX.TestPad.Business.Services
         }
 
 
+        private async Task<int> GetNewNumberByTestId(int testId)
+        {
+            var lastQuestion = (await _testQuestionRepository.GetAllByTestIdAsync(testId)).LastOrDefault();
+            int newNumber;
+            if (lastQuestion != null) newNumber = lastQuestion.Number + 1;
+            else newNumber = 1;
+
+            return newNumber;
+        } 
+
         public async Task LinkQuestionToTest(int questionId, int testId)
         {
             if (testId < 1)
@@ -70,10 +81,13 @@ namespace LX.TestPad.Business.Services
             if (questionId < 1)
                 throw new ArgumentOutOfRangeException("questionId");
 
+            var newNumber = await GetNewNumberByTestId(testId);
+
             var item = new TestQuestion
             {
                 QuestionId = questionId,
-                TestId = testId
+                TestId = testId,
+                Number = newNumber,
             };
 
             await _testQuestionRepository.CreateAsync(item);
@@ -89,10 +103,13 @@ namespace LX.TestPad.Business.Services
 
             foreach (var questionId in questionIds)
             {
+                var newNumber = await GetNewNumberByTestId(testId);
+
                 var item = new TestQuestion
                 {
                     QuestionId = questionId,
-                    TestId = testId
+                    TestId = testId,
+                    Number = newNumber,
                 };
 
                 await _testQuestionRepository.CreateAsync(item);
@@ -127,7 +144,7 @@ namespace LX.TestPad.Business.Services
             if (questionId < 1)
                 throw new ArgumentOutOfRangeException("questionId");
 
-            var items = await GetAllTestsByQuestionIdAsync(questionId);
+            var items = await _testQuestionRepository.GetAllByQuestionIdAsync(questionId);
 
             foreach (var item in items) await _testQuestionRepository.DeleteAsync(item);
         }

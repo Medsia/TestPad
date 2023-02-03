@@ -1,6 +1,7 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess;
+using LX.TestPad.DataAccess.Interfaces;
 
 namespace LX.TestPad.Business.Services
 {
@@ -36,9 +37,8 @@ namespace LX.TestPad.Business.Services
 
             var items = await _resultAnswerRepository.GetAllByResultIdAsync(resultId);
 
-
-            return await items.Select(Mapper.Map)
-                              .ToList();
+            return items.Select(Mapper.Map)
+                        .ToList();
         }
 
 
@@ -70,14 +70,7 @@ namespace LX.TestPad.Business.Services
             if (id < 1)
                 throw new ArgumentOutOfRangeException("id");
 
-            var item = await _resultAnswerRepository.GetAllByIdAsync(id);
-
-            await _resultAnswerRepository.DeleteAsync(item);
-        }
-
-        public async Task DeleteAsync(ResultAnswerModel model)
-        {
-            var item = Mapper.Map(model);
+            var item = await _resultAnswerRepository.GetByIdAsync(id);
 
             await _resultAnswerRepository.DeleteAsync(item);
         }

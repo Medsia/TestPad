@@ -3,5 +3,6 @@
     public interface IResultRepository : IRepository<Result>
     {
         Task<List<Result>> GetAllByTestIdAsync(int testId);
+        Task<int> CreateAndGetNewItemIdAsync(Result result);
     }
 }

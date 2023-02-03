@@ -1,6 +1,6 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
-using LX.TestPad.DataAccess;
+using LX.TestPad.DataAccess.Interfaces;
 
 namespace LX.TestPad.Business.Services
 {
@@ -37,9 +37,7 @@ namespace LX.TestPad.Business.Services
             var question = await _questionRepository.GetByIdAsync(id);
             var answers = await _answerService.GetAllByQuestionIdAsync(question.Id);
             
-            var item = Mapper.Map(question, answers);
-
-            return Mapper.Map(item);
+            return Mapper.Map(question, answers);
         }
 
         public async Task<List<int>> GetAllQuestionIdsByTestId(int testId)
@@ -73,7 +71,7 @@ namespace LX.TestPad.Business.Services
             await _testQuestionService.DeleteByQuestionIdAsync(id);
             await _answerService.DeleteAllByQuestionIdAsync(id);
 
-            var item = _questionRepository.GetByIdAsync(id);
+            var item = await _questionRepository.GetByIdAsync(id);
             await _questionRepository.DeleteAsync(item);
         }
 

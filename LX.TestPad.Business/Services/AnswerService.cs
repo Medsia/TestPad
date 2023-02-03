@@ -24,7 +24,7 @@ namespace LX.TestPad.Business.Services
             return Mapper.Map(item);
         }
 
-        public async Task<IReadOnlyCollection<AnswerModel>> GetAllByQuestionIdAsync(int testId)
+        public async Task<List<AnswerModel>> GetAllByQuestionIdAsync(int testId)
         {
             if (testId < 1)
                 throw new ArgumentOutOfRangeException("testId");
@@ -32,10 +32,10 @@ namespace LX.TestPad.Business.Services
             var items = await _answerRepository.GetAllByQuestionIdAsync(testId);
 
             return items.Select(Mapper.Map)
-                        .ToArray();
+                        .ToList();
         }
 
-        public async Task<IReadOnlyCollection<AnswerModel>> GetAllForClientByQuestionIdAsync(int testId)
+        public async Task<List<AnswerModel>> GetAllForClientByQuestionIdAsync(int testId)
         {
             if (testId < 1)
                 throw new ArgumentOutOfRangeException("testId");
@@ -44,7 +44,7 @@ namespace LX.TestPad.Business.Services
 
             return items.Select(Mapper.Map)
                         .ForEach(item => item.IsCorrect = false)
-                        .ToArray();
+                        .ToList();
         }
 
 
@@ -72,7 +72,7 @@ namespace LX.TestPad.Business.Services
             await _answerRepository.DeleteAsync(item);
         }
 
-        public async Task DeleteManyAsync(IEnumerable<int> ids)
+        public async Task DeleteManyAsync(List<int> ids)
         {
             foreach (var id in ids) await DeleteAsync(id);
         }

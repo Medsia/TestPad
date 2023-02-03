@@ -24,15 +24,15 @@ namespace LX.TestPad.Business.Services
             return Mapper.Map(item);
         }
 
-        public async Task<IEnumerable<TestModel>> GetAllAsync()
+        public async Task<List<TestModel>> GetAllAsync()
         {
             var items = await _testRepository.GetAllAsync();
 
-            return items.Select(Mapper.Map)
-                        .ToArray();
+            return await items.Select(Mapper.Map)
+                              .ToList();
         }
 
-        public async Task<IEnumerable<TestModel>> GetAllByPageNumberAsync(int pageNumber, int count)
+        public async Task<List<TestModel>> GetAllByPageNumberAsync(int pageNumber, int count)
         {
             if (pageNumber < 1)
                 throw new ArgumentOutOfRangeException("pageNumber");
@@ -43,9 +43,9 @@ namespace LX.TestPad.Business.Services
             var items = await _testRepository.GetAllAsync();
             var prevPages = (pageNumber - 1) * count;
 
-            return items.Skip(prevPages).Take(count)
-                        .Select(Mapper.Map)
-                        .ToArray();
+            return await items.Skip(prevPages).Take(count)
+                              .Select(Mapper.Map)
+                              .ToList();
         }
 
 
@@ -70,7 +70,7 @@ namespace LX.TestPad.Business.Services
             await _testRepository.DeleteAsync(item);
         }
 
-        public async Task DeleteManyAsync(IEnumerable<int> ids)
+        public async Task DeleteManyAsync(List<int> ids)
         {
             foreach (var id in ids) await DeleteAsync(id);
         }

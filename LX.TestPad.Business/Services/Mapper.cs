@@ -126,7 +126,7 @@ namespace LX.TestPad.Business.Services
 
 
         // One way mappers
-        public static QuestionWithAnswersModel Map (Question questionEntity, IEnumerable<Answer> answerEntities )
+        public static QuestionWithAnswersModel Map (Question questionEntity, List<Answer> answerEntities )
         {
             return new QuestionWithAnswersModel
             {

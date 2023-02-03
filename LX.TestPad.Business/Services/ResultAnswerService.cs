@@ -29,7 +29,7 @@ namespace LX.TestPad.Business.Services
             return Mapper.Map(item);
         }
 
-        public async Task<IEnumerable<ResultAnswerModel>> GetAllByResultIdAsync(int resultId)
+        public async Task<List<ResultAnswerModel>> GetAllByResultIdAsync(int resultId)
         {
             if (resultId < 1)
                 throw new ArgumentOutOfRangeException("resultId");
@@ -37,8 +37,8 @@ namespace LX.TestPad.Business.Services
             var items = await _resultAnswerRepository.GetAllByResultIdAsync(resultId);
 
 
-            return items.Select(Mapper.Map)
-                        .ToArray();
+            return await items.Select(Mapper.Map)
+                              .ToList();
         }
 
 

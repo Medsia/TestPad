@@ -16,18 +16,18 @@ namespace LX.TestPad.Business.Services
         }
 
         
-        public async Task<IEnumerable<TestQuestionModel>> GetAllByTestIdAsync(int testId)
+        public async Task<List<TestQuestionModel>> GetAllByTestIdAsync(int testId)
         {
             if (testId < 1)
                 throw new ArgumentOutOfRangeException("testId");
 
             var items = await _testQuestionRepository.GetAllByTestIdAsync(testId);
 
-            return items.Select(Mapper.Map)
-                        .ToArray();
+            return await items.Select(Mapper.Map)
+                              .ToList();
         }
 
-        public async Task<IEnumerable<QuestionModel>> GetAllQuestionsByTestIdAsync(int testId)
+        public async Task<List<QuestionModel>> GetAllQuestionsByTestIdAsync(int testId)
         {
             if (testId < 1)
                 throw new ArgumentOutOfRangeException("testId");
@@ -44,7 +44,7 @@ namespace LX.TestPad.Business.Services
             return result;
         }
 
-        public async Task<IEnumerable<QuestionModel>> GetAllTestsByQuestionIdAsync(int questionId)
+        public async Task<List<QuestionModel>> GetAllTestsByQuestionIdAsync(int questionId)
         {
             if (questionId < 1)
                 throw new ArgumentOutOfRangeException("questionId");
@@ -79,7 +79,7 @@ namespace LX.TestPad.Business.Services
             await _testQuestionRepository.CreateAsync(item);
         }
 
-        public async Task LinkQuestionsToTest(IEnumerable<int> questionIds, int testId)
+        public async Task LinkQuestionsToTest(List<int> questionIds, int testId)
         {
             if (testId < 1)
                 throw new ArgumentOutOfRangeException("testId");

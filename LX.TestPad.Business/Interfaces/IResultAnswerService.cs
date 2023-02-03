@@ -5,7 +5,7 @@ namespace LX.TestPad.Business.Interfaces
     public interface IResultAnswerService
     {
         Task<ResultAnswerModel> GetByIdAsync(int id);
-        Task<IEnumerable<ResultAnswerModel>> GetAllByResultIdAsync(int resultId);
+        Task<List<ResultAnswerModel>> GetAllByResultIdAsync(int resultId);
         Task CreateAsync(int resultId, int answerId);
         Task UpdateAsync(ResultAnswerModel model);
 

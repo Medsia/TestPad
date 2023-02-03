@@ -10,6 +10,7 @@ namespace LX.TestPad.DataAccess
         public int ResultId { get; set; }
         public string QuestionText { get; set; }
         public string AnswerText { get; set; }
+        public bool IsCorrect { get; set; }
         public virtual Result Result { get; set; }
     }
 }

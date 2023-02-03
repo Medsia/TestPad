@@ -1,12 +1,13 @@
+using LX.TestPad.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews()
-    .Services.AddDbContext<LX.TestPad.DataAccess.DataContext>(options => options.UseSqlServer(
+    .Services.AddDbContextPool<LX.TestPad.DataAccess.DataContext>(options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddEfRepositories();
 
 var app = builder.Build();
 

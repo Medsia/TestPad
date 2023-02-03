@@ -6,6 +6,5 @@
         Task<Result> GetByIdIncludingAsync(int id);
         Task<IEnumerable<Result>> GetAllIncludingAsync();
         Task<IEnumerable<Result>> GetAllByTestIdIncludingAsync(int testId);
-
     }
 }

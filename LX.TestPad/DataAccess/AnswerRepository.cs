@@ -23,16 +23,16 @@ namespace LX.TestPad.DataAccess
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Answer>> GetAllAsync()
+        public async Task<List<Answer>> GetAllAsync()
         {
             return await dbContext.Answers.ToListAsync();
         }
 
-        public async Task<IEnumerable<Answer>> GetAllByQuestionIdAsync(int questionId)
+        public async Task<List<Answer>> GetAllByQuestionIdAsync(int questionId)
         {
             return await dbContext.Answers.Where(x => x.QuestionId == questionId).ToListAsync();
         }
-        public async Task<IEnumerable<Answer>> GetAllByQuestionIdIncludingAsync(int questionId)
+        public async Task<List<Answer>> GetAllByQuestionIdIncludingAsync(int questionId)
         {
             return await dbContext.Answers
                 .Where(x => x.QuestionId == questionId)

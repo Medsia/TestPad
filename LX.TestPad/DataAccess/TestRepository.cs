@@ -24,7 +24,7 @@ namespace LX.TestPad.DataAccess
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Test>> GetAllAsync()
+        public async Task<List<Test>> GetAllAsync()
         {
             return await dbContext.Tests.ToListAsync();
         }

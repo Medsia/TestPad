@@ -23,11 +23,11 @@ namespace LX.TestPad.DataAccess
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ResultAnswer>> GetAllByResultIdAsync(int resultId)
+        public async Task<List<ResultAnswer>> GetAllByResultIdAsync(int resultId)
         {
             return await dbContext.ResultAnswers.Where(x => x.ResultId == resultId).ToListAsync();
         }
-        public async Task<IEnumerable<ResultAnswer>> GetAllAsync()
+        public async Task<List<ResultAnswer>> GetAllAsync()
         {
             return await dbContext.ResultAnswers.ToListAsync();
         }
@@ -36,7 +36,7 @@ namespace LX.TestPad.DataAccess
         {
             return await dbContext.ResultAnswers.FirstOrDefaultAsync(x => x.Id == id);
         }
-        public async Task<IEnumerable<ResultAnswer>> GetAllByResultIdIncludingAsync(int resultId)
+        public async Task<List<ResultAnswer>> GetAllByResultIdIncludingAsync(int resultId)
         {
             return await dbContext.ResultAnswers
                 .Where(x => x.ResultId == resultId)

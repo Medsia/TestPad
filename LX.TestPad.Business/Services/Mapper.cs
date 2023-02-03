@@ -16,15 +16,6 @@ namespace LX.TestPad.Business.Services
                 TestDuration = entity.TestDuration,
             };
         }
-        public static TestQuestionModel Map(TestQuestion entity)
-        {
-            return new TestQuestionModel
-            {
-                Id = entity.Id,
-                TestId = entity.TestId,
-                QuestionId = entity.QuestionId,
-            };
-        }
         public static QuestionModel Map(Question entity)
         {
             return new QuestionModel
@@ -51,6 +42,8 @@ namespace LX.TestPad.Business.Services
                 UserName = entity.UserName,
                 Score = entity.Score,
                 TestId = entity.TestId,
+                StartedAt = entity.StartedAt,
+                FinishedAt = entity.FinishedAt,
             };
         }
         public static ResultAnswerModel Map(ResultAnswer entity)
@@ -75,15 +68,6 @@ namespace LX.TestPad.Business.Services
                 Name = model.Name,
                 Description = model.Description,
                 TestDuration = model.TestDuration
-            };
-        }
-        public static TestQuestion Map(TestQuestionModel model)
-        {
-            return new TestQuestion
-            {
-                Id = model.Id,
-                TestId = model.TestId,
-                QuestionId = model.QuestionId,
             };
         }
         public static Question Map(QuestionModel model)
@@ -112,6 +96,8 @@ namespace LX.TestPad.Business.Services
                 UserName = model.UserName,
                 Score = model.Score,
                 TestId = model.TestId,
+                StartedAt = model.StartedAt,
+                FinishedAt = model.FinishedAt,
             };
         }
         public static ResultAnswer Map(ResultAnswerModel model)
@@ -128,13 +114,22 @@ namespace LX.TestPad.Business.Services
 
 
         // One way mappers
-        public static QuestionWithAnswersModel Map (Question questionEntity, List<Answer> answerEntities )
+        public static TestQuestionModel Map(TestQuestion entity)
+        {
+            return new TestQuestionModel
+            {
+                Id = entity.Id,
+                TestId = entity.TestId,
+                QuestionId = entity.QuestionId,
+            };
+        }
+        public static QuestionWithAnswersModel Map (Question questionEntity, List<AnswerModel> answerEntities )
         {
             return new QuestionWithAnswersModel
             {
                 Id = questionEntity.Id,
                 Text = questionEntity.Text,
-                Answers = answerEntities.Select(Map).ToList(),
+                Answers = answerEntities,
             };
         }
     }

@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews()
     .Services.AddDbContext<LX.TestPad.DataAccess.DataContext>(options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddEfRepositories(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddEfRepositories();
 
 var app = builder.Build();
 

@@ -7,7 +7,6 @@ namespace LX.TestPad.DataAccess
     {
         private readonly DataContext dbContext;
         
-        
         public TestRepository(DataContext dbContext)
         {
             this.dbContext = dbContext;

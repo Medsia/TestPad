@@ -32,23 +32,10 @@ namespace LX.TestPad.DataAccess
         {
             return await dbContext.Answers.Where(x => x.QuestionId == questionId).ToListAsync();
         }
-        public async Task<List<Answer>> GetAllByQuestionIdIncludingAsync(int questionId)
-        {
-            return await dbContext.Answers
-                .Where(x => x.QuestionId == questionId)
-                .Include(x => x.Question)
-                .ToListAsync();
-        }
 
         public async Task<Answer> GetByIdAsync(int id)
         {
             return await dbContext.Answers.FirstOrDefaultAsync(x => x.Id == id);
-        }
-        public async Task<Answer> GetByIdIncludingAsync(int id)
-        {
-            return await dbContext.Answers
-                .Include(x => x.Question)
-                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task UpdateAsync(Answer answer)

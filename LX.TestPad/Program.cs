@@ -2,11 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using LX.TestPad.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
+var sqlConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Add services to the container.
-builder.Services.AddControllersWithViews()
-    .Services.AddDbContextPool<DataContext>(options => options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext(sqlConnectionString);
 builder.Services.AddEfRepositories();
 builder.Services.AddBusinesLogicServices();
 

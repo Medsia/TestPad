@@ -5,7 +5,6 @@ namespace LX.TestPad.Business.Interfaces
     public interface IQuestionService
     {
         Task<QuestionModel> GetByIdAsync(int id);
-        Task<List<int>> GetAllQuestionIdsByTestId(int testId);
         Task<QuestionWithAnswersModel> GetByIdWithAnswersAsync(int id);
 
         Task CreateAsync(QuestionModel testModel);

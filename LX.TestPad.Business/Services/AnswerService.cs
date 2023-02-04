@@ -16,8 +16,7 @@ namespace LX.TestPad.Business.Services
 
         public async Task<AnswerModel> GetByIdAsync(int id)
         {
-            if (id < 1)
-                throw new ArgumentOutOfRangeException("id");
+            ExceptionChecker.SQLKeyIdCheck(id);
 
             var item = await _answerRepository.GetByIdAsync(id);
 
@@ -26,8 +25,7 @@ namespace LX.TestPad.Business.Services
 
         public async Task<List<AnswerModel>> GetAllByQuestionIdAsync(int testId)
         {
-            if (testId < 1)
-                throw new ArgumentOutOfRangeException("testId");
+            ExceptionChecker.SQLKeyIdCheck(testId);
 
             var items = await _answerRepository.GetAllByQuestionIdAsync(testId);
 
@@ -37,8 +35,7 @@ namespace LX.TestPad.Business.Services
 
         public async Task<List<AnswerModel>> GetAllForClientByQuestionIdAsync(int testId)
         {
-            if (testId < 1)
-                throw new ArgumentOutOfRangeException("testId");
+            ExceptionChecker.SQLKeyIdCheck(testId);
 
             var items = await _answerRepository.GetAllByQuestionIdAsync(testId);
 
@@ -65,8 +62,7 @@ namespace LX.TestPad.Business.Services
 
         public async Task DeleteAsync(int id)
         {
-            if (id < 1)
-                throw new ArgumentOutOfRangeException("id");
+            ExceptionChecker.SQLKeyIdCheck(id);
 
             var item = await _answerRepository.GetByIdAsync(id);
 
@@ -80,8 +76,7 @@ namespace LX.TestPad.Business.Services
 
         public async Task DeleteAllByQuestionIdAsync(int questionId)
         {
-            if (questionId < 1)
-                throw new ArgumentOutOfRangeException("questionId");
+            ExceptionChecker.SQLKeyIdCheck(questionId);
 
             var items = await _answerRepository.GetAllByQuestionIdAsync(questionId);
 

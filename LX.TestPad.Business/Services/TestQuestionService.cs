@@ -20,8 +20,7 @@ namespace LX.TestPad.Business.Services
 
         public async Task<QuestionModel> GetQuestionByIdAsync(int id)
         {
-            if (id < 1)
-                throw new ArgumentOutOfRangeException("id");
+            ExceptionChecker.SQLKeyIdCheck(id);
 
             var item = await _questionRepository.GetByIdAsync(id);
 
@@ -31,8 +30,7 @@ namespace LX.TestPad.Business.Services
 
         public async Task<List<TestQuestionModel>> GetAllByTestIdAsync(int testId)
         {
-            if (testId < 1)
-                throw new ArgumentOutOfRangeException("testId");
+            ExceptionChecker.SQLKeyIdCheck(testId);
 
             var items = await _testQuestionRepository.GetAllByTestIdAsync(testId);
 
@@ -42,8 +40,7 @@ namespace LX.TestPad.Business.Services
 
         public async Task<List<QuestionModel>> GetAllQuestionsByTestIdAsync(int testId)
         {
-            if (testId < 1)
-                throw new ArgumentOutOfRangeException("testId");
+            ExceptionChecker.SQLKeyIdCheck(testId);
 
             var items = await _testQuestionRepository.GetAllByTestIdAsync(testId);
 
@@ -59,8 +56,7 @@ namespace LX.TestPad.Business.Services
 
         public async Task<List<QuestionModel>> GetAllTestsByQuestionIdAsync(int questionId)
         {
-            if (questionId < 1)
-                throw new ArgumentOutOfRangeException("questionId");
+            ExceptionChecker.SQLKeyIdCheck(questionId);
 
             var items = await _testQuestionRepository.GetAllByQuestionIdAsync(questionId);
 
@@ -87,11 +83,8 @@ namespace LX.TestPad.Business.Services
 
         public async Task LinkQuestionToTest(int questionId, int testId)
         {
-            if (testId < 1)
-                throw new ArgumentOutOfRangeException("testId");
-
-            if (questionId < 1)
-                throw new ArgumentOutOfRangeException("questionId");
+            ExceptionChecker.SQLKeyIdCheck(questionId);
+            ExceptionChecker.SQLKeyIdCheck(testId);
 
             var newNumber = await GetNewNumberByTestId(testId);
 
@@ -107,11 +100,8 @@ namespace LX.TestPad.Business.Services
 
         public async Task LinkQuestionsToTest(List<int> questionIds, int testId)
         {
-            if (testId < 1)
-                throw new ArgumentOutOfRangeException("testId");
-
-            if (questionIds.Any(id => id < 1))
-                throw new ArgumentOutOfRangeException("questionIds");
+            ExceptionChecker.SQLKeyIdCheck(testId);
+            ExceptionChecker.ListOfSQLKeyIdsCheck(questionIds);
 
             foreach (var questionId in questionIds)
             {
@@ -130,11 +120,8 @@ namespace LX.TestPad.Business.Services
 
         public async Task LinkQuestionsFromTestToAnotherTest(int fromTestId, int toTestId)
         {
-            if (fromTestId < 1)
-                throw new ArgumentOutOfRangeException("fromTestId");
-
-            if (toTestId < 1)
-                throw new ArgumentOutOfRangeException("toTestId");
+            ExceptionChecker.SQLKeyIdCheck(fromTestId);
+            ExceptionChecker.SQLKeyIdCheck(toTestId);
 
             var sourceItems = await _testQuestionRepository.GetAllByTestIdAsync(fromTestId);
 
@@ -153,8 +140,7 @@ namespace LX.TestPad.Business.Services
 
         public async Task DeleteByQuestionIdAsync(int questionId)
         {
-            if (questionId < 1)
-                throw new ArgumentOutOfRangeException("questionId");
+            ExceptionChecker.SQLKeyIdCheck(questionId);
 
             var items = await _testQuestionRepository.GetAllByQuestionIdAsync(questionId);
 

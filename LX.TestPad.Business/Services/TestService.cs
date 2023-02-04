@@ -1,5 +1,6 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
+using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
 
 namespace LX.TestPad.Business.Services
@@ -16,8 +17,7 @@ namespace LX.TestPad.Business.Services
 
         public async Task<TestModel> GetByIdAsync(int id)
         {
-            if (id < 1)
-                throw new ArgumentOutOfRangeException("id");
+            ExceptionChecker.SQLKeyIdCheck(id);
 
             var item = await _testRepository.GetByIdAsync(id);
 
@@ -32,18 +32,15 @@ namespace LX.TestPad.Business.Services
                         .ToList();
         }
 
-        public async Task<List<TestModel>> GetAllByPageNumberAsync(int pageNumber, int count)
+        public async Task<List<TestModel>> GetAllByPageNumberAsync(int pageNumber, int maxCount)
         {
-            if (pageNumber < 1)
-                throw new ArgumentOutOfRangeException("pageNumber");
-
-            if (count == 0)
-                throw new ArgumentOutOfRangeException("count");
+            ExceptionChecker.PageNumberCheck(pageNumber);
+            ExceptionChecker.TestPerPageCountCheck(maxCount);
 
             var items = await _testRepository.GetAllAsync();
-            var prevPages = (pageNumber - 1) * count;
+            var prevPages = (pageNumber - 1) * maxCount;
 
-            return items.Skip(prevPages).Take(count)
+            return items.Skip(prevPages).Take(maxCount)
                         .Select(Mapper.Map)
                         .ToList();
         }

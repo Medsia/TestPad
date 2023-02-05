@@ -9,13 +9,15 @@ namespace LX.TestPad.Controllers
         private readonly ITestQuestionService _testQuestionService;
         private readonly ITestService _testService;
         private readonly IResultService _resultService;
+        private readonly IQuestionService _questionService;
 
         public TestController(ITestQuestionService testQuestionService, ITestService testService,
-            IResultService resultService)
+            IResultService resultService, IQuestionService questionService)
         {
             _testQuestionService = testQuestionService;
             _testService = testService;
             _resultService = resultService;
+            _questionService = questionService;
         }
 
         public IActionResult Index()
@@ -40,13 +42,24 @@ namespace LX.TestPad.Controllers
 
             await _resultService.CreateAsync(resultModel);
 
-            return RedirectToAction("Question");
+            return RedirectToAction("Question", new { @testId = resultModel.TestId });
         }
 
-        [Route("Question")]
-        public IActionResult Question(TestModel testModel)
+        public async Task<IActionResult> Question(int testId, int num = 0)
         {
-            return View();
+            var testQuestions = await _testQuestionService.GetAllByTestIdAsync(testId);
+            var question = await _questionService.GetByIdWithAnswersAsync(testQuestions[num].QuestionId);
+
+            return View(question);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Question(QuestionWithAnswersModel question, int num = 0)
+        {
+            //var question = questions[num];
+
+            return View(question);
         }
 
         [Route("Result")]

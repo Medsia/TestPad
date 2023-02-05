@@ -83,3 +83,7 @@ INSERT INTO [dbo].[Answers] ([Id], [QuestionId], [Text], [IsCorrect]) VALUES (59
 INSERT INTO [dbo].[Answers] ([Id], [QuestionId], [Text], [IsCorrect]) VALUES (60, 15, 'PUT is used to update', 1 )
 INSERT INTO [dbo].[Answers] ([Id], [QuestionId], [Text], [IsCorrect]) VALUES (61, 15, 'GET is used to get the resource', 1 )
 SET IDENTITY_INSERT [dbo].[Answers] OFF
+
+SET IDENTITY_INSERT [dbo].[TestQuestion] ON
+INSERT INTO [dbo].[TestQuestion] ([Id], [TestId], [QuestionId], [Number]) VALUES ( 1, 1, 1, 1)
+SET IDENTITY_INSERT [dbo].[TestQuestion] OFF

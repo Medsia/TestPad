@@ -1,4 +1,5 @@
-﻿using LX.TestPad.Models;
+﻿using LX.TestPad.Business.Interfaces;
+using LX.TestPad.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,15 +8,19 @@ namespace LX.TestPad.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ITestService _testService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ITestService testService)
         {
             _logger = logger;
+            _testService = testService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var tests = await _testService.GetAllAsync();
+
+            return View(tests);
         }
 
         public IActionResult Privacy()

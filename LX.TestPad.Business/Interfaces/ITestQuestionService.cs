@@ -6,7 +6,6 @@ namespace LX.TestPad.Business.Interfaces
     {
         Task<List<QuestionModel>> GetAllQuestionsByTestIdAsync(int testId);
         Task<List<QuestionModel>> GetAllTestsByQuestionIdAsync(int questionId);
-
         Task<List<TestQuestionModel>> GetAllByTestIdAsync(int testId);
         Task LinkQuestionToTest(int questionId, int testId);
         Task LinkQuestionsToTest(List<int> questionIds, int testId);

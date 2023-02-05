@@ -1,4 +1,8 @@
-﻿SET IDENTITY_INSERT [dbo].[Questions] ON
+﻿SET IDENTITY_INSERT [dbo].[Tests] ON
+INSERT INTO [dbo].[Tests] ([Id], [Name], [Description], [TestDuration]) VALUES ( 1, N'Java', N'a high-level, class-based, object-oriented programming language that is designed to have as few.', 30)
+SET IDENTITY_INSERT [dbo].[Tests] OFF
+
+SET IDENTITY_INSERT [dbo].[Questions] ON
 INSERT INTO [dbo].[Questions] ([Id], [Text]) VALUES ( 1, N'Given Interface: Foo extends Behaviour . Can Foo extend additional interfaces?' )
 INSERT INTO [dbo].[Questions] ([Id], [Text]) VALUES (2, N'Select keywords in Java')
 INSERT INTO [dbo].[Questions] ([Id], [Text]) VALUES (3, N'What would display from the following statements? int[]nums; {1,2,3,4,5,6}; System.out.println(( nums[1] + nums[3])); ')

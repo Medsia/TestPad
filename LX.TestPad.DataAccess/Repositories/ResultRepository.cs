@@ -13,23 +13,32 @@ namespace LX.TestPad.DataAccess.Repositories
             this.dbContext = dbContext;
         }
         
-        public async Task CreateAsync(Result result)
+        public async Task<Result> CreateAsync(Result result)
         {
             await dbContext.Results.AddAsync(result);
             await dbContext.SaveChangesAsync();
-        }
 
-        public async Task<int> CreateAndGetNewItemIdAsync(Result result)
-        {
-            await dbContext.Results.AddAsync(result);
-            await dbContext.SaveChangesAsync();
-            return result.Id;
+            return result;
         }
 
 
-        public async Task DeleteAsync(Result result)
+        public async Task DeleteAsync(int id)
         {
-            dbContext.Results.Remove(result);
+            var item = await dbContext.Results.FirstOrDefaultAsync(x => x.Id == id);
+            if (item != null)
+            {
+                dbContext.Results.Remove(item);
+                await dbContext.SaveChangesAsync();
+            }
+        }
+        public async Task DeleteManyAsync(List<int> ids)
+        {
+            foreach (var id in ids)
+            {
+                var item = await dbContext.Results.FirstOrDefaultAsync(x => x.Id == id);
+                if (item != null) dbContext.Results.Remove(item);
+            }
+
             await dbContext.SaveChangesAsync();
         }
 

@@ -5,11 +5,12 @@ namespace LX.TestPad.Business.Interfaces
     public interface ITestQuestionService
     {
         Task<List<QuestionModel>> GetAllQuestionsByTestIdAsync(int testId);
-        Task<List<QuestionModel>> GetAllTestsByQuestionIdAsync(int questionId);
+        Task<List<TestModel>> GetAllTestsByQuestionIdAsync(int questionId);
+
         Task<List<TestQuestionModel>> GetAllByTestIdAsync(int testId);
-        Task LinkQuestionToTest(int questionId, int testId);
-        Task LinkQuestionsToTest(List<int> questionIds, int testId);
-        Task LinkQuestionsFromTestToAnotherTest(int fromTestId, int toTestId);
+        Task CreateAsync(int questionId, int testId);
+        Task CreateAsync(List<int> questionIds, int testId);
+        Task CreateFromAsync(int oldTestId, int newTestId);
         Task DeleteByQuestionIdAsync(int questionId);
     }
 }

@@ -20,6 +20,7 @@ namespace LX.TestPad.Tests.ServiceTests
 
         static Answer answerEntity { get; } = new Answer { Id = 13, QuestionId = 3, Text = "Some answer text", IsCorrect = false };
         static AnswerModel answerModel { get; } = new AnswerModel { Id = 13, QuestionId = 3, Text = "Some answer text", IsCorrect = false };
+        static CutAnswerModel cutAnswerModel { get; } = new CutAnswerModel { Id = 13, QuestionId = 3, Text = "Some answer text" };
 
         static DateTime dateTimeStarted = DateTime.Now;
         static DateTime dateTimeFinished = DateTime.Now.AddMinutes(10.0);
@@ -61,7 +62,7 @@ namespace LX.TestPad.Tests.ServiceTests
         [Fact]
         public void TestModel_MappedFromTest_IsCorrect()
         {
-            var actualModel = Mapper.Map(testEntity);
+            var actualModel = Mapper.TestToModel(testEntity);
 
             Assert.Equal(testModel.Id, actualModel.Id);
             Assert.Equal(testModel.Name, actualModel.Name);
@@ -72,7 +73,7 @@ namespace LX.TestPad.Tests.ServiceTests
         [Fact]
         public void QuestionModel_MappedFromQuestion_IsCorrect()
         {
-            var actualModel = Mapper.Map(questionEntity);
+            var actualModel = Mapper.QuestionToModel(questionEntity);
 
             Assert.Equal(questionModel.Id, actualModel.Id);
             Assert.Equal(questionModel.Text, actualModel.Text);
@@ -81,7 +82,7 @@ namespace LX.TestPad.Tests.ServiceTests
         [Fact]
         public void TestQuestionModel_MappedFromTestQuestion_IsCorrect()
         {
-            var actualModel = Mapper.Map(testQuestionEntity);
+            var actualModel = Mapper.TestQuestionToModel(testQuestionEntity);
 
             Assert.Equal(testQuestionModel.Id, actualModel.Id);
             Assert.Equal(testQuestionModel.TestId, actualModel.TestId);
@@ -91,7 +92,7 @@ namespace LX.TestPad.Tests.ServiceTests
         [Fact]
         public void AnswerModel_MappedFromAnswer_IsCorrect()
         {
-            var actualModel = Mapper.Map(answerEntity);
+            var actualModel = Mapper.AnswerToModel(answerEntity);
 
             Assert.Equal(answerModel.Id, actualModel.Id);
             Assert.Equal(answerModel.QuestionId, actualModel.QuestionId);
@@ -102,7 +103,7 @@ namespace LX.TestPad.Tests.ServiceTests
         [Fact]
         public void ResultModel_MappedFromResult_IsCorrect()
         {
-            var actualModel = Mapper.Map(resultEntity);
+            var actualModel = Mapper.ResultToModel(resultEntity);
 
             Assert.Equal(resultModel.Id, actualModel.Id);
             Assert.Equal(resultModel.TestId, actualModel.TestId);
@@ -115,7 +116,7 @@ namespace LX.TestPad.Tests.ServiceTests
         [Fact]
         public void ResultAnswerModel_MappedFromResultAnswer_IsCorrect()
         {
-            var actualModel = Mapper.Map(resultAnswerEntity);
+            var actualModel = Mapper.ResultAnswerToModel(resultAnswerEntity);
 
             Assert.Equal(resultAnswerModel.Id, actualModel.Id);
             Assert.Equal(resultAnswerModel.ResultId, actualModel.ResultId);
@@ -127,7 +128,7 @@ namespace LX.TestPad.Tests.ServiceTests
         [Fact]
         public void Test_MappedFromTestModel_IsCorrect()
         {
-            var actualEntity = Mapper.Map(testModel);
+            var actualEntity = Mapper.TestModelToEntity(testModel);
 
             Assert.Equal(testEntity.Id, actualEntity.Id);
             Assert.Equal(testEntity.Name, actualEntity.Name);
@@ -138,7 +139,7 @@ namespace LX.TestPad.Tests.ServiceTests
         [Fact]
         public void Question_MappedFromQuestionModel_IsCorrect()
         {
-            var actualEntity = Mapper.Map(questionModel);
+            var actualEntity = Mapper.QuestionModelToEntity(questionModel);
 
             Assert.Equal(questionEntity.Id, actualEntity.Id);
             Assert.Equal(questionEntity.Text, actualEntity.Text);
@@ -147,7 +148,7 @@ namespace LX.TestPad.Tests.ServiceTests
         [Fact]
         public void Answer_MappedFromAnswerModel_IsCorrect()
         {
-            var actualEntity = Mapper.Map(answerModel);
+            var actualEntity = Mapper.AnswerModelToEntity(answerModel);
 
             Assert.Equal(answerEntity.Id, actualEntity.Id);
             Assert.Equal(answerEntity.QuestionId, actualEntity.QuestionId);
@@ -158,7 +159,7 @@ namespace LX.TestPad.Tests.ServiceTests
         [Fact]
         public void Result_MappedFromResultModel_IsCorrect()
         {
-            var actualEntity = Mapper.Map(resultModel);
+            var actualEntity = Mapper.ResultModelToEntity(resultModel);
 
             Assert.Equal(resultEntity.Id, actualEntity.Id);
             Assert.Equal(resultEntity.TestId, actualEntity.TestId);
@@ -171,7 +172,7 @@ namespace LX.TestPad.Tests.ServiceTests
         [Fact]
         public void ResultAnswer_MappedFromeResultAnswerModel_IsCorrect()
         {
-            var actualEntity = Mapper.Map(resultAnswerModel);
+            var actualEntity = Mapper.ResultAnswerModelToEntity(resultAnswerModel);
 
             Assert.Equal(resultAnswerEntity.Id, actualEntity.Id);
             Assert.Equal(resultAnswerEntity.ResultId, actualEntity.ResultId);
@@ -185,7 +186,7 @@ namespace LX.TestPad.Tests.ServiceTests
         public void QuestionWithAnswers_MappedFromQuestionEntityAndListOfAnswerEntities_IsCorrect()
         {
             var testList = new List<AnswerModel> { answerModel };
-            var actualResult = Mapper.Map(questionEntity, testList);
+            var actualResult = Mapper.QuestionWithAnswers(questionEntity, testList);
 
             var expectedAnswers = new List<AnswerModel> { answerModel };
             var expectedResult = new QuestionWithAnswersModel { Id = questionEntity.Id, Text = questionEntity.Text, Answers = expectedAnswers };
@@ -200,6 +201,17 @@ namespace LX.TestPad.Tests.ServiceTests
                 Assert.Equal(answer.Text, answer.Text);
                 Assert.Equal(answer.IsCorrect, answer.IsCorrect);
             }
+        }
+
+
+        [Fact]
+        public void CutAnswerModel_MappedFromAnswer_IsCorrect()
+        {
+            var actualModel = Mapper.AnswerToCutAnswerModel(answerEntity);
+
+            Assert.Equal(cutAnswerModel.Id, actualModel.Id);
+            Assert.Equal(cutAnswerModel.QuestionId, actualModel.QuestionId);
+            Assert.Equal(cutAnswerModel.Text, actualModel.Text);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LX.TestPad.DataAccess.Entities;
+using System.Threading.Tasks;
 
 namespace LX.TestPad.DataAccess.Interfaces
 {
@@ -6,5 +7,6 @@ namespace LX.TestPad.DataAccess.Interfaces
     {
         Task<List<TestQuestion>> GetAllByTestIdAsync(int testId);
         Task<List<TestQuestion>> GetAllByQuestionIdAsync(int QuestionId);
+        Task DeleteAllByQuestionIdAsync(int questionId);
     }
 }

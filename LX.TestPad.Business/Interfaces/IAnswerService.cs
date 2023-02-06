@@ -2,20 +2,12 @@
 
 namespace LX.TestPad.Business.Interfaces
 {
-    public interface IAnswerService
+    public interface IAnswerService : IService<AnswerModel>
     {
         Task<AnswerModel> GetByIdAsync(int id);
-        Task<List<AnswerModel>> GetAllByQuestionIdAsync(int testId);
+        Task<List<AnswerModel>> GetAllByQuestionIdAsync(int questionId);
+        Task<List<CutAnswerModel>> GetAllCutByQuestionIdAsync(int questionId);
 
-        // <<summary>>
-        // Changes IsCorrect field to false to all selected questions
-        // <<\summary>>
-        Task<List<AnswerModel>> GetAllForClientByQuestionIdAsync(int testId);
-
-        Task CreateAsync(AnswerModel testModel);
-        Task UpdateAsync(AnswerModel testModel);
-        Task DeleteAsync(int id);
-        Task DeleteManyAsync(List<int> ids);
         Task DeleteAllByQuestionIdAsync(int questionId);
     }
 }

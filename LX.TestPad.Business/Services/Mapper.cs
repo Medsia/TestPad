@@ -7,7 +7,7 @@ namespace LX.TestPad.Business.Services
     public static class Mapper
     {
         // Mapping from viewmodel to data object
-        public static TestModel Map(Test entity)
+        public static TestModel TestToModel(Test entity)
         {
             return new TestModel
             {
@@ -17,7 +17,7 @@ namespace LX.TestPad.Business.Services
                 TestDuration = entity.TestDuration,
             };
         }
-        public static QuestionModel Map(Question entity)
+        public static QuestionModel QuestionToModel(Question entity)
         {
             return new QuestionModel
             {
@@ -25,7 +25,7 @@ namespace LX.TestPad.Business.Services
                 Text = entity.Text,
             };
         }
-        public static AnswerModel Map(Answer entity)
+        public static AnswerModel AnswerToModel(Answer entity)
         {
             return new AnswerModel
             {
@@ -35,7 +35,7 @@ namespace LX.TestPad.Business.Services
                 QuestionId = entity.QuestionId,
             };
         }
-        public static ResultModel Map(Result entity)
+        public static ResultModel ResultToModel(Result entity)
         {
             return new ResultModel
             {
@@ -47,7 +47,7 @@ namespace LX.TestPad.Business.Services
                 FinishedAt = entity.FinishedAt,
             };
         }
-        public static ResultAnswerModel Map(ResultAnswer entity)
+        public static ResultAnswerModel ResultAnswerToModel(ResultAnswer entity)
         {
             return new ResultAnswerModel
             {
@@ -61,7 +61,7 @@ namespace LX.TestPad.Business.Services
 
 
         // Mapping from data object to viewmodel
-        public static Test Map(TestModel model)
+        public static Test TestModelToEntity(TestModel model)
         {
             return new Test
             {
@@ -71,7 +71,7 @@ namespace LX.TestPad.Business.Services
                 TestDuration = model.TestDuration
             };
         }
-        public static Question Map(QuestionModel model)
+        public static Question QuestionModelToEntity(QuestionModel model)
         {
             return new Question
             {
@@ -79,7 +79,7 @@ namespace LX.TestPad.Business.Services
                 Text = model.Text,
             };
         }
-        public static Answer Map(AnswerModel model)
+        public static Answer AnswerModelToEntity(AnswerModel model)
         {
             return new Answer
             {
@@ -89,7 +89,7 @@ namespace LX.TestPad.Business.Services
                 QuestionId = model.QuestionId,
             };
         }
-        public static Result Map(ResultModel model)
+        public static Result ResultModelToEntity(ResultModel model)
         {
             return new Result
             {
@@ -101,7 +101,7 @@ namespace LX.TestPad.Business.Services
                 FinishedAt = model.FinishedAt,
             };
         }
-        public static ResultAnswer Map(ResultAnswerModel model)
+        public static ResultAnswer ResultAnswerModelToEntity(ResultAnswerModel model)
         {
             return new ResultAnswer
             {
@@ -115,7 +115,7 @@ namespace LX.TestPad.Business.Services
 
 
         // One way mappers
-        public static TestQuestionModel Map(TestQuestion entity)
+        public static TestQuestionModel TestQuestionToModel(TestQuestion entity)
         {
             return new TestQuestionModel
             {
@@ -124,13 +124,22 @@ namespace LX.TestPad.Business.Services
                 QuestionId = entity.QuestionId,
             };
         }
-        public static QuestionWithAnswersModel Map(Question questionEntity, List<AnswerModel> answerEntities)
+        public static QuestionWithAnswersModel QuestionWithAnswers(Question questionEntity, List<AnswerModel> answerEntities)
         {
             return new QuestionWithAnswersModel
             {
                 Id = questionEntity.Id,
                 Text = questionEntity.Text,
                 Answers = answerEntities,
+            };
+        }
+        public static CutAnswerModel AnswerToCutAnswerModel(Answer entity)
+        {
+            return new CutAnswerModel
+            {
+                Id = entity.Id,
+                Text = entity.Text,
+                QuestionId = entity.QuestionId,
             };
         }
     }

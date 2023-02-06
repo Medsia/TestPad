@@ -1,14 +1,15 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LX.TestPad.DataAccess
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddBusinesLogicServices(this IServiceCollection services)
+        public static IServiceCollection AddBusinessLogicServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddEfRepositories();
+            services.AddEfRepositories(configuration.GetConnectionString("DefaultConnection"));
 
             services.AddScoped<IAnswerService, AnswerService>();
             services.AddScoped<IQuestionService, QuestionService>();

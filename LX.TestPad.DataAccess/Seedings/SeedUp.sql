@@ -86,4 +86,5 @@ SET IDENTITY_INSERT [dbo].[Answers] OFF
 
 SET IDENTITY_INSERT [dbo].[TestQuestion] ON
 INSERT INTO [dbo].[TestQuestion] ([Id], [TestId], [QuestionId], [Number]) VALUES ( 1, 1, 1, 1)
+INSERT INTO [dbo].[TestQuestion] ([Id], [TestId], [QuestionId], [Number]) VALUES ( 2, 1, 2, 2)
 SET IDENTITY_INSERT [dbo].[TestQuestion] OFF

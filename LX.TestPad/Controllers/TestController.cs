@@ -10,14 +10,16 @@ namespace LX.TestPad.Controllers
         private readonly ITestService _testService;
         private readonly IResultService _resultService;
         private readonly IQuestionService _questionService;
+        private readonly IResultAnswerService _resultAnswerService;
 
         public TestController(ITestQuestionService testQuestionService, ITestService testService,
-            IResultService resultService, IQuestionService questionService)
+            IResultService resultService, IQuestionService questionService, IResultAnswerService resultAnswerService)
         {
             _testQuestionService = testQuestionService;
             _testService = testService;
             _resultService = resultService;
             _questionService = questionService;
+            _resultAnswerService = resultAnswerService;
         }
 
         public IActionResult Index()
@@ -38,28 +40,32 @@ namespace LX.TestPad.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EnterUserName(TestModel testModel, string name, string surname)
         {
-            var resultModel = new ResultModel(testModel.Id, name + surname, 0, DateTime.Now, DateTime.MinValue);
+            var resultModel = await _resultService.CreateAsync(new ResultModel(testModel.Id, name + surname, 0, DateTime.Now, DateTime.MinValue));
 
-            await _resultService.CreateAsync(resultModel);
-
-            return RedirectToAction("Question", new { @testId = resultModel.TestId });
+            return RedirectToAction("Question", new { @resultId = resultModel.Id });
         }
 
-        public async Task<IActionResult> Question(int testId, int num = 0)
+        public async Task<IActionResult> Question(int resultId, int num = 0)
         {
-            var testQuestions = await _testQuestionService.GetAllByTestIdAsync(testId);
-            var question = await _questionService.GetByIdWithAnswersAsync(testQuestions[num].QuestionId);
+            var result = await _resultService.GetByIdAsync(resultId);
+            var testQuestions = await _testQuestionService.GetAllByTestIdAsync(result.TestId);
+            var question = await _questionService.GetByIdIcludingAnswersAsync(testQuestions[num].QuestionId);
+
+            ViewBag.resultId = resultId;
+            ViewBag.num = num;
 
             return View(question);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Question(QuestionWithAnswersModel question, int num = 0)
+        public async Task<IActionResult> Question(QuestionWithAnswersModel question, int resultId,
+            int answerId, int num)
         {
-            //var question = questions[num];
+            await _resultAnswerService.CreateAsync(resultId, answerId);
 
-            return View(question);
+            return RedirectToAction("Question", new { @resultId = resultId, @num = num + 1 });
         }
 
         [Route("Result")]

@@ -51,7 +51,13 @@ namespace LX.TestPad.DataAccess.Repositories
             foreach (var id in ids)
             {
                 var item = await dbContext.Questions.FirstOrDefaultAsync(x => x.Id == id);
-                if (item != null) dbContext.Questions.Remove(item);
+                if (item != null)
+                {
+                    await DeleteTestQuestionsByQuestionIdAsync(id);
+                    await DeleteAllAsnwersByQuestionIdAsync(id);
+
+                    dbContext.Questions.Remove(item);
+                }
             }
 
             await dbContext.SaveChangesAsync();

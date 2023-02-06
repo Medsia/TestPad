@@ -62,6 +62,15 @@ namespace LX.TestPad.Business.Services
             return Mapper.ResultAnswerToModel(item);
         }
 
+        public async Task<ResultAnswerModel> CreateAsync(ResultAnswerModel model)
+        {
+            var item = Mapper.ResultAnswerModelToEntity(model);
+
+            item = await _resultAnswerRepository.CreateAsync(item);
+
+            return Mapper.ResultAnswerToModel(item);
+        }
+
         public async Task UpdateAsync(ResultAnswerModel resultAnswerModel)
         {
             var item = Mapper.ResultAnswerModelToEntity(resultAnswerModel);
@@ -74,6 +83,13 @@ namespace LX.TestPad.Business.Services
             ExceptionChecker.SQLKeyIdCheck(id);
 
             await _resultAnswerRepository.DeleteAsync(id);
+        }
+
+        public async Task DeleteManyAsync(List<int> ids)
+        {
+            ExceptionChecker.ListOfSQLKeyIdsCheck(ids);
+
+            await _resultAnswerRepository.DeleteManyAsync(ids);
         }
 
         public async Task DeleteAllByResultIdAsync(int resultId)

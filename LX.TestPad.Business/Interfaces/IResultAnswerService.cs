@@ -2,14 +2,13 @@
 
 namespace LX.TestPad.Business.Interfaces
 {
-    public interface IResultAnswerService
+    public interface IResultAnswerService : IService<ResultAnswerModel>
     {
         Task<ResultAnswerModel> GetByIdAsync(int id);
         Task<List<ResultAnswerModel>> GetAllByResultIdAsync(int resultId);
-        Task<ResultAnswerModel> CreateAsync(int resultId, int answerId);
-        Task UpdateAsync(ResultAnswerModel resultAnswerModel);
 
-        Task DeleteAsync(int id);
+        Task<ResultAnswerModel> CreateAsync(int resultId, int answerId);
+
         Task DeleteAllByResultIdAsync(int resultId);
     }
 }

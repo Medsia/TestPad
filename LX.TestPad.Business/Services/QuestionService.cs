@@ -8,14 +8,11 @@ namespace LX.TestPad.Business.Services
     {
         private readonly IQuestionRepository _questionRepository;
         private readonly IAnswerRepository _answerRepository;
-        private readonly ITestQuestionRepository _testQuestionRepository;
         
-        public QuestionService(IQuestionRepository questionRepository, IAnswerRepository answerRepository,
-                                ITestQuestionRepository testQuestionRepository)
+        public QuestionService(IQuestionRepository questionRepository, IAnswerRepository answerRepository)
         {
             _questionRepository = questionRepository;
             _answerRepository = answerRepository;
-            _testQuestionRepository = testQuestionRepository;
         }
 
 

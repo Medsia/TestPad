@@ -2,14 +2,9 @@
 
 namespace LX.TestPad.Business.Interfaces
 {
-    public interface IQuestionService
+    public interface IQuestionService : IService<QuestionModel>
     {
         Task<QuestionModel> GetByIdAsync(int id);
         Task<QuestionWithAnswersModel> GetByIdIcludingAnswersAsync(int id);
-
-        Task<QuestionModel> CreateAsync(QuestionModel questionModel);
-        Task UpdateAsync(QuestionModel questionModel);
-        Task DeleteAsync(int id);
-        Task DeleteManyAsync(List<int> ids);
     }
 }

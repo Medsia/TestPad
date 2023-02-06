@@ -1,5 +1,7 @@
 ﻿@model LX.TestPad.Business.Models.QuestionWithAnswersModel
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
 <div class="text-center">
     <h1 class="display-4">@Model.Text</h1>
 </div>
@@ -8,8 +10,20 @@
 asp-route-answerId="1" asp-route-num="@ViewBag.num" method="post">
 @foreach(var answer in Model.Answers){
 <div style="height:auto">
-  <input class="{answers: true}" type="checkbox" id="@answer.Id" value="@answer.Text" name="answers">@answer.Text
+  <input type="checkbox" id="@answer.Id" value="@answer.Text" name="answer">
+  <label for="@answer.Id" >@answer.Text</label>
 </div>
 }
-<button type="submit" class="btn btn-success">Next</button>
+<button type="submit" class="btn btn-success" id="Nextbtn" disabled>Next</button>
 </form>
+
+
+<script>
+$('input[type="checkbox"]').change(function() {
+    if ($('input[type="checkbox"]:checked').length > 0) {
+        $('#Nextbtn').prop('disabled', false);
+    } else {
+        $('#Nextbtn').prop('disabled', true);
+    }
+});
+</script>

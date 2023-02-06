@@ -28,19 +28,6 @@ namespace LX.TestPad.Business.Services
             return items.Select(Mapper.AnswerToModel)
                         .ToList();
         }
-        public async Task DeleteAllAsnwersByQuestionIdAsync(int questionId)
-        {
-            ExceptionChecker.SQLKeyIdCheck(questionId);
-
-            await _answerRepository.DeleteAllByQuestionIdAsync(questionId);
-        }
-        public async Task DeleteTestQuestionsByQuestionIdAsync(int questionId)
-        {
-            ExceptionChecker.SQLKeyIdCheck(questionId);
-
-            await _testQuestionRepository.DeleteAllByQuestionIdAsync(questionId);
-        }
-
 
 
         public async Task<QuestionModel> GetByIdAsync(int id)
@@ -78,14 +65,15 @@ namespace LX.TestPad.Business.Services
 
         public async Task DeleteAsync(int id)
         {
-            await DeleteTestQuestionsByQuestionIdAsync(id);
-            await DeleteAllAsnwersByQuestionIdAsync(id);
+            ExceptionChecker.SQLKeyIdCheck(id);
 
             await _questionRepository.DeleteAsync(id);
         }
 
         public async Task DeleteManyAsync(List<int> ids)
         {
+            ExceptionChecker.ListOfSQLKeyIdsCheck(ids);
+
             await _questionRepository.DeleteManyAsync(ids);
         }
     }

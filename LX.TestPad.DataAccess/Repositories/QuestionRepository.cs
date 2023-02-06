@@ -18,16 +18,34 @@ namespace LX.TestPad.DataAccess.Repositories
             await dbContext.SaveChangesAsync();
         }
 
+
+
+        private async Task DeleteTestQuestionsByQuestionIdAsync(int questionId)
+        {
+            var items = await dbContext.TestQuestion.Where(x => x.QuestionId == questionId).ToListAsync();
+            if (items.Count == 0) return;
+
+            foreach (var item in items) dbContext.TestQuestion.Remove(item);
+        }
+        private async Task DeleteAllAsnwersByQuestionIdAsync(int questionId)
+        {
+            var items = await dbContext.Answers.Where(x => x.QuestionId == questionId).ToListAsync();
+            if (items.Count == 0) return;
+
+            foreach (var item in items) dbContext.Answers.Remove(item);
+        }
         public async Task DeleteAsync(int id)
         {
             var item = dbContext.Questions.FirstOrDefault(x => x.Id == id);
             if (item != null)
             {
+                await DeleteTestQuestionsByQuestionIdAsync(id);
+                await DeleteAllAsnwersByQuestionIdAsync(id);
+
                 dbContext.Questions.Remove(item);
                 await dbContext.SaveChangesAsync();
             }
         }
-
         public async Task DeleteManyAsync(List<int> ids)
         {
             foreach (var id in ids)

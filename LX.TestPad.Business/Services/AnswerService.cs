@@ -23,21 +23,21 @@ namespace LX.TestPad.Business.Services
             return Mapper.AnswerToModel(item);
         }
 
-        public async Task<List<AnswerModel>> GetAllByQuestionIdAsync(int testId)
+        public async Task<List<AnswerModel>> GetAllByQuestionIdAsync(int questionId)
         {
-            ExceptionChecker.SQLKeyIdCheck(testId);
+            ExceptionChecker.SQLKeyIdCheck(questionId);
 
-            var items = await _answerRepository.GetAllByQuestionIdAsync(testId);
+            var items = await _answerRepository.GetAllByQuestionIdAsync(questionId);
 
             return items.Select(Mapper.AnswerToModel)
                         .ToList();
         }
 
-        public async Task<List<CutAnswerModel>> GetAllForClientByQuestionIdAsync(int testId)
+        public async Task<List<CutAnswerModel>> GetAllCutByQuestionIdAsync(int questionId)
         {
-            ExceptionChecker.SQLKeyIdCheck(testId);
+            ExceptionChecker.SQLKeyIdCheck(questionId);
 
-            var items = await _answerRepository.GetAllByQuestionIdAsync(testId);
+            var items = await _answerRepository.GetAllByQuestionIdAsync(questionId);
 
             return items.Select(Mapper.AnswerToCutAnswerModel).ToList();
         }

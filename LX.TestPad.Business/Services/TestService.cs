@@ -1,6 +1,5 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
-using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
 
 namespace LX.TestPad.Business.Services
@@ -60,18 +59,18 @@ namespace LX.TestPad.Business.Services
             await _testRepository.UpdateAsync(item);
         }
 
-        public async Task DeleteAsync(int testId)
+        public async Task DeleteAsync(int id)
         {
-            ExceptionChecker.SQLKeyIdCheck(testId);
+            ExceptionChecker.SQLKeyIdCheck(id);
 
-            await _testRepository.DeleteAsync(testId);
+            await _testRepository.DeleteAsync(id);
         }
 
-        public async Task DeleteManyAsync(List<int> testIds)
+        public async Task DeleteManyAsync(List<int> ids)
         {
-            ExceptionChecker.ListOfSQLKeyIdsCheck(testIds);
+            ExceptionChecker.ListOfSQLKeyIdsCheck(ids);
 
-            await _testRepository.DeleteManyAsync(testIds);
+            await _testRepository.DeleteManyAsync(ids);
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
-using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
-using LX.TestPad.DataAccess.Repositories;
 
 namespace LX.TestPad.Business.Services
 {
@@ -21,11 +19,11 @@ namespace LX.TestPad.Business.Services
         }
 
 
-        public async Task<List<AnswerModel>> GetAllAnswersByQuestionIdAsync(int testId)
+        public async Task<List<AnswerModel>> GetAllAnswersByQuestionIdAsync(int questionId)
         {
-            ExceptionChecker.SQLKeyIdCheck(testId);
+            ExceptionChecker.SQLKeyIdCheck(questionId);
 
-            var items = await _answerRepository.GetAllByQuestionIdAsync(testId);
+            var items = await _answerRepository.GetAllByQuestionIdAsync(questionId);
 
             return items.Select(Mapper.AnswerToModel)
                         .ToList();
@@ -54,7 +52,7 @@ namespace LX.TestPad.Business.Services
             return Mapper.QuestionToModel(item);
         }
 
-        public async Task<QuestionWithAnswersModel> GetByIdWithAnswersAsync(int id)
+        public async Task<QuestionWithAnswersModel> GetByIdIcludingAnswersAsync(int id)
         {
             ExceptionChecker.SQLKeyIdCheck(id);
 
@@ -64,16 +62,16 @@ namespace LX.TestPad.Business.Services
             return Mapper.QuestionWithAnswers(question, answers);
         }
 
-        public async Task CreateAsync(QuestionModel testModel)
+        public async Task CreateAsync(QuestionModel questionModel)
         {
-            var item = Mapper.QuestionModelToEntity(testModel);
+            var item = Mapper.QuestionModelToEntity(questionModel);
 
             await _questionRepository.CreateAsync(item);
         }
 
-        public async Task UpdateAsync(QuestionModel testModel)
+        public async Task UpdateAsync(QuestionModel questionModel)
         {
-            var item = Mapper.QuestionModelToEntity(testModel);
+            var item = Mapper.QuestionModelToEntity(questionModel);
 
             await _questionRepository.UpdateAsync(item);
         }

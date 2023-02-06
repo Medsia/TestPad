@@ -12,7 +12,7 @@ namespace LX.TestPad.Business.Interfaces
         // <<\summary>>
         Task<List<CutAnswerModel>> GetAllCutByQuestionIdAsync(int questionId);
 
-        Task CreateAsync(AnswerModel testModel);
+        Task<AnswerModel> CreateAsync(AnswerModel testModel);
         Task UpdateAsync(AnswerModel testModel);
         Task DeleteAsync(int id);
         Task DeleteManyAsync(List<int> ids);

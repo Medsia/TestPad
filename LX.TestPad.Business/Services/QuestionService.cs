@@ -49,11 +49,13 @@ namespace LX.TestPad.Business.Services
             return Mapper.QuestionWithAnswers(question, answers);
         }
 
-        public async Task CreateAsync(QuestionModel questionModel)
+        public async Task<QuestionModel> CreateAsync(QuestionModel questionModel)
         {
             var item = Mapper.QuestionModelToEntity(questionModel);
 
-            await _questionRepository.CreateAsync(item);
+            item = await _questionRepository.CreateAsync(item);
+
+            return Mapper.QuestionToModel(item);
         }
 
         public async Task UpdateAsync(QuestionModel questionModel)

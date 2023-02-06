@@ -45,11 +45,13 @@ namespace LX.TestPad.Business.Services
         }
 
 
-        public async Task CreateAsync(TestModel testModel)
+        public async Task<TestModel> CreateAsync(TestModel testModel)
         {
             var item = Mapper.TestModelToEntity(testModel);
 
-            await _testRepository.CreateAsync(item);
+            item = await _testRepository.CreateAsync(item);
+
+            return Mapper.TestToModel(item);
         }
 
         public async Task UpdateAsync(TestModel testModel)

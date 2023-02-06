@@ -7,7 +7,7 @@ namespace LX.TestPad.Business.Interfaces
         Task<QuestionModel> GetByIdAsync(int id);
         Task<QuestionWithAnswersModel> GetByIdIcludingAnswersAsync(int id);
 
-        Task CreateAsync(QuestionModel questionModel);
+        Task<QuestionModel> CreateAsync(QuestionModel questionModel);
         Task UpdateAsync(QuestionModel questionModel);
         Task DeleteAsync(int id);
         Task DeleteManyAsync(List<int> ids);

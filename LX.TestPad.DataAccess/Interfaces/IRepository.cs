@@ -4,7 +4,7 @@
     {
         Task<T> GetByIdAsync(int id);
         Task<List<T>> GetAllAsync();
-        Task CreateAsync(T item);
+        Task<T> CreateAsync(T item);
         Task UpdateAsync(T item);
         Task DeleteAsync(int id);
         Task DeleteManyAsync(List<int> ids);

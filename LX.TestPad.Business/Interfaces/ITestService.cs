@@ -8,7 +8,7 @@ namespace LX.TestPad.Business.Interfaces
         Task<List<TestModel>> GetAllAsync();
         Task<List<TestModel>> GetAllByPageNumberAsync(int pageNumber, int count);
 
-        Task CreateAsync(TestModel testModel);
+        Task<TestModel> CreateAsync(TestModel testModel);
         Task UpdateAsync(TestModel testModel);
         Task DeleteAsync(int id);
         Task DeleteManyAsync(List<int> ids);

@@ -41,7 +41,7 @@ namespace LX.TestPad.Business.Services
         }
 
 
-        public async Task CreateAsync(int resultId, int answerId)
+        public async Task<ResultAnswerModel> CreateAsync(int resultId, int answerId)
         {
             ExceptionChecker.SQLKeyIdCheck(resultId);
             ExceptionChecker.SQLKeyIdCheck(answerId);
@@ -57,7 +57,9 @@ namespace LX.TestPad.Business.Services
                 IsCorrect = answer.IsCorrect,
             };
 
-            await _resultAnswerRepository.CreateAsync(item);
+            item = await _resultAnswerRepository.CreateAsync(item);
+
+            return Mapper.ResultAnswerToModel(item);
         }
 
         public async Task UpdateAsync(ResultAnswerModel resultAnswerModel)

@@ -13,10 +13,12 @@ namespace LX.TestPad.DataAccess.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task CreateAsync(TestQuestion testQuestion)
+        public async Task<TestQuestion> CreateAsync(TestQuestion testQuestion)
         {
             await dbContext.TestQuestion.AddAsync(testQuestion);
             await dbContext.SaveChangesAsync();
+
+            return testQuestion;
         }
 
         public async Task DeleteAsync(int id)

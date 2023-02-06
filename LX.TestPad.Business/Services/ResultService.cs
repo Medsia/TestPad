@@ -33,18 +33,13 @@ namespace LX.TestPad.Business.Services
                         .ToList();
         }
 
-        public async Task CreateAsync(ResultModel resultModel)
+        public async Task<ResultModel> CreateAsync(ResultModel resultModel)
         {
             var item = Mapper.ResultModelToEntity(resultModel);
 
-            await _resultRepository.CreateAndGetNewItemIdAsync(item);
-        }
+            item = await _resultRepository.CreateAsync(item);
 
-        public async Task<int> CreateAndGetIdAsync(ResultModel resultModel)
-        {
-            var item = Mapper.ResultModelToEntity(resultModel);
-
-            return await _resultRepository.CreateAndGetNewItemIdAsync(item);
+            return Mapper.ResultToModel(item);
         }
 
         public async Task UpdateAsync(ResultModel resultModel)

@@ -8,6 +8,8 @@ namespace LX.TestPad.DataAccess
     {
         public static IServiceCollection AddBusinesLogicServices(this IServiceCollection services)
         {
+            services.AddEfRepositories();
+
             services.AddScoped<IAnswerService, AnswerService>();
             services.AddScoped<IQuestionService, QuestionService>();
             services.AddScoped<IResultAnswerService, ResultAnswerService>();

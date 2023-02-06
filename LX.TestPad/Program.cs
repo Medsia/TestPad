@@ -7,7 +7,6 @@ var sqlConnectionString = builder.Configuration.GetConnectionString("DefaultConn
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext(sqlConnectionString);
-builder.Services.AddEfRepositories();
 builder.Services.AddBusinesLogicServices();
 
 var app = builder.Build();

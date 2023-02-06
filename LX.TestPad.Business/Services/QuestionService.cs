@@ -27,38 +27,20 @@ namespace LX.TestPad.Business.Services
 
             var items = await _answerRepository.GetAllByQuestionIdAsync(testId);
 
-            return items.Select(Mapper.Map)
+            return items.Select(Mapper.AnswerToModel)
                         .ToList();
         }
-
         public async Task DeleteAllAsnwersByQuestionIdAsync(int questionId)
         {
             ExceptionChecker.SQLKeyIdCheck(questionId);
 
-            var items = await _answerRepository.GetAllByQuestionIdAsync(questionId);
-
-            foreach (var item in items) await _answerRepository.DeleteAsync(item);
+            await _answerRepository.DeleteAllByQuestionIdAsync(questionId);
         }
-
-
-
-        public async Task<List<TestQuestionModel>> GetAllTestQuestionsByTestIdAsync(int testId)
-        {
-            ExceptionChecker.SQLKeyIdCheck(testId);
-
-            var items = await _testQuestionRepository.GetAllByTestIdAsync(testId);
-
-            return items.Select(Mapper.Map)
-                        .ToList();
-        }
-
-        public async Task DeleteTestQuestionByQuestionIdAsync(int questionId)
+        public async Task DeleteTestQuestionsByQuestionIdAsync(int questionId)
         {
             ExceptionChecker.SQLKeyIdCheck(questionId);
 
-            var items = await _testQuestionRepository.GetAllByQuestionIdAsync(questionId);
-
-            foreach (var item in items) await _testQuestionRepository.DeleteAsync(item);
+            await _testQuestionRepository.DeleteAllByQuestionIdAsync(questionId);
         }
 
 
@@ -69,7 +51,7 @@ namespace LX.TestPad.Business.Services
 
             var item = await _questionRepository.GetByIdAsync(id);
 
-            return Mapper.Map(item);
+            return Mapper.QuestionToModel(item);
         }
 
         public async Task<QuestionWithAnswersModel> GetByIdWithAnswersAsync(int id)
@@ -79,36 +61,34 @@ namespace LX.TestPad.Business.Services
             var question = await _questionRepository.GetByIdAsync(id);
             var answers = await GetAllAnswersByQuestionIdAsync(question.Id);
 
-            return Mapper.Map(question, answers);
+            return Mapper.QuestionWithAnswers(question, answers);
         }
-
 
         public async Task CreateAsync(QuestionModel testModel)
         {
-            var item = Mapper.Map(testModel);
+            var item = Mapper.QuestionModelToEntity(testModel);
 
             await _questionRepository.CreateAsync(item);
         }
 
         public async Task UpdateAsync(QuestionModel testModel)
         {
-            var item = Mapper.Map(testModel);
+            var item = Mapper.QuestionModelToEntity(testModel);
 
             await _questionRepository.UpdateAsync(item);
         }
 
         public async Task DeleteAsync(int id)
         {
-            await DeleteTestQuestionByQuestionIdAsync(id);
+            await DeleteTestQuestionsByQuestionIdAsync(id);
             await DeleteAllAsnwersByQuestionIdAsync(id);
 
-            var item = await _questionRepository.GetByIdAsync(id);
-            await _questionRepository.DeleteAsync(item);
+            await _questionRepository.DeleteAsync(id);
         }
 
         public async Task DeleteManyAsync(List<int> ids)
         {
-            foreach (var id in ids) await DeleteAsync(id);
+            await _questionRepository.DeleteManyAsync(ids);
         }
     }
 }

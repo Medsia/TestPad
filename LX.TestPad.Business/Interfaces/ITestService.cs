@@ -4,13 +4,13 @@ namespace LX.TestPad.Business.Interfaces
 {
     public interface ITestService
     {
-        Task<TestModel> GetByIdAsync(int id);
+        Task<TestModel> GetByIdAsync(int testId);
         Task<List<TestModel>> GetAllAsync();
         Task<List<TestModel>> GetAllByPageNumberAsync(int pageNumber, int count);
 
         Task CreateAsync(TestModel testModel);
         Task UpdateAsync(TestModel testModel);
-        Task DeleteAsync(int id);
-        Task DeleteManyAsync(List<int> ids);
+        Task DeleteAsync(int testId);
+        Task DeleteManyAsync(List<int> testIds);
     }
 }

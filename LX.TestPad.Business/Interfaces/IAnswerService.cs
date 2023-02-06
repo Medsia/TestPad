@@ -8,9 +8,9 @@ namespace LX.TestPad.Business.Interfaces
         Task<List<AnswerModel>> GetAllByQuestionIdAsync(int testId);
 
         // <<summary>>
-        // Changes IsCorrect field to false to all selected questions
+        // Returns List of cut models, which does not contain IsCorrect field
         // <<\summary>>
-        Task<List<AnswerModel>> GetAllForClientByQuestionIdAsync(int testId);
+        Task<List<CutAnswerModel>> GetAllForClientByQuestionIdAsync(int testId);
 
         Task CreateAsync(AnswerModel testModel);
         Task UpdateAsync(AnswerModel testModel);

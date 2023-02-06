@@ -1,6 +1,5 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
-using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
 
 namespace LX.TestPad.Business.Services
@@ -21,7 +20,7 @@ namespace LX.TestPad.Business.Services
 
             var item = await _resultRepository.GetByIdAsync(id);
 
-            return Mapper.Map(item);
+            return Mapper.ResultToModel(item);
         }
 
         public async Task<List<ResultModel>> GetAllByTestIdAsync(int testId)
@@ -30,35 +29,43 @@ namespace LX.TestPad.Business.Services
 
             var items = await _resultRepository.GetAllByTestIdAsync(testId);
 
-            return items.Select(Mapper.Map)
+            return items.Select(Mapper.ResultToModel)
                         .ToList();
         }
 
-
-        public async Task<int> CreateAsync(ResultModel testModel)
+        public async Task CreateAsync(ResultModel resultModel)
         {
-            var item = Mapper.Map(testModel);
+            var item = Mapper.ResultModelToEntity(resultModel);
+
+            await _resultRepository.CreateAndGetNewItemIdAsync(item);
+        }
+
+        public async Task<int> CreateAndGetIdAsync(ResultModel resultModel)
+        {
+            var item = Mapper.ResultModelToEntity(resultModel);
 
             return await _resultRepository.CreateAndGetNewItemIdAsync(item);
         }
 
-        public async Task UpdateAsync(ResultModel testModel)
+        public async Task UpdateAsync(ResultModel resultModel)
         {
-            var item = Mapper.Map(testModel);
+            var item = Mapper.ResultModelToEntity(resultModel);
 
             await _resultRepository.UpdateAsync(item);
         }
 
         public async Task DeleteAsync(int id)
         {
-            var item = await _resultRepository.GetByIdAsync(id);
+            ExceptionChecker.SQLKeyIdCheck(id);
 
-            await _resultRepository.DeleteAsync(item);
+            await _resultRepository.DeleteAsync(id);
         }
 
         public async Task DeleteManyAsync(List<int> ids)
         {
-            foreach (var id in ids) await DeleteAsync(id);
+            ExceptionChecker.ListOfSQLKeyIdsCheck(ids);
+
+            await _resultRepository.DeleteManyAsync(ids);
         }
     }
 }

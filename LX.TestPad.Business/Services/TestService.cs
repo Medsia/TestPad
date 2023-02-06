@@ -15,61 +15,63 @@ namespace LX.TestPad.Business.Services
         }
 
 
-        public async Task<TestModel> GetByIdAsync(int id)
+        public async Task<TestModel> GetByIdAsync(int testId)
         {
-            ExceptionChecker.SQLKeyIdCheck(id);
+            ExceptionChecker.SQLKeyIdCheck(testId);
 
-            var item = await _testRepository.GetByIdAsync(id);
+            var item = await _testRepository.GetByIdAsync(testId);
 
-            return Mapper.Map(item);
+            return Mapper.TestToModel(item);
         }
 
         public async Task<List<TestModel>> GetAllAsync()
         {
             var items = await _testRepository.GetAllAsync();
 
-            return items.Select(Mapper.Map)
+            return items.Select(Mapper.TestToModel)
                         .ToList();
         }
 
-        public async Task<List<TestModel>> GetAllByPageNumberAsync(int pageNumber, int maxCount)
+        public async Task<List<TestModel>> GetAllByPageNumberAsync(int pageNumber, int count)
         {
             ExceptionChecker.PageNumberCheck(pageNumber);
-            ExceptionChecker.TestPerPageCountCheck(maxCount);
+            ExceptionChecker.TestPerPageCountCheck(count);
 
             var items = await _testRepository.GetAllAsync();
-            var prevPages = (pageNumber - 1) * maxCount;
+            var prevPages = (pageNumber - 1) * count;
 
-            return items.Skip(prevPages).Take(maxCount)
-                        .Select(Mapper.Map)
+            return items.Skip(prevPages).Take(count)
+                        .Select(Mapper.TestToModel)
                         .ToList();
         }
 
 
         public async Task CreateAsync(TestModel testModel)
         {
-            var item = Mapper.Map(testModel);
+            var item = Mapper.TestModelToEntity(testModel);
 
             await _testRepository.CreateAsync(item);
         }
 
         public async Task UpdateAsync(TestModel testModel)
         {
-            var item = Mapper.Map(testModel);
+            var item = Mapper.TestModelToEntity(testModel);
 
             await _testRepository.UpdateAsync(item);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int testId)
         {
-            var item = await _testRepository.GetByIdAsync(id);
+            ExceptionChecker.SQLKeyIdCheck(testId);
 
-            await _testRepository.DeleteAsync(item);
+            await _testRepository.DeleteAsync(testId);
         }
 
-        public async Task DeleteManyAsync(List<int> ids)
+        public async Task DeleteManyAsync(List<int> testIds)
         {
-            foreach (var id in ids) await DeleteAsync(id);
+            ExceptionChecker.ListOfSQLKeyIdsCheck(testIds);
+
+            await _testRepository.DeleteManyAsync(testIds);
         }
     }
 }

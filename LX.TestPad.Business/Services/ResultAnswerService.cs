@@ -21,33 +21,13 @@ namespace LX.TestPad.Business.Services
         }
 
 
-        public async Task<QuestionModel> GetQuestionByIdAsync(int id)
-        {
-            ExceptionChecker.SQLKeyIdCheck(id);
-
-            var item = await _questionRepository.GetByIdAsync(id);
-
-            return Mapper.Map(item);
-        }
-
-
-        public async Task<AnswerModel> GetAnswerByIdAsync(int id)
-        {
-            ExceptionChecker.SQLKeyIdCheck(id);
-
-            var item = await _answerRepository.GetByIdAsync(id);
-
-            return Mapper.Map(item);
-        }
-
-
         public async Task<ResultAnswerModel> GetByIdAsync(int id)
         {
             ExceptionChecker.SQLKeyIdCheck(id);
 
             var item = await _resultAnswerRepository.GetByIdAsync(id);
 
-            return Mapper.Map(item);
+            return Mapper.ResultAnswerToModel(item);
         }
 
         public async Task<List<ResultAnswerModel>> GetAllByResultIdAsync(int resultId)
@@ -56,7 +36,7 @@ namespace LX.TestPad.Business.Services
 
             var items = await _resultAnswerRepository.GetAllByResultIdAsync(resultId);
 
-            return items.Select(Mapper.Map)
+            return items.Select(Mapper.ResultAnswerToModel)
                         .ToList();
         }
 
@@ -66,8 +46,8 @@ namespace LX.TestPad.Business.Services
             ExceptionChecker.SQLKeyIdCheck(resultId);
             ExceptionChecker.SQLKeyIdCheck(answerId);
 
-            var answer = await GetAnswerByIdAsync(answerId);
-            var question = await GetQuestionByIdAsync(answer.QuestionId);
+            var answer = await _answerRepository.GetByIdAsync(answerId);
+            var question = await _questionRepository.GetByIdAsync(answer.QuestionId);
 
             var item = new ResultAnswer
             {
@@ -80,9 +60,9 @@ namespace LX.TestPad.Business.Services
             await _resultAnswerRepository.CreateAsync(item);
         }
 
-        public async Task UpdateAsync(ResultAnswerModel model)
+        public async Task UpdateAsync(ResultAnswerModel resultAnswerModel)
         {
-            var item = Mapper.Map(model);
+            var item = Mapper.ResultAnswerModelToEntity(resultAnswerModel);
 
             await _resultAnswerRepository.UpdateAsync(item);
         }
@@ -91,18 +71,14 @@ namespace LX.TestPad.Business.Services
         {
             ExceptionChecker.SQLKeyIdCheck(id);
 
-            var item = await _resultAnswerRepository.GetByIdAsync(id);
-
-            await _resultAnswerRepository.DeleteAsync(item);
+            await _resultAnswerRepository.DeleteAsync(id);
         }
 
         public async Task DeleteAllByResultIdAsync(int resultId)
         {
             ExceptionChecker.SQLKeyIdCheck(resultId);
 
-            var items = await _resultAnswerRepository.GetAllByResultIdAsync(resultId);
-
-            foreach (var item in items) await _resultAnswerRepository.DeleteAsync(item);
+            await _resultAnswerRepository.DeleteAllByResultIdAsync(resultId);
         }
     }
 }

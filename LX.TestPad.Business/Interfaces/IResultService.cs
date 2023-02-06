@@ -6,8 +6,9 @@ namespace LX.TestPad.Business.Interfaces
     {
         Task<ResultModel> GetByIdAsync(int id);
         Task<List<ResultModel>> GetAllByTestIdAsync(int testId);
-        Task<int> CreateAsync(ResultModel testModel);
-        Task UpdateAsync(ResultModel testModel);
+        Task CreateAsync(ResultModel resultModel);
+        Task<int> CreateAndGetIdAsync(ResultModel resultModel);
+        Task UpdateAsync(ResultModel resultModel);
 
         Task DeleteAsync(int id);
         Task DeleteManyAsync(List<int> ids);

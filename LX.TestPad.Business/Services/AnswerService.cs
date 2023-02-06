@@ -20,7 +20,7 @@ namespace LX.TestPad.Business.Services
 
             var item = await _answerRepository.GetByIdAsync(id);
 
-            return Mapper.Map(item);
+            return Mapper.AnswerToModel(item);
         }
 
         public async Task<List<AnswerModel>> GetAllByQuestionIdAsync(int testId)
@@ -29,33 +29,30 @@ namespace LX.TestPad.Business.Services
 
             var items = await _answerRepository.GetAllByQuestionIdAsync(testId);
 
-            return items.Select(Mapper.Map)
+            return items.Select(Mapper.AnswerToModel)
                         .ToList();
         }
 
-        public async Task<List<AnswerModel>> GetAllForClientByQuestionIdAsync(int testId)
+        public async Task<List<CutAnswerModel>> GetAllForClientByQuestionIdAsync(int testId)
         {
             ExceptionChecker.SQLKeyIdCheck(testId);
 
             var items = await _answerRepository.GetAllByQuestionIdAsync(testId);
 
-            var result = items.Select(Mapper.Map).ToList();
-            result.ForEach(item => item.IsCorrect = false);
-
-            return result;
+            return items.Select(Mapper.AnswerToCutAnswerModel).ToList();
         }
 
 
         public async Task CreateAsync(AnswerModel testModel)
         {
-            var item = Mapper.Map(testModel);
+            var item = Mapper.AnswerModelToEntity(testModel);
 
             await _answerRepository.CreateAsync(item);
         }
 
         public async Task UpdateAsync(AnswerModel testModel)
         {
-            var item = Mapper.Map(testModel);
+            var item = Mapper.AnswerModelToEntity(testModel);
 
             await _answerRepository.UpdateAsync(item);
         }
@@ -64,23 +61,21 @@ namespace LX.TestPad.Business.Services
         {
             ExceptionChecker.SQLKeyIdCheck(id);
 
-            var item = await _answerRepository.GetByIdAsync(id);
-
-            await _answerRepository.DeleteAsync(item);
+            await _answerRepository.DeleteAsync(id);
         }
 
         public async Task DeleteManyAsync(List<int> ids)
         {
-            foreach (var id in ids) await DeleteAsync(id);
+            ExceptionChecker.ListOfSQLKeyIdsCheck(ids);
+
+            await _answerRepository.DeleteManyAsync(ids);
         }
 
         public async Task DeleteAllByQuestionIdAsync(int questionId)
         {
             ExceptionChecker.SQLKeyIdCheck(questionId);
 
-            var items = await _answerRepository.GetAllByQuestionIdAsync(questionId);
-
-            foreach (var item in items) await _answerRepository.DeleteAsync(item);
+            await _answerRepository.DeleteAllByQuestionIdAsync(questionId);
         }
     }
 }

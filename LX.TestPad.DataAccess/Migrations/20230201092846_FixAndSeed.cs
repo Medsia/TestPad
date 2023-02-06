@@ -20,7 +20,7 @@ namespace LX.TestPad.DataAccess.Migrations
                 table: "Results",
                 newName: "FinishedAt");
 
-            var sqlFile = Path.Combine("Seedings/SeedUp.sql");
+            var sqlFile = Path.Combine("../LX.TestPad.DataAccess/Seedings/SeedUp.sql");
             migrationBuilder.Sql(File.ReadAllText(sqlFile));
         }
 
@@ -37,7 +37,7 @@ namespace LX.TestPad.DataAccess.Migrations
                 table: "Results",
                 newName: "FinisedAt");
 
-            var sqlFile = Path.Combine("Seedings/SeedDown.sql");
+            var sqlFile = Path.Combine("../LX.TestPad.DataAccess/Seedings/SeedDown.sql");
             migrationBuilder.Sql(File.ReadAllText(sqlFile));
         }
     }

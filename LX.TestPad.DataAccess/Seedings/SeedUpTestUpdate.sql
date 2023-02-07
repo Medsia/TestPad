@@ -18,5 +18,7 @@ INSERT INTO [dbo].[TestQuestion] ([Id], [TestId], [QuestionId], [Number]) VALUES
 INSERT INTO [dbo].[TestQuestion] ([Id], [TestId], [QuestionId], [Number]) VALUES (13, 1, 13, 13)
 INSERT INTO [dbo].[TestQuestion] ([Id], [TestId], [QuestionId], [Number]) VALUES (14, 1, 14, 14)
 INSERT INTO [dbo].[TestQuestion] ([Id], [TestId], [QuestionId], [Number]) VALUES (15, 1, 15, 15)
+INSERT INTO [dbo].[TestQuestion] ([Id], [TestId], [QuestionId], [Number]) VALUES (16, 2, 14, 1)
+INSERT INTO [dbo].[TestQuestion] ([Id], [TestId], [QuestionId], [Number]) VALUES (17, 2, 15, 2)
 SET IDENTITY_INSERT [dbo].[TestQuestion] OFF
 

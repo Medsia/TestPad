@@ -2,17 +2,21 @@
 using LX.TestPad.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using LX.TestPad.DataAccess;
 
 namespace LX.TestPad.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly DataContext _context;
         private readonly ITestService _testService;
 
+        public HomeController(ILogger<HomeController> logger, DataContext context)
         public HomeController(ILogger<HomeController> logger, ITestService testService)
         {
             _logger = logger;
+            _context = context;
             _testService = testService;
         }
 

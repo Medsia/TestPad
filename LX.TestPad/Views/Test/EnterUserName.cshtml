@@ -2,13 +2,13 @@
 <div class="text-center">
     <h1 class="display-4">Please enter your Name</h1>
 </div>
-<form asp-action="EnterUserName" asp-route-id="@Model.Id" asp-route-name="Name" asp-route-surname="Surname" method="post">
+<form asp-action="EnterUserName" asp-route-id="@Model.Id" method="post">
 <div class="input-group-text flex-column">
         <label>Name</label>
-        <input type="text" class="form-control" style="text-align:center; width: 200px" name="Name" maxlength="50" required/>
+        <input type="text" class="form-control" style="text-align:center; width: 200px" name="UserName" maxlength="50" required/>
         <span class="text-danger"></span>
         <label>Surname</label>
-        <input type="text" class="form-control" style="text-align:center; width: 200px" name="Surname" maxlength="50" required/>
+        <input type="text" class="form-control" style="text-align:center; width: 200px" name="UserSurname" maxlength="50" required/>
         <span class="text-danger"></span>
 </div>
     <button type="submit" class="btn btn-dark">Start Test</button>

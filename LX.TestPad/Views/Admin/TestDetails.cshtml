@@ -1,8 +1,10 @@
-﻿@{
+﻿@model LX.TestPad.Business.Models.TestModel
+
+@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @{
-        var answers = new[]
+    var answers = new[]
     {
     new {Text="Yes"},
     new {Text="No"},
@@ -17,10 +19,7 @@
     new {Text="What people in Australia?", Answers = answers},
     new {Text="What is australia s form of government?", Answers = answers},
     };
-    var test = new { Name = "C#",
-    Desc = " good well cool great best good well cool great best good well cool great best description",
-    };
-
+    var test = Model;
 }
 
 <div class="row box-shadow mb-3">   
@@ -35,7 +34,13 @@
             Description
         </dt>
         <dd class="col-sm-8">
-            @test.Desc
+            @test.Description
+        </dd>
+        <dt class="col-sm-4">
+            Test Duration
+        </dt>
+        <dd class="col-sm-8">
+            @test.TestDuration
         </dd>
     </dl>   
     <br>

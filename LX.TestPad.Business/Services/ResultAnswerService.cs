@@ -75,7 +75,7 @@ namespace LX.TestPad.Business.Services
             var items = new ResultAnswer[answers.Count];
             for(int i = 0; i < items.Length; i++) 
             {
-                if (question.Id == answers[i].QuestionId)
+                if (question.Id != answers[i].QuestionId)
                     throw new ArgumentException("Answer cannot be matched with question.", "answers[i].QuestionId");
                 items[i] = (new ResultAnswer
                 {

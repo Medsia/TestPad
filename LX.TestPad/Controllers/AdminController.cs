@@ -7,11 +7,13 @@ namespace LX.TestPad.Controllers
     {
         private readonly ITestService _testService;
         private readonly IQuestionService _questionService;
+        private readonly ITestQuestionService _testQuestionService;
 
-        public AdminController(IQuestionService questionService, ITestService testService)
+        public AdminController(IQuestionService questionService, ITestService testService, ITestQuestionService testQuestionService)
         {
             _questionService = questionService;
             _testService = testService;
+            _testQuestionService = testQuestionService;
         }
 
         public IActionResult Index()
@@ -46,10 +48,17 @@ namespace LX.TestPad.Controllers
 
         public async Task<IActionResult> Questions()
         {
-            ViewBag.Tests = await _testService.GetAllAsync();
-            ViewBag.Questions = await _questionService.GetAllAsync();
+            var tests = await _testService.GetAllAsync();
+            ViewBag.Tests = tests;
+
+            if (tests.Count == 0)
+            {
+                ViewBag.Questions = await _questionService.GetAllAsync();
+            }
+
             return View();
         }
+
 
         public IActionResult CreateAnswer()
         {

@@ -77,5 +77,26 @@ namespace LX.TestPad.DataAccess.Repositories
 
             await dbContext.SaveChangesAsync();
         }
+
+        public async Task DeleteSingleAsync(int testQuestionId)
+        {
+            var item = await dbContext.TestQuestion.SingleOrDefaultAsync(x => x.Id == testQuestionId);
+            if (item == null) dbContext.TestQuestion.Remove(item);
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteSingleAsync(int testId, int questionId)
+        {
+            var item = await dbContext.TestQuestion.SingleOrDefaultAsync(x => x.TestId == testId && x.QuestionId == questionId);
+            if (item != null) dbContext.TestQuestion.Remove(item);
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<TestQuestion> GetSingleOrDefaultAsync(int testId, int questionId)
+        {
+            return await dbContext.TestQuestion.SingleOrDefaultAsync(x => x.TestId == testId && x.QuestionId == questionId);
+        }
     }
 }

@@ -61,23 +61,22 @@ namespace LX.TestPad.Business.Services
 
             return Mapper.ResultAnswerToModel(item);
         }
-        public async Task CreateRangeAsync(int resultId, int[] answersId)
+        public async Task CreateRangeAsync(int resultId, params int[] answersId)
         {
             ExceptionChecker.SQLKeyIdCheck(resultId);
-
-            var answers = new List<Answer>();
-
             foreach (var answerId in answersId)
             {
                 ExceptionChecker.SQLKeyIdCheck(answerId);
-                answers.Add(await _answerRepository.GetByIdAsync(answerId));
             }
 
+            var answers = await _answerRepository.GetAllByIdsAsync(answersId);
             var question = await _questionRepository.GetByIdAsync(answers[0].QuestionId);
 
             var items = new ResultAnswer[answers.Count];
             for(int i = 0; i < items.Length; i++) 
             {
+                if (question.Id == answers[i].QuestionId)
+                    throw new ArgumentException("Answer cannot be matched with question.", "answers[i].QuestionId");
                 items[i] = (new ResultAnswer
                 {
                     ResultId = resultId,

@@ -59,6 +59,16 @@ namespace LX.TestPad.DataAccess.Repositories
             return await dbContext.Answers.Where(x => x.QuestionId == questionId).ToListAsync();
         }
 
+        public async Task<List<Answer>> GetAllByIdsAsync(params int[] answersIds)
+        {
+            var answers = new List<Answer>();
+            foreach (var answersId in answersIds)
+            {
+                answers.Add(await dbContext.Answers.FirstOrDefaultAsync(x => x.Id == answersId));
+            }
+            return answers;
+        }
+
         public async Task<Answer> GetByIdAsync(int id)
         {
             return await dbContext.Answers.FirstOrDefaultAsync(x => x.Id == id);

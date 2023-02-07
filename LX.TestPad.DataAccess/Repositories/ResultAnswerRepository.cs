@@ -7,7 +7,7 @@ namespace LX.TestPad.DataAccess.Repositories
     public class ResultAnswerRepository : IResultAnswerRepository
     {
         private readonly DataContext dbContext;
-        
+
         public ResultAnswerRepository(DataContext dbContext)
         {
             this.dbContext = dbContext;

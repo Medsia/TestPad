@@ -1,5 +1,4 @@
 ﻿SET IDENTITY_INSERT [dbo].[Tests] ON
-INSERT INTO [dbo].[Tests] ([Id], [Name], [Description], [TestDuration]) VALUES (1, N'Java', N'Java test', 300000)
 INSERT INTO [dbo].[Tests] ([Id], [Name], [Description], [TestDuration]) VALUES (2, N'C#', N' C# test', 300000)
 SET IDENTITY_INSERT [dbo].[Tests] OFF
 

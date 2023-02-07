@@ -68,7 +68,7 @@ namespace LX.TestPad.Controllers
             // Split user AnswersIds
             var answersIdSplitter = answerIds.Split(';', StringSplitOptions.RemoveEmptyEntries);
             var answersIds = new int[answersIdSplitter.Length];
-            for(int i = 0; i < answersIds.Length; i++)
+            for (int i = 0; i < answersIds.Length; i++)
             {
                 answersIds[i] = int.Parse(answersIdSplitter[i]);
             }

@@ -1,0 +1,206 @@
+﻿@using LX.TestPad.Business.Models;
+
+@model int
+
+@{
+    List<TestModel> testList = ViewBag.Tests;
+    List<QuestionModel> questionListList = ViewBag.Questions;
+
+    bool isAnyTest = testList.Count() > 0;
+}
+
+    @* string to insert this page into another *@
+    @* @Html.RenderPartialAsync("QuestionsPartial", selectedTestId) *@
+
+<div class="my-3">
+    <a class="btn btn-outline-danger" href="javascript:history.back()">Back</a>
+</div>
+
+<div class="mb-5 row">
+    <div class="col-4 border">
+        <div class="border-bottom text-center">
+            <p class="my-2" style="font-weight: bold;">Tests</p>
+        </div>
+
+        <div class="text-center">
+            @if (isAnyTest)
+            {
+                <div class="my-2" id="TestsTable">
+                    @foreach (var test in testList)
+                    {
+                        <div class="mb-2 border">
+                            <button class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%;" onclick="loadItems(@test.Id)">@test.Name</button>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-4 border" onload="">
+        <div class="border-bottom text-center">
+            <p class="my-2" style="font-weight: bold;">Questions</p>
+        </div>
+
+        <div id="loadingQuestions"><img class="mx-auto mt-3" width="30" height="30" src='@Url.Content("~/Content/loading_spinner.gif")'></div>
+
+        <div class="text-center">
+            <div class="my-2" id="QuestionsTable">
+                @if (!isAnyTest)
+                {
+                    @foreach (var question in questionListList)
+                    {
+                        <div class="mb-2 border">
+                            <button class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%;" onclick="addQuestionToTest(@question.Id)">@question.Text</button>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-4 border">
+        <div class="border-bottom text-center">
+            <p class="my-2" style="font-weight: bold;">Selected question</p>
+        </div>
+
+        <div id="loadingSelectedQuestions"><img class="mx-auto mt-3" width="30" height="30" src='@Url.Content("~/Content/loading_spinner.gif")'></div>
+
+        <div class="text-center">
+            <div class="my-2" id="SelectedQuestionsTable">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    var _inCallback = false;
+
+    var selectedTestId = @Model;
+
+    $(document).ready(function () {
+            $('div#loadingQuestions').hide();
+            $("div#loadingSelectedQuestions").hide();
+
+            _inCallback = false;
+
+            loadSelectedItems();
+    })
+
+    function loadItems(testId) {
+        if (testId>0 && !_inCallback) {
+            _inCallback = true;
+            
+            document.getElementById('QuestionsTable').innerHTML = "";
+
+            $('div#loadingQuestions').show();
+
+            $.ajax({
+                type: 'GET',
+                url: '../../api/GetQuestions/'+testId,
+                success: function (data, textstatus) {
+                    if (data.length > 0) {
+                        var htmlLine = "";
+                        $.each(data, function (index, item) {
+                            htmlLine +=
+                                '<div class="mb-2 border">' + 
+                                    '<button class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%;" onclick="addQuestionToTest('+item.id+')">' + item.text + '</button>' + 
+                                '</div>';
+                        })
+
+                        $("#QuestionsTable").append(htmlLine);
+                    }
+
+                    _inCallback = false;
+                    $("div#loadingQuestions").hide();
+                }
+            });
+        }
+    }
+
+
+    function loadSelectedItems(){
+        if (selectedTestId>0 && !_inCallback) {
+            _inCallback = true;
+
+            document.getElementById('SelectedQuestionsTable').innerHTML = "";
+
+            $('div#loadingSelectedQuestions').show();
+
+            $.ajax({
+                type: 'GET',
+                url: '../../api/GetQuestions/'+selectedTestId,
+                success: function (data, textstatus) {
+                    if (data.length > 0) {
+                        var htmlLine = "";
+                        $.each(data, function (index, item) {
+                            htmlLine +=
+                                '<div class="mb-2 border">' + 
+                                    '<button class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%;" onclick="removeQuestionToTest('+item.id+')">' + item.text + '</button>' + 
+                                '</div>';
+                        })
+
+                        $("#SelectedQuestionsTable").append(htmlLine);
+                    }
+
+                    _inCallback = false;
+                    $("div#loadingSelectedQuestions").hide();
+                }
+            });
+        }
+    }
+
+
+    function addQuestionToTest(questionId) {
+        if (selectedTestId>0 && questionId>0 && !_inCallback) {
+            _inCallback = true;
+
+            document.getElementById('SelectedQuestionsTable').innerHTML = "";
+
+            $('div#loadingSelectedQuestions').show();
+
+            $.ajax({
+                type: 'POST',
+                url: '../../api/AddQuestionToTest/'+selectedTestId+'/'+questionId,
+                success: function (data, textstatus) {
+                    _inCallback = false;
+
+                    loadSelectedItems();
+
+                    $("div#loadingSelectedQuestions").hide();
+                }
+            });
+        }
+    }
+
+
+    function removeQuestionToTest(questionId) {
+        if (selectedTestId>0 && questionId>0 && !_inCallback) {
+            _inCallback = true;
+
+            document.getElementById('SelectedQuestionsTable').innerHTML = "";
+
+            $('div#loadingSelectedQuestions').show();
+
+            $.ajax({
+                type: 'POST',
+                url: '../../api/RemoveQuestionFromTest/'+selectedTestId+'/'+questionId,
+                success: function (data, textstatus) {
+                    _inCallback = false;
+
+                    loadSelectedItems();
+
+                    $("div#loadingSelectedQuestions").hide();
+                }
+            });
+        }
+    }
+
+</script>

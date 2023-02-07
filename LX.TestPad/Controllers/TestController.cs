@@ -42,13 +42,15 @@ namespace LX.TestPad.Controllers
         {
             var resultModel = await _resultService.CreateAsync(new ResultModel(testModel.Id, name + surname, 0, DateTime.Now, DateTime.MinValue));
 
-            return RedirectToAction("Question", new { @resultId = resultModel.Id });
+            return RedirectToAction(nameof(Question), new { @resultId = resultModel.Id });
         }
 
         public async Task<IActionResult> Question(int resultId, int num = 0)
         {
             var result = await _resultService.GetByIdAsync(resultId);
             var testQuestions = await _testQuestionService.GetAllByTestIdAsync(result.TestId);
+            if (num >= testQuestions.Count)
+                return RedirectToAction(nameof(Result));
             var question = await _questionService.GetByIdIcludingAnswersAsync(testQuestions[num].QuestionId);
 
             ViewBag.resultId = resultId;
@@ -65,7 +67,7 @@ namespace LX.TestPad.Controllers
         {
             await _resultAnswerService.CreateAsync(resultId, answerId);
 
-            return RedirectToAction("Question", new { @resultId = resultId, @num = num + 1 });
+            return RedirectToAction(nameof(Question), new { @resultId = resultId, @num = num + 1 });
         }
 
         [Route("Result")]

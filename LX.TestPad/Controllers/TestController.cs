@@ -63,9 +63,17 @@ namespace LX.TestPad.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Question(QuestionWithAnswersModel question, int resultId,
-            int answerId, int num)
+            string answerIds, int num)
         {
-            await _resultAnswerService.CreateAsync(resultId, answerId);
+            // Split user AnswersIds
+            var answersIdSplitter = answerIds.Split(';', StringSplitOptions.RemoveEmptyEntries);
+            var answersIds = new int[answersIdSplitter.Length];
+            for(int i = 0; i < answersIds.Length; i++)
+            {
+                answersIds[i] = int.Parse(answersIdSplitter[i]);
+            }
+
+            await _resultAnswerService.CreateRangeAsync(resultId, answersIds);
 
             return RedirectToAction(nameof(Question), new { @resultId = resultId, @num = num + 1 });
         }

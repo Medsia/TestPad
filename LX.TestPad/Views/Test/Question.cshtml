@@ -7,14 +7,14 @@
 </div>
 
 <form asp-action="Question" asp-route-resultId="@ViewBag.resultId"
-asp-route-answerId="1" asp-route-num="@ViewBag.num" method="post">
+ asp-route-num="@ViewBag.num" method="post">
 @foreach(var answer in Model.Answers){
 <div style="height:auto">
   <input type="checkbox" id="@answer.Id" value="@answer.Text" name="answer">
   <label for="@answer.Id" >@answer.Text</label>
 </div>
 }
-<button type="submit" class="btn btn-success" id="Nextbtn" disabled>Next</button>
+<button type="submit" class="btn btn-success" onclick='submitform()' id="Nextbtn" disabled>Next</button>
 </form>
 
 
@@ -26,4 +26,16 @@ $('input[type="checkbox"]').change(function() {
         $('#Nextbtn').prop('disabled', true);
     }
 });
+</script>
+<script>
+        function submitform() {
+            var ids = "";
+            $('input[type="checkbox"]').each(function () {
+                if ($(this).is(':checked')) {
+                    ids += $(this).attr("id")+";";
+                }
+            });
+            $('<input type="hidden" name="answerIds"/>').val(ids).appendTo('form');
+            $("form").submit();
+        }
 </script>

@@ -1,44 +1,80 @@
-﻿@{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-}
+﻿@using LX.TestPad.Business.Models;
+
 @{
-    var answers = new[]
-    {
-    new {Text="Yes"},
-    new {Text="No"},
-    };
+    ViewData["Title"] = "Add questions";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
-    var questions = new[]
-    {
-    new {Text="What language do people speak in Australia?", Answers = answers},
-    new {Text="What?", Answers = answers},
-    new {Text="What language do people speak?", Answers = answers},
-    new {Text="What is Australia?", Answers = answers},
-    new {Text="What people in Australia?", Answers = answers},
-    new {Text="What is australia s form of government?", Answers = answers},
-    };
+    List<TestModel> testList = ViewBag.Tests;
+    List<QuestionModel> questionListList = ViewBag.Questions;
+
+    bool isAnyTest = testList.Count() > 0;
 }
-@foreach(var question in questions){
 
-<div class="flex-lg-wrap" style="height:auto">
-
-  <label>@question.Text</label>
-        <a asp-action="CreateAnswer" class="text-info">Add Answer</a>
-        <a asp-action="DeleteQuestion" class="text-danger">Delete Question</a><br>
-        @foreach(var answer in question.Answers)
-        {
-            if(answer.Text == "Yes")
-            {
-                <label>Answer: @answer.Text✅</label>
-                <a asp-action="DeleteAnswer" class="text-danger">✗</a><br>
-            }
-            else
-            {
-                <label>Answer: @answer.Text</label>
-                <a asp-action="DeleteAnswer" class="text-danger">✗</a><br>
-            }
-        }
-
+<div class="my-3">
+    <a class="btn btn-outline-danger" href="javascript:history.back()">Back</a>
 </div>
-}
-<a class="btn btn-outline-danger" href="javascript:history.back()">Back</a>
+
+<div class="mb-5 row">
+    <div class="col-4 border" id="TestsTable">
+        <div class="border-bottom text-center">
+            <p class="my-2" style="font-weight: bold;">Tests</p>
+        </div>
+
+        <div class="text-center">
+            @if (isAnyTest)
+            {
+                <div class="my-2">
+                    @foreach (var test in testList)
+                    {
+                            <div class="mb-2 border">
+                                        <button class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%;" onclick="">@test.Name</button>
+                            </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-5 border" id="QuestionsTable" onload="">
+        <div class="border-bottom text-center">
+            <p class="my-2" style="font-weight: bold;">Questions</p>
+        </div>
+
+        <div class="text-center">
+            @if (!isAnyTest)
+            {
+                    <div class="my-2">
+                    @foreach (var question in questionListList)
+                    {
+                            <div class="mb-2 border">
+                                        <button class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%;" onclick="">@question.Text</button>
+                            </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-3 border" id="Menu">
+        <div class="border-bottom text-center">
+            <p class="my-2" style="font-weight: bold;">Menu</p>
+        </div>
+
+        <div class="text-center">
+            <div class="mx-auto my-3" id="AddBtn" hidden>
+                <button type="button" class="btn btn-outline-success">Add to test</button><br />
+            </div>
+            <div class="mx-auto my-3" id="RemoveBtn" hidden>
+                <button type="button" class="btn btn-outline-danger">Remove form test</button>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+
+
+<script>
+
+</script>

@@ -38,14 +38,20 @@ namespace LX.TestPad.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EnterUserName(TestModel testModel, string name, string surname)
+        public async Task<IActionResult> EnterUserName(TestModel testModel)
         {
-            var resultModel = await _resultService.CreateAsync(new ResultModel(testModel.Id, name + surname, 0, DateTime.Now, DateTime.MinValue));
+            var resultModel = await _resultService.CreateAsync(new ResultModel {
+                TestId = testModel.Id,
+                UserName = testModel.UserName + testModel.UserSurname,
+                Score = 0,
+                StartedAt = DateTime.Now,
+                FinishedAt = DateTime.MinValue
+            });
 
             return RedirectToAction(nameof(Question), new { @resultId = resultModel.Id });
         }
 
-        public async Task<IActionResult> Question(int resultId, int num = 0)
+        public async Task<IActionResult> Question(int resultId, int num)
         {
             var result = await _resultService.GetByIdAsync(resultId);
             var testQuestions = await _testQuestionService.GetAllByTestIdAsync(result.TestId);
@@ -59,18 +65,15 @@ namespace LX.TestPad.Controllers
             return View(question);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Question(QuestionWithAnswersModel question, int resultId,
-            string answerIds, int num)
+        public async Task<IActionResult> Question(int resultId,
+            string[] answer, int num)
         {
-            // Split user AnswersIds
-            var answersIdSplitter = answerIds.Split(';', StringSplitOptions.RemoveEmptyEntries);
-            var answersIds = new int[answersIdSplitter.Length];
+            var answersIds = new int[answer.Length];
             for (int i = 0; i < answersIds.Length; i++)
             {
-                answersIds[i] = int.Parse(answersIdSplitter[i]);
+                answersIds[i] = int.Parse(answer[i]);
             }
 
             await _resultAnswerService.CreateRangeAsync(resultId, answersIds);

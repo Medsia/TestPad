@@ -26,7 +26,6 @@ namespace LX.TestPad.Authorization
             if (authHeader != null && authHeader.StartsWith("Basic"))
             {
                 var token = authHeader.Substring("Basic ".Length).Trim();
-                Console.WriteLine(token);
                 var credentialstring = Encoding.UTF8.GetString(Convert.FromBase64String(token));
                 var credentials = credentialstring.Split(':');
                 if (credentials[0] == "admin" && credentials[1] == "admin")

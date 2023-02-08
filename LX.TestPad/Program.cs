@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using LX.TestPad.DataAccess;
+using LX.TestPad;
 using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,15 +24,15 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-app.UseAuthentication();
-app.UseAuthorization();
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+
 app.UseRouting();
-
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

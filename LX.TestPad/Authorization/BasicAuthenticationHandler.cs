@@ -23,15 +23,15 @@ namespace LX.TestPad.Authorization
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             var authHeader = Request.Headers["Authorization"].ToString();
-            if (authHeader != null && authHeader.StartsWith("Basic"))
+            if (authHeader != null && authHeader.StartsWith(AuthenticationSchemes.Basic))
             {
-                var token = authHeader.Substring("Basic ".Length).Trim();
+                var token = authHeader.Substring(AuthenticationSchemes.Basic.Length).Trim();
                 var credentialstring = Encoding.UTF8.GetString(Convert.FromBase64String(token));
                 var credentials = credentialstring.Split(':');
-                if (credentials[0] == "LX.TestPad.Admin.Access" && credentials[1] == "TheVeryStrongPasswordToLx.TestPad.Admin.Access")
+                if (credentials[0] == AuthenticationSchemes.Username && credentials[1] == AuthenticationSchemes.Password)
                 {
-                    var claims = new[] { new Claim("name", credentials[0]), new Claim(ClaimTypes.Role, "Admin") };
-                    var identity = new ClaimsIdentity(claims, "Basic");
+                    var claims = new[] { new Claim(AuthenticationSchemes.Name, credentials[0]), new Claim(ClaimTypes.Role, AuthenticationSchemes.Role) };
+                    var identity = new ClaimsIdentity(claims, AuthenticationSchemes.Basic);
                     var claimsPrincipal = new ClaimsPrincipal(identity);
                     return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, Scheme.Name)));
                 }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LX.TestPad.Controllers
 {
-    [Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = "Admin")]
+    [Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
     public class AdminController : Controller
     {
         public IActionResult Index()

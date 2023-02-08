@@ -28,7 +28,7 @@ namespace LX.TestPad.Authorization
                 var token = authHeader.Substring("Basic ".Length).Trim();
                 var credentialstring = Encoding.UTF8.GetString(Convert.FromBase64String(token));
                 var credentials = credentialstring.Split(':');
-                if (credentials[0] == "admin" && credentials[1] == "admin")
+                if (credentials[0] == "LX.TestPad.Admin.Access" && credentials[1] == "TheVeryStrongPasswordToLx.TestPad.Admin.Access")
                 {
                     var claims = new[] { new Claim("name", credentials[0]), new Claim(ClaimTypes.Role, "Admin") };
                     var identity = new ClaimsIdentity(claims, "Basic");

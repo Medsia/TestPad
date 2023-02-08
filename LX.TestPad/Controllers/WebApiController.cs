@@ -1,12 +1,16 @@
-﻿using LX.TestPad.Business.Interfaces;
+﻿using LX.TestPad.Authorization;
+using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace LX.TestPad.Controllers
 {
     [Route("api/")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
     public class WebApiController : ControllerBase
     {
         private readonly ITestService _testService;

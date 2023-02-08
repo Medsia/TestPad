@@ -86,7 +86,7 @@
     var selectedTestElementId = '';
     var selectedTestOptionId = 0;
 
-    var counter = 0;
+    var isSelectedTest = false;
 
     $(document).ready(function () {
             $("div#loadingTests").hide();
@@ -123,14 +123,14 @@
                                 '</div>';
                             }
                             else {
-                                counter++;
+                                isSelectedTest = true;
                                 thisTestText +=
                                     '<p style="font-weight: bold; font-size: 22px;" class="border-bottom">'+item.name+'</p>' + 
                                     '<p style="font-size: 18px;">'+item.description+'</p>';
                             }
                         })
 
-                        if (counter == 0){
+                        if (isSelectedTest == false){
                             thisTestText +=
                                 '<p style="font-weight: bold; font-size: 22px;" class="border-bottom">No test selected</p>' + 
                                 '<p style="font-size: 18px;">Add/Remove actions are unavailable.</p>';
@@ -243,7 +243,7 @@
 
 
     function loadSelectedItems(){
-        if (selectedTestId>0 && counter>0 && !_inCallback) {
+        if (selectedTestId>0 && isSelectedTest && !_inCallback) {
             _inCallback = true;
 
             document.getElementById('SelectedQuestionsTable').innerHTML = "";
@@ -279,7 +279,7 @@
 
 
     function addQuestionToTest(questionId) {
-        if (selectedTestId>0 && counter>0 && questionId>0 && !_inCallback) {
+        if (selectedTestId>0 && isSelectedTest && questionId>0 && !_inCallback) {
             _inCallback = true;
 
             document.getElementById('SelectedQuestionsTable').innerHTML = "";
@@ -302,7 +302,7 @@
 
 
     function removeQuestionToTest(questionId) {
-        if (selectedTestId>0 && counter>0 && questionId>0 && !_inCallback) {
+        if (selectedTestId>0 && isSelectedTest && questionId>0 && !_inCallback) {
             _inCallback = true;
 
             document.getElementById('SelectedQuestionsTable').innerHTML = "";

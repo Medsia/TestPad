@@ -1,3 +1,4 @@
+using LX.TestPad.Authorization;
 using LX.TestPad.Business.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

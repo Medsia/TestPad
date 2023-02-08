@@ -35,25 +35,9 @@ namespace LX.TestPad.Authorization
                     var claimsPrincipal = new ClaimsPrincipal(identity);
                     return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, Scheme.Name)));
                 }
-
-                Response.StatusCode = 401;
-                Response.Headers.Add("WWW-Authenticate", "Basic realm=\"testpad\"");
-
-                return Task.FromResult(AuthenticateResult.Fail("Invalid Authorization Header"));
             }
-            else
-            {
-                if ($"{Request.Path}".StartsWith("/admin", StringComparison.OrdinalIgnoreCase))
-                {
-                    Response.StatusCode = 401;
-                    Response.Headers.Add("WWW-Authenticate", "Basic realm=\"testpad\"");
-                    return Task.FromResult(AuthenticateResult.NoResult());
-                }
-                else
-                {
-                    return Task.FromResult(AuthenticateResult.NoResult());
-                }
-            }
+            Response.Headers.Add("WWW-Authenticate", "Basic realm=\"testpad\"");
+            return Task.FromResult(AuthenticateResult.Fail("Invalid Authorization Header"));
         }
     }
 }

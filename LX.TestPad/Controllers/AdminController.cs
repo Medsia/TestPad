@@ -46,9 +46,11 @@ namespace LX.TestPad.Controllers
         }
 
 
-        public async Task<IActionResult> ExistingQuestions()
+        public IActionResult ExistingQuestions(int testId)
         {
-            return View();
+            testId = 2; // testing value
+
+            return View(testId);
         }
 
 

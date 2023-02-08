@@ -1,7 +1,7 @@
-﻿@using LX.TestPad.Business.Models;
+﻿@model int
 
 @{
-    ViewData["Title"] = "Add questions";
+    ViewData["Title"] = "Add existing questions";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -71,7 +71,7 @@
 
     var _inCallback = false;
 
-    var selectedTestId = 2; // testing value
+    var selectedTestId = @Model;
 
     $(document).ready(function () {
             $("div#loadingTests").hide();

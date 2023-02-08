@@ -2,6 +2,7 @@
 using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
+using System.Security.Cryptography;
 
 namespace LX.TestPad.Business.Services
 {
@@ -46,14 +47,14 @@ namespace LX.TestPad.Business.Services
                         .ToList();
         }
 
-        private async Task<int> GetNewNumberByTestIdAsync(int testId)
+        private async Task<int> GetNewQuestionSequenceNumberByTestIdAsync(int testId)
         {
             var lastQuestion = (await _testQuestionRepository.GetAllByTestIdAsync(testId)).LastOrDefault();
-            int newNumber;
-            if (lastQuestion != null) newNumber = lastQuestion.Number + 1;
-            else newNumber = 1;
+            int newSequenceNumber;
+            if (lastQuestion != null) newSequenceNumber = lastQuestion.Number + 1;
+            else newSequenceNumber = 1;
 
-            return newNumber;
+            return newSequenceNumber;
         }
 
 
@@ -104,10 +105,10 @@ namespace LX.TestPad.Business.Services
             ExceptionChecker.SQLKeyIdCheck(questionId);
             ExceptionChecker.SQLKeyIdCheck(testId);
 
-            var twin = await _testQuestionRepository.GetSingleOrDefaultAsync(testId, questionId);
-            if (twin == null)
+            var existingTestQuestion = await _testQuestionRepository.GetSingleOrDefaultAsync(testId, questionId);
+            if (existingTestQuestion == null)
             {
-                var newNumber = await GetNewNumberByTestIdAsync(testId);
+                var newNumber = await GetNewQuestionSequenceNumberByTestIdAsync(testId);
 
                 var item = new TestQuestion
                 {
@@ -127,7 +128,7 @@ namespace LX.TestPad.Business.Services
 
             foreach (var questionId in questionIds)
             {
-                var newNumber = await GetNewNumberByTestIdAsync(testId);
+                var newNumber = await GetNewQuestionSequenceNumberByTestIdAsync(testId);
 
                 var item = new TestQuestion
                 {

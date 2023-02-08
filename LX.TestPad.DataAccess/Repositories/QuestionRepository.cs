@@ -75,8 +75,8 @@ namespace LX.TestPad.DataAccess.Repositories
             var result = new List<Question>();
             foreach (var item in items)
             {
-                var isAny = await dbContext.TestQuestion.AnyAsync(x => x.QuestionId == item.Id);
-                if (!isAny) result.Add(item);
+                var isAnyDBRecord = await dbContext.TestQuestion.AnyAsync(x => x.QuestionId == item.Id);
+                if (!isAnyDBRecord) result.Add(item);
             }
 
             return result;

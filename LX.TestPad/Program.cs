@@ -9,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddBusinessLogicServices(builder.Configuration);
 
-
 builder.Services.AddAuthentication(AuthenticationSchemes.Schema)
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>
                 (AuthenticationSchemes.Schema, null);

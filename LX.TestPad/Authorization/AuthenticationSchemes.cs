@@ -8,5 +8,6 @@
         public const string Name = "name";
         public const string Password = "TheVeryStrongPasswordToLx.TestPad.Admin.Access";
         public const string Username = "LX.TestPad.Admin.Access";
+        public const int HeaderStartLength = 5;
     }
 }

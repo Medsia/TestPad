@@ -25,7 +25,7 @@ namespace LX.TestPad.Authorization
             var authHeader = Request.Headers["Authorization"].ToString();
             if (authHeader != null && authHeader.StartsWith(AuthenticationSchemes.Basic))
             {
-                var token = authHeader.Substring(AuthenticationSchemes.Basic.Length).Trim();
+                var token = authHeader.Substring(AuthenticationSchemes.HeaderStartLength);
                 var credentialstring = Encoding.UTF8.GetString(Convert.FromBase64String(token));
                 var credentials = credentialstring.Split(':');
                 if (credentials[0] == AuthenticationSchemes.Username && credentials[1] == AuthenticationSchemes.Password)

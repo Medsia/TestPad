@@ -61,12 +61,7 @@ namespace LX.TestPad.DataAccess.Repositories
 
         public async Task<List<Answer>> GetAllByIdsAsync(params int[] answersIds)
         {
-            var answers = new List<Answer>();
-            foreach (var answersId in answersIds)
-            {
-                answers.Add(await dbContext.Answers.FirstOrDefaultAsync(x => x.Id == answersId));
-            }
-            return answers;
+            return await dbContext.Answers.Where(e => answersIds.Contains(e.Id)).ToListAsync();
         }
 
         public async Task<Answer> GetByIdAsync(int id)

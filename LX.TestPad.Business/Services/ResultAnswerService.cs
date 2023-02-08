@@ -61,7 +61,7 @@ namespace LX.TestPad.Business.Services
 
             return Mapper.ResultAnswerToModel(item);
         }
-        public async Task CreateRangeAsync(int resultId, params int[] answersId)
+        public async Task AddUserResultAnswersAsync(int resultId, params int[] answersId)
         {
             ExceptionChecker.SQLKeyIdCheck(resultId);
             foreach (var answerId in answersId)

@@ -7,11 +7,11 @@
     <h1 class="display-4">@Model.Text</h1>
 </div>
 
-<form asp-action="Question" asp-route-resultId="@ViewBag.resultId"
- asp-route-num="@ViewBag.num" method="post">
+<form asp-action="SendUserAnswer" asp-route-resultId="@ViewBag.resultId"
+ asp-route-questionNumber="@ViewBag.questionNumber" method="post">
 @foreach(var answer in Model.Answers){
 <div style="height:auto">
-  <input type="checkbox" id="@answer.Id" value="@answer.Id" name="answer">
+  <input type="checkbox" id="@answer.Id" value="@answer.Id" name="answersIds">
   <label for="@answer.Id" >@answer.Text</label>
 </div>
 }

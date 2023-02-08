@@ -133,9 +133,9 @@ namespace LX.TestPad.Business.Services
                 Answers = answerEntities,
             };
         }
-        public static CutAnswerModel AnswerToCutAnswerModel(Answer entity)
+        public static AnswerModelWithoutIsCorrect AnswerToAnswerModelWithoutIsCorrect(Answer entity)
         {
-            return new CutAnswerModel
+            return new AnswerModelWithoutIsCorrect
             {
                 Id = entity.Id,
                 Text = entity.Text,

@@ -5,9 +5,18 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="my-3">
-    <a class="btn btn-outline-danger" href="javascript:history.back()">Back</a>
+<div class="d-flex justify-content-between my-3">
+    <div class="border">
+        <div id="selectedTestData" class="m-2">
+            
+        </div>
+    </div>
+
+    <div>
+        <a class="btn btn-outline-danger my-auto" href="javascript:history.back()">Back</a>
+    </div>
 </div>
+
 
 <div class="mb-5 row">
     <div class="col-4 border">
@@ -18,7 +27,7 @@
         <div class="text-center">
             <div class="my-2">
                 <div class="mb-2 border">
-                    <button class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%; font-weight: bold;" onclick="loadUnusedItems()">Unused questions</button>
+                    <button id="test0" class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%; font-weight: bold;" onclick="loadUnusedItems()">Unused questions</button>
                 </div>
 
                 <div id="TestsTable">
@@ -48,7 +57,7 @@
 
     <div class="col-4 border">
         <div class="border-bottom text-center">
-            <p class="my-2" style="font-weight: bold;">Selected question (Click to remove)</p>
+            <p class="my-2" style="font-weight: bold;">Selected questions (Click to remove)</p>
         </div>
 
         <div class="text-center">
@@ -72,6 +81,13 @@
     var _inCallback = false;
 
     var selectedTestId = @Model;
+    
+    var selectedItemsList = '';
+
+    var selectedTestElementId = '';
+    var selectedTestOptionId = 0;
+
+    var counter = 0;
 
     $(document).ready(function () {
             $("div#loadingTests").hide();
@@ -81,7 +97,6 @@
             _inCallback = false;
 
             loadAllTests();
-            loadSelectedItems();
     })
 
 
@@ -99,27 +114,53 @@
                 success: function (data, textstatus) {
                     if (data.length > 0) {
                         var htmlLine = "";
+                        var thisTestText = "";
                         $.each(data, function (index, item) {
-                            htmlLine +=
+                            if (item.id != selectedTestId){
+                                htmlLine +=
                                 '<div class="mb-2 border">' + 
-                                    '<button class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%;" onclick="loadItems('+item.id+')">'+item.name+'</button>' + 
+                                    '<button id="test'+item.id+'" class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%;" onclick="loadItems('+item.id+')">'+item.name+'</button>' + 
                                 '</div>';
+                            }
+                            else {
+                                counter++;
+                                thisTestText +=
+                                '<p style="font-weight: bold; font-size: 22px;" class="border-bottom">'+item.name+'</p>' + 
+                                '<p style="font-size: 18px;">'+item.description+'</p>';
+                            }
                         })
 
+                        $("#selectedTestData").append(thisTestText);
                         $("#TestsTable").append(htmlLine);
                     }
 
                     _inCallback = false;
                     $("div#loadingTests").hide();
+
+                    loadSelectedItems();
                 }
             });
         }
     }
 
 
+    function btnSelection(selectedBtnId){
+        if (selectedTestElementId != ''){
+            var btn = document.getElementById(selectedTestElementId);
+            btn.classList.remove("btn-outline-primary");
+        }
+        
+        selectedTestElementId = selectedBtnId;
+        btn = document.getElementById(selectedTestElementId);
+        btn.classList.add("btn-outline-primary");
+    }
+
     function loadUnusedItems() {
         if (!_inCallback) {
             _inCallback = true;
+
+            selectedTestOptionId = 0;
+            btnSelection('test0');
 
             document.getElementById('QuestionsTable').innerHTML = "";
 
@@ -152,6 +193,9 @@
     function loadItems(testId) {
         if (testId>0 && !_inCallback) {
             _inCallback = true;
+
+            selectedTestOptionId = testId;
+            btnSelection('test'+testId);
             
             document.getElementById('QuestionsTable').innerHTML = "";
 
@@ -164,9 +208,17 @@
                     if (data.length > 0) {
                         var htmlLine = "";
                         $.each(data, function (index, item) {
+
+                            var selection = '';
+                            $.each(selectedItemsList, function (indexSel, selectedItem){
+                                if (item.id == selectedItem.id){
+                                    selection = 'btn-outline-success';
+                                }
+                            })
+
                             htmlLine +=
                                 '<div class="mb-2 border">' + 
-                                    '<button class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%;" onclick="addQuestionToTest('+item.id+')">' + item.text + '</button>' + 
+                                    '<button class="text-center text-wrap btn '+selection+'" style="box-sizing: border-box; width: 100%;" onclick="addQuestionToTest('+item.id+')">' + item.text + '</button>' + 
                                 '</div>';
                         })
 
@@ -178,11 +230,14 @@
                 }
             });
         }
+        else if (testId == 0){
+            loadUnusedItems();
+        }
     }
 
 
     function loadSelectedItems(){
-        if (selectedTestId>0 && !_inCallback) {
+        if (selectedTestId>0 && counter>0 && !_inCallback) {
             _inCallback = true;
 
             document.getElementById('SelectedQuestionsTable').innerHTML = "";
@@ -193,12 +248,14 @@
                 type: 'GET',
                 url: '../../api/questions/GetQuestions/'+selectedTestId,
                 success: function (data, textstatus) {
+                    selectedItemsList = data;
+                    
                     if (data.length > 0) {
                         var htmlLine = "";
                         $.each(data, function (index, item) {
                             htmlLine +=
                                 '<div class="mb-2 border">' + 
-                                    '<button class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%;" onclick="removeQuestionToTest('+item.id+')">' + item.text + '</button>' + 
+                                    '<button class="text-center text-wrap btn btn-outline-danger" style="box-sizing: border-box; width: 100%;" onclick="removeQuestionToTest('+item.id+')">' + item.text + '</button>' + 
                                 '</div>';
                         })
 
@@ -207,6 +264,8 @@
 
                     _inCallback = false;
                     $("div#loadingSelectedQuestions").hide();
+
+                    loadItems(selectedTestOptionId);
                 }
             });
         }
@@ -214,7 +273,7 @@
 
 
     function addQuestionToTest(questionId) {
-        if (selectedTestId>0 && questionId>0 && !_inCallback) {
+        if (selectedTestId>0 && counter>0 && questionId>0 && !_inCallback) {
             _inCallback = true;
 
             document.getElementById('SelectedQuestionsTable').innerHTML = "";
@@ -237,7 +296,7 @@
 
 
     function removeQuestionToTest(questionId) {
-        if (selectedTestId>0 && questionId>0 && !_inCallback) {
+        if (selectedTestId>0 && counter>0 && questionId>0 && !_inCallback) {
             _inCallback = true;
 
             document.getElementById('SelectedQuestionsTable').innerHTML = "";

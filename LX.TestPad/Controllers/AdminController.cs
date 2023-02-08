@@ -48,8 +48,6 @@ namespace LX.TestPad.Controllers
 
         public IActionResult ExistingQuestions(int testId)
         {
-            testId = 2; // testing value
-
             return View(testId);
         }
 

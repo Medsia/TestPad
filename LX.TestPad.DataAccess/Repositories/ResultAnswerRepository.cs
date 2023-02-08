@@ -7,7 +7,7 @@ namespace LX.TestPad.DataAccess.Repositories
     public class ResultAnswerRepository : IResultAnswerRepository
     {
         private readonly DataContext dbContext;
-        
+
         public ResultAnswerRepository(DataContext dbContext)
         {
             this.dbContext = dbContext;
@@ -19,7 +19,12 @@ namespace LX.TestPad.DataAccess.Repositories
 
             return resultAnswer;
         }
+        public async Task CreateRangeAsync(params ResultAnswer[] resultAnswer)
+        {
+            await dbContext.ResultAnswers.AddRangeAsync(resultAnswer);
+            await dbContext.SaveChangesAsync();
 
+        }
         public async Task DeleteAsync(int id)
         {
             var item = await dbContext.ResultAnswers.FirstOrDefaultAsync(x => x.Id == id);

@@ -1,6 +1,6 @@
 ﻿namespace LX.TestPad.Business.Models
 {
-    public class CutAnswerModel
+    public class AnswerModelWithoutIsCorrect
     {
         public int Id { get; set; }
         public int QuestionId { get; set; }

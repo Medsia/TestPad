@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using LX.TestPad.DataAccess;
-using LX.TestPad;
 using Microsoft.AspNetCore.Authentication;
+using LX.TestPad.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 

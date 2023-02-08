@@ -7,7 +7,7 @@ using System.Text.Encodings.Web;
 using System.Text;
 using System.Net.Sockets;
 
-namespace LX.TestPad
+namespace LX.TestPad.Authorization
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
@@ -26,7 +26,7 @@ namespace LX.TestPad
             if (authHeader != null && authHeader.StartsWith("Basic"))
             {
                 var token = authHeader.Substring("Basic ".Length).Trim();
-                System.Console.WriteLine(token);
+                Console.WriteLine(token);
                 var credentialstring = Encoding.UTF8.GetString(Convert.FromBase64String(token));
                 var credentials = credentialstring.Split(':');
                 if (credentials[0] == "admin" && credentials[1] == "admin")

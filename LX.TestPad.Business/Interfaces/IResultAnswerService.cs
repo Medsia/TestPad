@@ -8,7 +8,7 @@ namespace LX.TestPad.Business.Interfaces
         Task<List<ResultAnswerModel>> GetAllByResultIdAsync(int resultId);
 
         Task<ResultAnswerModel> CreateAsync(int resultId, int answerId);
-
+        Task AddUserResultAnswersAsync(int resultId, int[] answersId);
         Task DeleteAllByResultIdAsync(int resultId);
     }
 }

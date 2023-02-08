@@ -18,10 +18,7 @@ namespace LX.TestPad.DataAccess.Migrations
             migrationBuilder.RenameColumn(
                 name: "FinisedAt",
                 table: "Results",
-                newName: "FinishedAt");
-
-            var sqlFile = Path.Combine("../LX.TestPad.DataAccess/Seedings/SeedUp.sql");
-            migrationBuilder.Sql(File.ReadAllText(sqlFile));
+                newName: "FinishedAt");          
         }
 
         /// <inheritdoc />
@@ -36,9 +33,6 @@ namespace LX.TestPad.DataAccess.Migrations
                 name: "FinishedAt",
                 table: "Results",
                 newName: "FinisedAt");
-
-            var sqlFile = Path.Combine("../LX.TestPad.DataAccess/Seedings/SeedDown.sql");
-            migrationBuilder.Sql(File.ReadAllText(sqlFile));
         }
     }
 }

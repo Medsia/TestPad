@@ -1,26 +1,31 @@
-﻿@{
-    var answers = new[]
-    {
-    new {Name="C#"},
-    new {Name=".NET"},
-    new {Name="JAVA"},
-    new {Name="JavaScript"},
-    new {Name="English"}
-    };
-    var question = new { Text = "What language do people speak in Australia?", Answers = answers };
-
+﻿@model LX.TestPad.Business.Models.QuestionWithAnswersModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <div class="text-center">
-    <h1 class="display-4">@question.Text</h1>
+    <h1 class="display-4">@Model.Text</h1>
 </div>
 
-
-@foreach(var answer in question.Answers){
+<form asp-action="SendUserAnswer" asp-route-resultId="@ViewBag.resultId"
+ asp-route-questionNumber="@ViewBag.questionNumber" method="post">
+@foreach(var answer in Model.Answers){
 <div style="height:auto">
-  <input type="checkbox">
-  <label>@answer.Name</label>
+  <input type="checkbox" id="@answer.Id" value="@answer.Id" name="answersIds">
+  <label for="@answer.Id" >@answer.Text</label>
 </div>
 }
-<form action="/Result">
-        <button type="submit" class="btn btn-success">Next</button>
+<button type="submit" class="btn btn-success" id="Nextbtn" disabled>Next</button>
 </form>
+
+@section scripts {
+    <script>
+        $('input[type="checkbox"]').change(function() {
+        if ($('input[type="checkbox"]:checked').length > 0) {
+            $('#Nextbtn').prop('disabled', false);
+        } else {
+            $('#Nextbtn').prop('disabled', true);
+        }
+        });
+    </script>
+}

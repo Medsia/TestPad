@@ -20,7 +20,7 @@ namespace LX.TestPad.Tests.ServiceTests
 
         static Answer answerEntity { get; } = new Answer { Id = 13, QuestionId = 3, Text = "Some answer text", IsCorrect = false };
         static AnswerModel answerModel { get; } = new AnswerModel { Id = 13, QuestionId = 3, Text = "Some answer text", IsCorrect = false };
-        static CutAnswerModel cutAnswerModel { get; } = new CutAnswerModel { Id = 13, QuestionId = 3, Text = "Some answer text" };
+        static AnswerModelWithoutIsCorrect answerModelWithoutIsCorrect { get; } = new AnswerModelWithoutIsCorrect { Id = 13, QuestionId = 3, Text = "Some answer text" };
 
         static DateTime dateTimeStarted = DateTime.Now;
         static DateTime dateTimeFinished = DateTime.Now.AddMinutes(10.0);
@@ -207,11 +207,11 @@ namespace LX.TestPad.Tests.ServiceTests
         [Fact]
         public void CutAnswerModel_MappedFromAnswer_IsCorrect()
         {
-            var actualModel = Mapper.AnswerToCutAnswerModel(answerEntity);
+            var actualModel = Mapper.AnswerToAnswerModelWithoutIsCorrect(answerEntity);
 
-            Assert.Equal(cutAnswerModel.Id, actualModel.Id);
-            Assert.Equal(cutAnswerModel.QuestionId, actualModel.QuestionId);
-            Assert.Equal(cutAnswerModel.Text, actualModel.Text);
+            Assert.Equal(answerModelWithoutIsCorrect.Id, actualModel.Id);
+            Assert.Equal(answerModelWithoutIsCorrect.QuestionId, actualModel.QuestionId);
+            Assert.Equal(answerModelWithoutIsCorrect.Text, actualModel.Text);
         }
     }
 }

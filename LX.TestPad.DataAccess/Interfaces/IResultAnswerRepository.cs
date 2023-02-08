@@ -6,5 +6,6 @@ namespace LX.TestPad.DataAccess.Interfaces
     {
         Task<List<ResultAnswer>> GetAllByResultIdAsync(int resultId);
         Task DeleteAllByResultIdAsync(int resultId);
+        Task CreateRangeAsync(params ResultAnswer[] resultAnswer);
     }
 }

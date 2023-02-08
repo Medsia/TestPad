@@ -1,8 +1,10 @@
-﻿using LX.TestPad.Business.Interfaces;
+using LX.TestPad.Business.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LX.TestPad.Controllers
 {
+    [Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
     public class AdminController : Controller
     {
         private readonly ITestService _testService;

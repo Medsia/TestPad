@@ -1,16 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model List<LX.TestPad.Business.Models.TestModel>
 @{
-    var tests = new[]
-{
-    new {Name="C#", Desc = " good well cool great best good well cool great best good well cool great best description"},
-    new {Name=".NET", Desc = "good well cool great best good well cool great best good well cool great best description"},
-    new {Name="JAVA", Desc = "good well cool great best good well cool great best good well cool great best description"},
-    new {Name="JavaScript", Desc = "good well cool great bestgood well cool great best description"},
-    new {Name="English", Desc = "good well cool great best good well cool great best good well cool great best description"}
-};
-
+    ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
@@ -20,14 +10,14 @@
                 <input class="m-lg-0" type="search" style="width: 200px" maxlength="50" name="query" placeholder="Search test"/>
                 <button class="btn btn-primary" type="submit">Search</button>
 </form>
-@foreach(var test in tests){
+@foreach(var test in Model){
 
 <div class="test">
     <img class="test-img" src="" height="250" width="250"/>
     <p class="test-title">@test.Name</p>    
-    <p class="product-desc" style="word-wrap: break-word; width: 250px">@test.Desc</p>
-    <form action="/StartTest">
-        <button type="submit" class="btn btn-success">Start</button>
+    <p class="product-desc" style="word-wrap: break-word; width: 250px">@test.Description</p>
+    <form>
+        <button asp-controller="Test" asp-action="EnterUserName" asp-route-id="@test.Id" type="submit" class="btn btn-success">Start</button>
     </form>
 
 </div>

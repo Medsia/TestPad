@@ -18,9 +18,11 @@ namespace LX.TestPad.Controllers
             _questionService = questionService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var tests = await _testService.GetAllAsync();
+
+            return View(tests);
         }
 
         public IActionResult TestResults()
@@ -47,8 +49,8 @@ namespace LX.TestPad.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateTest(TestModel testModel)
         {
-            await _testService.CreateAsync(testModel);
-            return RedirectToAction(nameof(TestDetails), testModel);
+            var @test = await _testService.CreateAsync(testModel);
+            return RedirectToAction(nameof(TestDetails), new { @id = @test.Id });
         }
 
         public IActionResult Questions()
@@ -61,13 +63,29 @@ namespace LX.TestPad.Controllers
             return View();
         }
 
-        public IActionResult DeleteTest()
+        public async Task<IActionResult> DeleteTest(int? id)
         {
-            return View();
+            if (id == null) return NotFound();
+
+            var @test = await _testService.GetByIdAsync((int)id);
+            if (@test == null) return NotFound();
+
+            return View(@test);
         }
-        public IActionResult TestDetails(TestModel testModel)
+
+        [HttpPost, ActionName("DeleteTest")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            return View(testModel);
+            await _testService.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> TestDetails(int id)
+        
+        {
+            var @test = await _testService.GetByIdAsync(id);
+            return View(@test);
         }
     }
 }

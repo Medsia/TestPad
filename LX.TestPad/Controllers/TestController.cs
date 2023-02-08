@@ -22,9 +22,9 @@ namespace LX.TestPad.Controllers
             _resultAnswerService = resultAnswerService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var tests = _testService.GetAllAsync();
+            var tests = await _testService.GetAllAsync();
 
             return View(tests);
         }

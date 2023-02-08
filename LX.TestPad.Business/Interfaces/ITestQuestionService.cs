@@ -4,6 +4,7 @@ namespace LX.TestPad.Business.Interfaces
 {
     public interface ITestQuestionService
     {
+        Task<List<QuestionModel>> GetAllUnusedQuestionsAsync();
         Task<List<QuestionModel>> GetAllQuestionsByTestIdAsync(int testId);
         Task<List<TestModel>> GetAllTestsByQuestionIdAsync(int questionId);
         Task<List<TestQuestionModel>> GetAllByTestIdAsync(int testId);

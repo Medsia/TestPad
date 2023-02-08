@@ -57,6 +57,15 @@ namespace LX.TestPad.Business.Services
         }
 
 
+        public async Task<List<QuestionModel>> GetAllUnusedQuestionsAsync()
+        {
+            var items = await _questionRepository.GetAllUnusedAsync();
+
+            if (items.Count== 0) return new List<QuestionModel>();
+
+            return items.Select(Mapper.QuestionToModel)
+                        .ToList();
+        }
 
         public async Task<List<QuestionModel>> GetAllQuestionsByTestIdAsync(int testId)
         {

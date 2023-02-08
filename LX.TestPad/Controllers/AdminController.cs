@@ -46,16 +46,8 @@ namespace LX.TestPad.Controllers
         }
 
 
-        public async Task<IActionResult> Questions()
+        public async Task<IActionResult> ExistingQuestions()
         {
-            var tests = await _testService.GetAllAsync();
-            ViewBag.Tests = tests;
-
-            if (tests.Count == 0)
-            {
-                ViewBag.Questions = await _questionService.GetAllAsync();
-            }
-
             return View();
         }
 

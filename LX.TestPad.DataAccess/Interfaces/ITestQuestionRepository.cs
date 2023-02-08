@@ -1,5 +1,4 @@
 ﻿using LX.TestPad.DataAccess.Entities;
-using System.Threading.Tasks;
 
 namespace LX.TestPad.DataAccess.Interfaces
 {

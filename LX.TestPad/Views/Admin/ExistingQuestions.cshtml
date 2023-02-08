@@ -115,6 +115,7 @@
                     if (data.length > 0) {
                         var htmlLine = "";
                         var thisTestText = "";
+
                         $.each(data, function (index, item) {
                             if (item.id != selectedTestId){
                                 htmlLine +=
@@ -125,10 +126,16 @@
                             else {
                                 counter++;
                                 thisTestText +=
-                                '<p style="font-weight: bold; font-size: 22px;" class="border-bottom">'+item.name+'</p>' + 
-                                '<p style="font-size: 18px;">'+item.description+'</p>';
+                                    '<p style="font-weight: bold; font-size: 22px;" class="border-bottom">'+item.name+'</p>' + 
+                                    '<p style="font-size: 18px;">'+item.description+'</p>';
                             }
                         })
+
+                        if (counter == 0){
+                            thisTestText +=
+                                '<p style="font-weight: bold; font-size: 22px;" class="border-bottom">No test selected</p>' + 
+                                '<p style="font-size: 18px;">Add/Remove actions are unavailable.</p>';
+                        }
 
                         $("#selectedTestData").append(thisTestText);
                         $("#TestsTable").append(htmlLine);

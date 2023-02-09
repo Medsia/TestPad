@@ -56,15 +56,17 @@ input[type='checkbox'] {
 }
 
 #notification {
-    position:fixed;
-    bottom:0px;
-    width:20%;
-    z-index:105;
-    text-align:center;
-    font-weight:normal;
-    font-size:14px;
-    font-weight:bold;
-    color:white;
-    background-color:#508c36;
-    padding:5px;
+    position: fixed;
+    bottom: 0px;
+    left: 70%;
+
+    width: 20%;
+    z-index: 105;
+    text-align: center;
+    font-weight: normal;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: #508c36;
+    padding: 5px;
 }

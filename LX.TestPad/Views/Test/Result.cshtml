@@ -20,6 +20,8 @@
 <button onclick="copyResultLink()">TEST POPUP</button>
 
 
+
+
 <div id="notification" style="display: none;"></div>
 
 
@@ -29,23 +31,31 @@
         $(document).ready(function () {
             var scorePercent = 60;
             renderPieChart('pieChart', scorePercent);
+            $("#notification").append('Link to your result was copied to clipboard');
         })
 
 
+        var isShown = false;
         function copyResultLink(){
 
             // copy to clipboard functionality
 
-            var popupRemainFor = 3; //seconds
-            $("#notification").fadeIn("slow").append('Link to your result was copied to clipboard');
+            if(!isShown){
+                isShown = true;
+                var popupRemainFor = 3; //seconds
 
-            let timer = setInterval(function() { 
-                if(timer >= popupRemainFor){
-                    $("#notification").fadeOut("slow");
-                    clearInterval(timer);
-                    return;
-                }
-            }, 1000);
+                $("#notification").fadeIn("slow");
+
+                var sec = 0;
+                var timer = setInterval(function() { 
+                    if(sec++ >= popupRemainFor){
+                        $("#notification").fadeOut("slow");
+                        clearInterval(timer);
+                        isShown = false;
+                        return;
+                    }
+                }, 1000);
+            }
         }
 
 

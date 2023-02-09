@@ -40,7 +40,7 @@ namespace LX.TestPad.Business.Services
             return new ResultModel
             {
                 Id = entity.Id,
-                UserName = entity.UserName,
+                NormalizedUserName = entity.UserName,
                 Score = entity.Score,
                 TestId = entity.TestId,
                 StartedAt = entity.StartedAt,
@@ -85,7 +85,7 @@ namespace LX.TestPad.Business.Services
             {
                 Id = model.Id,
                 Text = model.Text,
-                IsCorrect = model.IsCorrect,
+                IsCorrect = (bool)model.IsCorrect,
                 QuestionId = model.QuestionId,
             };
         }
@@ -94,7 +94,7 @@ namespace LX.TestPad.Business.Services
             return new Result
             {
                 Id = model.Id,
-                UserName = model.UserName,
+                UserName = model.NormalizedUserName,
                 Score = model.Score,
                 TestId = model.TestId,
                 StartedAt = model.StartedAt,
@@ -133,6 +133,15 @@ namespace LX.TestPad.Business.Services
                 Answers = answerEntities,
             };
         }
+        public static QuestionWithAnswersModel QuestionWithAnswers(Question questionEntity, List<AnswerModelWithoutIsCorrect> answerEntities)
+        {
+            return new QuestionWithAnswersModel
+            {
+                Id = questionEntity.Id,
+                Text = questionEntity.Text,
+                Answers = AnswerModelsWithoutIsCorrectToAnswerModels(answerEntities),
+            };
+        }
         public static AnswerModelWithoutIsCorrect AnswerToAnswerModelWithoutIsCorrect(Answer entity)
         {
             return new AnswerModelWithoutIsCorrect
@@ -141,6 +150,19 @@ namespace LX.TestPad.Business.Services
                 Text = entity.Text,
                 QuestionId = entity.QuestionId,
             };
+        }
+        public static List<AnswerModel> AnswerModelsWithoutIsCorrectToAnswerModels(List<AnswerModelWithoutIsCorrect> answerModelsWithoutIs)
+        {
+            var answerModels = new List<AnswerModel>();
+            foreach (AnswerModelWithoutIsCorrect answerModelWithoutIsCorrect in answerModelsWithoutIs)
+            {
+                answerModels.Add(new AnswerModel{
+                    Id = answerModelWithoutIsCorrect.Id,
+                    QuestionId = answerModelWithoutIsCorrect.QuestionId,
+                    Text = answerModelWithoutIsCorrect.Text,
+                });
+            }
+            return answerModels;
         }
     }
 }

@@ -11,7 +11,7 @@
  asp-route-questionNumber="@ViewBag.questionNumber" method="post">
 @foreach(var answer in Model.Answers){
 <div style="height:auto">
-  <input type="checkbox" id="@answer.Id" value="@answer.Id" name="answersIds">
+  <input type="checkbox" id="@answer.Id" value="@answer.Id" name="AnswersIds">
   <label for="@answer.Id" >@answer.Text</label>
 </div>
 }

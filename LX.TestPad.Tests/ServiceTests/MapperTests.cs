@@ -37,7 +37,8 @@ namespace LX.TestPad.Tests.ServiceTests
         {
             Id = 1,
             TestId = 11,
-            NormalizedUserName = "Chel Chelov",
+            UserName = "Chel",
+            UserSurname = "Chelov",
             StartedAt = dateTimeStarted,
             FinishedAt = dateTimeFinished,
             Score = 22.5
@@ -107,7 +108,8 @@ namespace LX.TestPad.Tests.ServiceTests
 
             Assert.Equal(resultModel.Id, actualModel.Id);
             Assert.Equal(resultModel.TestId, actualModel.TestId);
-            Assert.Equal(resultModel.NormalizedUserName, actualModel.NormalizedUserName);
+            Assert.Equal(resultModel.UserName, actualModel.UserName);
+            Assert.Equal(resultModel.UserSurname, actualModel.UserSurname);
             Assert.Equal(resultModel.Score, actualModel.Score);
             Assert.Equal(resultModel.StartedAt, actualModel.StartedAt);
             Assert.Equal(resultModel.FinishedAt, actualModel.FinishedAt);

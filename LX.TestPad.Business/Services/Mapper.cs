@@ -40,9 +40,10 @@ namespace LX.TestPad.Business.Services
             return new ResultModel
             {
                 Id = entity.Id,
-                NormalizedUserName = entity.UserName,
                 Score = entity.Score,
                 TestId = entity.TestId,
+                UserName = entity.UserName.Substring(0, entity.UserName.IndexOf(' ')),
+                UserSurname = entity.UserName.Substring(entity.UserName.IndexOf(' ') + 1),
                 StartedAt = entity.StartedAt,
                 FinishedAt = entity.FinishedAt,
             };
@@ -94,7 +95,7 @@ namespace LX.TestPad.Business.Services
             return new Result
             {
                 Id = model.Id,
-                UserName = model.NormalizedUserName,
+                UserName = model.UserName +' '+ model.UserSurname,
                 Score = model.Score,
                 TestId = model.TestId,
                 StartedAt = model.StartedAt,

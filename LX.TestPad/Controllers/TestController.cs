@@ -43,7 +43,8 @@ namespace LX.TestPad.Controllers
             var emptyUserResult = await _resultService.CreateAsync(new ResultModel
             {
                 TestId = resultModel.TestId,
-                NormalizedUserName = resultModel.UserName.ToUpperInvariant()[0] + resultModel.UserSurname.ToUpperInvariant(),
+                UserName = resultModel.UserName,
+                UserSurname = resultModel.UserSurname,
                 Score = 0,
                 StartedAt = DateTime.Now,
                 FinishedAt = DateTime.MinValue

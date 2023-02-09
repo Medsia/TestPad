@@ -50,11 +50,7 @@ namespace LX.TestPad.Business.Services
         private async Task<int> GetNewQuestionSequenceNumberByTestIdAsync(int testId)
         {
             var lastQuestion = (await _testQuestionRepository.GetAllByTestIdAsync(testId)).LastOrDefault();
-            int newSequenceNumber;
-            if (lastQuestion != null) newSequenceNumber = lastQuestion.Number + 1;
-            else newSequenceNumber = 1;
-
-            return newSequenceNumber;
+            return lastQuestion == null ? 1 : lastQuestion.Number + 1;
         }
 
 

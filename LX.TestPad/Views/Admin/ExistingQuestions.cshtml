@@ -77,6 +77,7 @@
 
 <script type="text/javascript">
 
+    var api = '../../Api/';
     var _inCallback = false;
 
     var selectedTestId = @Model;
@@ -109,7 +110,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: '../../api/tests/GetAllTests',
+                url: api+'TestApi/GetAllTests',
                 success: function (data, textstatus) {
                     if (data.length > 0) {
                         var htmlLine = "";
@@ -174,7 +175,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: '../../api/questions/GetUnusedQuestions',
+                url: api+'QuestionApi/GetUnusedQuestions',
                 success: function (data, textstatus) {
                     if (data.length > 0) {
                         var htmlLine = "";
@@ -209,7 +210,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: '../../api/questions/GetQuestions/'+testId,
+                url: api+'QuestionApi/GetQuestions/'+testId,
                 success: function (data, textstatus) {
                     if (data.length > 0) {
                         var htmlLine = "";
@@ -252,7 +253,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: '../../api/questions/GetQuestions/'+selectedTestId,
+                url: api+'QuestionApi/GetQuestions/'+selectedTestId,
                 success: function (data, textstatus) {
                     selectedItemsList = data;
                     
@@ -288,7 +289,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '../../api/questions/AddQuestionToTest/'+selectedTestId+'/'+questionId,
+                url: api+'QuestionApi/AddQuestionToTest/'+selectedTestId+'/'+questionId,
                 success: function (data, textstatus) {
                     _inCallback = false;
 
@@ -311,7 +312,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '../../api/questions/RemoveQuestionFromTest/'+selectedTestId+'/'+questionId,
+                url: api+'QuestionApi/RemoveQuestionFromTest/'+selectedTestId+'/'+questionId,
                 success: function (data, textstatus) {
                     _inCallback = false;
 

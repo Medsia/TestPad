@@ -17,90 +17,91 @@
 </p>
 
 
+<button onclick="copyResultLink()">TEST POPUP</button>
+
+
+<div id="notification" style="display: none;"></div>
+
+
 @section scripts{
     <script type="text/javascript">
 
         $(document).ready(function () {
-            var chartData = [ 60, 20, 15, 5 ];
-            renderPieChart('pieChart', chartData);
+            var scorePercent = 60;
+            renderPieChart('pieChart', scorePercent);
         })
 
 
+        function copyResultLink(){
 
+            // copy to clipboard functionality
+
+            var popupRemainFor = 3; //seconds
+            $("#notification").fadeIn("slow").append('Link to your result was copied to clipboard');
+
+            let timer = setInterval(function() { 
+                if(timer >= popupRemainFor){
+                    $("#notification").fadeOut("slow");
+                    clearInterval(timer);
+                    return;
+                }
+            }, 1000);
+        }
 
 
         
-        
-        
-        var staticAngleIncrement = (2 * Math.PI) / 100;
-        var currentAngle = staticAngleIncrement;
-        var lastItemAngle = 0;
 
-        function renderPieChart(canvasId, chartData){
-            var myCanvas = document.getElementById(canvasId);
-            myCanvas.width = 300;
-            myCanvas.height = 300;
-            var ctx = myCanvas.getContext("2d");
 
-            let start = Date.now();
+        var start_angle = 0;
+        var total_value = 100;
+
+        function renderPieChart(canvasId, scorePercent){
+            var chartCanvas = document.getElementById(canvasId);
+            chartCanvas.width = 300;
+            chartCanvas.height = 300;
+            var ctx = chartCanvas.getContext("2d");
+
+            var pieRadius = Math.min(chartCanvas.width/2, chartCanvas.height/2);
+            pieRadius -= pieRadius/10;
+            var centerX = chartCanvas.width/2;
+            var centerY = chartCanvas.height/2;
+
+            var correctAnswersColor = '#508c36';
+            var wrongAnswersColor = '#ef891f';
 
             var fillPoint = 2 * Math.PI;
-            var fillPercent = 0;
-            $.each(chartData, function(index, item){
-                ctx.fillStyle = getRandomColor();
+            
+            var angle = (2 * Math.PI * scorePercent) / total_value;
+            drawPieSlice(ctx, centerX, centerY, pieRadius, 0, angle, correctAnswersColor);
+            drawSlicePercentage(chartCanvas, ctx, scorePercent);
 
-                var currentItemMaxAngle = ((2 * Math.PI * item) / 100);
-                var currentItemColor = getRandomColor();
-
-                let timer = setInterval(function() {
-                    let timePassed = Date.now() - start;
-
-                    if (currentAngle >= currentItemMaxAngle) {
-                        clearInterval(timer);
-                        lastItemAngle = currentAngle;
-                        return;
-                    }
-
-                    draw(timePassed, ctx, currentItemColor);
-
-                }, 50);
-            })
+            drawPieSlice(ctx, centerX, centerY, pieRadius, angle, fillPoint, wrongAnswersColor);
+            drawSlicePercentage(chartCanvas, ctx, total_value-scorePercent);
         }
 
-        function draw(timePassed, ctx, color) {
-            drawPieSlice(ctx, 150, 150, 100, lastItemAngle, currentAngle, color);
-            currentAngle += staticAngleIncrement;
-        }
-
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF';
-            var color = '#';
-            for (var i = 0; i < 6; i++) {
-              color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
-
-        function drawLine(ctx, startX, startY, endX, endY){
-            ctx.beginPath();
-        	ctx.moveTo(startX,startY);
-        	ctx.lineTo(endX,endY);
-        	ctx.stroke();
-        }
-
-        function drawArc(ctx, centerX, centerY, radius, startAngle, endAngle){
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-            ctx.stroke();
-        }
 
         function drawPieSlice(ctx,centerX, centerY, radius, startAngle, endAngle, color ){
-            //ctx.fillStyle = color;
+            ctx.fillStyle = color;
             ctx.beginPath();
             ctx.moveTo(centerX,centerY);
             ctx.arc(centerX, centerY, radius, startAngle, endAngle);
             ctx.closePath();
             ctx.fill();
+        }
+
+
+        function drawSlicePercentage(canvas, ctx, percent){
+			slice_angle = 2 * Math.PI * percent / total_value;
+			var pieRadius = Math.min(canvas.width/2, canvas.height/2);
+			var labelX = canvas.width/2 + (pieRadius / 2) * Math.cos(start_angle + slice_angle/2);
+			var labelY = canvas.height/2 + (pieRadius / 2) * Math.sin(start_angle + slice_angle/2);
+			
+			var labelText = Math.round(100 * percent / total_value);
+			ctx.fillStyle = "white";
+			ctx.font = "bold 20px Arial";
+			ctx.fillText(labelText+"%", labelX, labelY);
+
+			start_angle += slice_angle;
         }
 
     </script>

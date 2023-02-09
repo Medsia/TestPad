@@ -75,8 +75,9 @@ namespace LX.TestPad.Controllers
             return RedirectToAction(nameof(Question), new { @resultId = resultId, @questionNumber = questionNumber + 1 });
         }
 
+        // [HttpGet("Result{resultId}{isExpired}")]
         [Route("Result")]
-        public IActionResult Result()
+        public IActionResult Result(int resultId, bool isExpired)
         {
             return View();
         }

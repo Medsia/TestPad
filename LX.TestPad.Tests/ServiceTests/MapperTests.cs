@@ -37,7 +37,7 @@ namespace LX.TestPad.Tests.ServiceTests
         {
             Id = 1,
             TestId = 11,
-            UserName = "Chel Chelov",
+            NormalizedUserName = "Chel Chelov",
             StartedAt = dateTimeStarted,
             FinishedAt = dateTimeFinished,
             Score = 22.5
@@ -107,7 +107,7 @@ namespace LX.TestPad.Tests.ServiceTests
 
             Assert.Equal(resultModel.Id, actualModel.Id);
             Assert.Equal(resultModel.TestId, actualModel.TestId);
-            Assert.Equal(resultModel.UserName, actualModel.UserName);
+            Assert.Equal(resultModel.NormalizedUserName, actualModel.NormalizedUserName);
             Assert.Equal(resultModel.Score, actualModel.Score);
             Assert.Equal(resultModel.StartedAt, actualModel.StartedAt);
             Assert.Equal(resultModel.FinishedAt, actualModel.FinishedAt);
@@ -205,7 +205,7 @@ namespace LX.TestPad.Tests.ServiceTests
 
 
         [Fact]
-        public void CutAnswerModel_MappedFromAnswer_IsCorrect()
+        public void AnswerWithoutIsCorrectModel_MappedFromAnswer_IsCorrect()
         {
             var actualModel = Mapper.AnswerToAnswerModelWithoutIsCorrect(answerEntity);
 

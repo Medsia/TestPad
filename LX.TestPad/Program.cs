@@ -1,11 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using LX.TestPad.DataAccess;
+using Microsoft.AspNetCore.Authentication;
+using LX.TestPad.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddBusinessLogicServices(builder.Configuration);
+
+builder.Services.AddAuthentication(AuthenticationSchemes.Schema)
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>
+                (AuthenticationSchemes.Schema, null);
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -22,6 +29,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

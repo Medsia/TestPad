@@ -1,4 +1,6 @@
 ﻿
+using LX.TestPad.DataAccess.Entities;
+
 namespace LX.TestPad.Business.Services
 {
     public static class ExceptionChecker
@@ -27,6 +29,14 @@ namespace LX.TestPad.Business.Services
         {
             if (count < MinimalTestCount)
                 throw new ArgumentOutOfRangeException("count", count, "Quantity of tests per page cannot be 0 or negative.");
+        }
+        public static void IsAnswersRelatedToOneQuestionCheck(int questionId, List<Answer> answers)
+        {
+            foreach (var answer in answers)
+            {
+                if (questionId != answer.QuestionId)
+                    throw new ArgumentException("Answer cannot be matched with question.", "answers[i].QuestionId");
+            }
         }
     }
 }

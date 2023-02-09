@@ -1,41 +1,31 @@
 ﻿@model LX.TestPad.Business.Models.QuestionWithAnswersModel
-
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 <div class="text-center">
     <h1 class="display-4">@Model.Text</h1>
 </div>
 
-<form asp-action="Question" asp-route-resultId="@ViewBag.resultId"
- asp-route-num="@ViewBag.num" method="post">
+<form asp-action="SendUserAnswer" asp-route-resultId="@ViewBag.resultId"
+ asp-route-questionNumber="@ViewBag.questionNumber" method="post">
 @foreach(var answer in Model.Answers){
 <div style="height:auto">
-  <input type="checkbox" id="@answer.Id" value="@answer.Text" name="answer">
+  <input type="checkbox" id="@answer.Id" value="@answer.Id" name="answersIds">
   <label for="@answer.Id" >@answer.Text</label>
 </div>
 }
-<button type="submit" class="btn btn-success" onclick='submitform()' id="Nextbtn" disabled>Next</button>
+<button type="submit" class="btn btn-success" id="Nextbtn" disabled>Next</button>
 </form>
 
-
-<script>
-$('input[type="checkbox"]').change(function() {
-    if ($('input[type="checkbox"]:checked').length > 0) {
-        $('#Nextbtn').prop('disabled', false);
-    } else {
-        $('#Nextbtn').prop('disabled', true);
-    }
-});
-</script>
-<script>
-        function submitform() {
-            var ids = "";
-            $('input[type="checkbox"]').each(function () {
-                if ($(this).is(':checked')) {
-                    ids += $(this).attr("id")+";";
-                }
-            });
-            $('<input type="hidden" name="answerIds"/>').val(ids).appendTo('form');
-            $("form").submit();
+@section scripts {
+    <script>
+        $('input[type="checkbox"]').change(function() {
+        if ($('input[type="checkbox"]:checked').length > 0) {
+            $('#Nextbtn').prop('disabled', false);
+        } else {
+            $('#Nextbtn').prop('disabled', true);
         }
-</script>
+        });
+    </script>
+}

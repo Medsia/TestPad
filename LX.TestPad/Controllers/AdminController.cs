@@ -1,9 +1,12 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
+using LX.TestPad.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LX.TestPad.Controllers
 {
+    [Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
     public class AdminController : Controller
     {
         private readonly ITestQuestionService _testQuestionService;

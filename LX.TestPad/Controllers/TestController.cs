@@ -38,44 +38,41 @@ namespace LX.TestPad.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EnterUserName(TestModel testModel, string name, string surname)
+        public async Task<IActionResult> CreatePreliminaryUserResultForTest(TestModel testModel)
         {
-            var resultModel = await _resultService.CreateAsync(new ResultModel(testModel.Id, name + surname, 0, DateTime.Now, DateTime.MinValue));
+            var resultModel = await _resultService.CreateAsync(new ResultModel {
+                TestId = testModel.Id,
+                UserName = testModel.UserName + testModel.UserSurname,
+                Score = 0,
+                StartedAt = DateTime.Now,
+                FinishedAt = DateTime.MinValue
+            });
 
             return RedirectToAction(nameof(Question), new { @resultId = resultModel.Id });
         }
 
-        public async Task<IActionResult> Question(int resultId, int num = 0)
+        public async Task<IActionResult> Question(int resultId, int questionNumber)
         {
             var result = await _resultService.GetByIdAsync(resultId);
             var testQuestions = await _testQuestionService.GetAllByTestIdAsync(result.TestId);
-            if (num >= testQuestions.Count)
+            if (questionNumber >= testQuestions.Count)
                 return RedirectToAction(nameof(Result));
-            var question = await _questionService.GetByIdIcludingAnswersAsync(testQuestions[num].QuestionId);
+            var question = await _questionService.GetByIdIcludingAnswersAsync(testQuestions[questionNumber].QuestionId);
 
             ViewBag.resultId = resultId;
-            ViewBag.num = num;
+            ViewBag.questionNumber = questionNumber;
 
             return View(question);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Question(QuestionWithAnswersModel question, int resultId,
-            string answerIds, int num)
+        public async Task<IActionResult> SendUserAnswer(int resultId,
+            int[] answersIds, int questionNumber)
         {
-            // Split user AnswersIds
-            var answersIdSplitter = answerIds.Split(';', StringSplitOptions.RemoveEmptyEntries);
-            var answersIds = new int[answersIdSplitter.Length];
-            for (int i = 0; i < answersIds.Length; i++)
-            {
-                answersIds[i] = int.Parse(answersIdSplitter[i]);
-            }
+            await _resultAnswerService.AddUserResultAnswersAsync(resultId, answersIds);
 
-            await _resultAnswerService.CreateRangeAsync(resultId, answersIds);
-
-            return RedirectToAction(nameof(Question), new { @resultId = resultId, @num = num + 1 });
+            return RedirectToAction(nameof(Question), new { @resultId = resultId, @questionNumber = questionNumber + 1 });
         }
 
         [Route("Result")]

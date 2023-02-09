@@ -77,7 +77,7 @@
 
 <script type="text/javascript">
 
-    var api = '../../Api/';
+    var api = '../../api/';
     var _inCallback = false;
 
     var selectedTestId = @Model;
@@ -110,7 +110,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: api+'TestApi/GetAllTests',
+                url: api+'tests/all',
                 success: function (data, textstatus) {
                     if (data.length > 0) {
                         var htmlLine = "";
@@ -175,7 +175,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: api+'QuestionApi/GetUnusedQuestions',
+                url: api+'questions/unused',
                 success: function (data, textstatus) {
                     if (data.length > 0) {
                         var htmlLine = "";
@@ -210,7 +210,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: api+'QuestionApi/GetQuestions/'+testId,
+                url: api+'questions/'+testId,
                 success: function (data, textstatus) {
                     if (data.length > 0) {
                         var htmlLine = "";
@@ -253,7 +253,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: api+'QuestionApi/GetQuestions/'+selectedTestId,
+                url: api+'questions/'+selectedTestId,
                 success: function (data, textstatus) {
                     selectedItemsList = data;
                     
@@ -288,8 +288,8 @@
             $('div#loadingSelectedQuestions').show();
 
             $.ajax({
-                type: 'POST',
-                url: api+'QuestionApi/AddQuestionToTest/'+selectedTestId+'/'+questionId,
+                type: 'PUT',
+                url: api+'tests/'+questionId+'/'+selectedTestId,
                 success: function (data, textstatus) {
                     _inCallback = false;
 
@@ -311,8 +311,8 @@
             $('div#loadingSelectedQuestions').show();
 
             $.ajax({
-                type: 'POST',
-                url: api+'QuestionApi/RemoveQuestionFromTest/'+selectedTestId+'/'+questionId,
+                type: 'DELETE',
+                url: api+'tests/'+questionId+'/'+selectedTestId,
                 success: function (data, textstatus) {
                     _inCallback = false;
 

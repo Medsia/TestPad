@@ -6,43 +6,31 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LX.TestPad.Api
 {
-    [Route("Api/QuestionApi")]
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
-    public class QuestionApiController : ControllerBase
+    public class QuestionsController : ControllerBase
     {
         private readonly ITestQuestionService _testQuestionService;
 
-        public QuestionApiController(ITestQuestionService testQuestionService)
+        public QuestionsController(ITestQuestionService testQuestionService)
         {
             _testQuestionService = testQuestionService;
         }
 
 
-        [HttpGet("GetUnusedQuestions")]
+        [HttpGet("unused")]
         public async Task<ActionResult<List<QuestionModel>>> GetUnusedQuestions()
         {
             var items = await _testQuestionService.GetAllUnusedQuestionsAsync();
             return new ObjectResult(items);
         }
 
-        [HttpGet("GetQuestions/{testId}")]
+        [HttpGet("{testId}")]
         public async Task<ActionResult<List<QuestionModel>>> GetQuestions(int testId)
         {
             var items = await _testQuestionService.GetAllQuestionsByTestIdAsync(testId);
             return new ObjectResult(items);
-        }
-
-        [HttpPost("AddQuestionToTest/{testId}/{questionId}")]
-        public async Task AddQuestionToTest(int testId, int questionId)
-        {
-            await _testQuestionService.CreateAsync(questionId, testId);
-        }
-
-        [HttpPost("RemoveQuestionFromTest/{testId}/{questionId}")]
-        public async Task RemoveQuestionFromTest(int testId, int questionId)
-        {
-            await _testQuestionService.DeleteAsync(testId, questionId);
         }
     }
 }

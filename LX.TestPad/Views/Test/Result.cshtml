@@ -1,33 +1,108 @@
-﻿@{
-    var answers = new[]
-    {
-    new {Name="Yes"},
-    new {Name="No"},
-    };
-
-    var questions = new[]
-    {
-    new {Text="What language do people speak in Australia?", Answer = "Yes"},
-    new {Text="What?", Answer = "No"},
-    new {Text="What language do people speak?", Answer = "Yes"},
-    new {Text="What is Australia?", Answer = "No"},
-    new {Text="What people in Australia?", Answer = "Yes"},
-    new {Text="What is australia s form of government?", Answer = "No"},
-    };
-
-
+﻿
+@{
+    
 }
+
 <div class="text-center">
     <h1 class="display-4">Test Result</h1>
     <h4 class="display-4">60%</h4>
 </div>
 
-@foreach(var question in questions){
-<div class="border" style="height:auto; ">
-  <label>@question.Text</label>
-  <p>Your answer: @question.Answer</p>
+<div class="my-5">
+    <canvas id="pieChart"></canvas>
 </div>
-}
+
 <p>
     <a href="@Url.Action("Index", "Home")">Back to tests</a>.
 </p>
+
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var chartData = [ 60, 20, 15, 5 ];
+            renderPieChart('pieChart', chartData);
+        })
+
+
+
+
+
+        
+        
+        
+        var staticAngleIncrement = (2 * Math.PI) / 100;
+        var currentAngle = staticAngleIncrement;
+        var lastItemAngle = 0;
+
+        function renderPieChart(canvasId, chartData){
+            var myCanvas = document.getElementById(canvasId);
+            myCanvas.width = 300;
+            myCanvas.height = 300;
+            var ctx = myCanvas.getContext("2d");
+
+            let start = Date.now();
+
+            var fillPoint = 2 * Math.PI;
+            var fillPercent = 0;
+            $.each(chartData, function(index, item){
+                ctx.fillStyle = getRandomColor();
+
+                var currentItemMaxAngle = ((2 * Math.PI * item) / 100);
+                var currentItemColor = getRandomColor();
+
+                let timer = setInterval(function() {
+                    let timePassed = Date.now() - start;
+
+                    if (currentAngle >= currentItemMaxAngle) {
+                        clearInterval(timer);
+                        lastItemAngle = currentAngle;
+                        return;
+                    }
+
+                    draw(timePassed, ctx, currentItemColor);
+
+                }, 50);
+            })
+        }
+
+        function draw(timePassed, ctx, color) {
+            drawPieSlice(ctx, 150, 150, 100, lastItemAngle, currentAngle, color);
+            currentAngle += staticAngleIncrement;
+        }
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+              color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function drawLine(ctx, startX, startY, endX, endY){
+            ctx.beginPath();
+        	ctx.moveTo(startX,startY);
+        	ctx.lineTo(endX,endY);
+        	ctx.stroke();
+        }
+
+        function drawArc(ctx, centerX, centerY, radius, startAngle, endAngle){
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+            ctx.stroke();
+        }
+
+        function drawPieSlice(ctx,centerX, centerY, radius, startAngle, endAngle, color ){
+            //ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(centerX,centerY);
+            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+    </script>
+
+}

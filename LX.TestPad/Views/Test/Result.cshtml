@@ -38,7 +38,7 @@
         var isShown = false;
         function copyResultLink(){
 
-            // copy to clipboard functionality
+            navigator.clipboard.writeText(window.location.href);
 
             if(!isShown){
                 isShown = true;

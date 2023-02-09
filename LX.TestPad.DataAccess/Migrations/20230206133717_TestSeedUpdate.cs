@@ -10,13 +10,13 @@ namespace LX.TestPad.DataAccess.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(File.ReadAllText("../LX.TestPad.DataAccess/Seedings/TestSeedUpdate.sql"));
+            migrationBuilder.Sql(File.ReadAllText("../LX.TestPad.DataAccess/Seedings/SeedInitialData_TestSeedUpdate.sql"));
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(File.ReadAllText("../LX.TestPad.DataAccess/Seedings/Rollback_TestSeedUpdate.sql"));
+            migrationBuilder.Sql(File.ReadAllText("../LX.TestPad.DataAccess/Seedings/Rollback_SeedInitialData_TestSeedUpdate.sql"));
         }
     }
 }

@@ -124,7 +124,7 @@ namespace LX.TestPad.Business.Services
                 QuestionId = entity.QuestionId,
             };
         }
-        public static QuestionWithAnswersModel QuestionWithAnswers(Question questionEntity, List<AnswerModel> answerEntities)
+        public static QuestionWithAnswersModel MapQuestionWithAnswers(Question questionEntity, List<AnswerModel> answerEntities)
         {
             return new QuestionWithAnswersModel
             {
@@ -133,7 +133,7 @@ namespace LX.TestPad.Business.Services
                 Answers = answerEntities,
             };
         }
-        public static QuestionWithAnswersModel QuestionWithAnswers(Question questionEntity, List<AnswerModelWithoutIsCorrect> answerEntities)
+        public static QuestionWithAnswersModel MapQuestionWithAnswers(Question questionEntity, List<AnswerModelWithoutIsCorrect> answerEntities)
         {
             return new QuestionWithAnswersModel
             {

@@ -43,7 +43,7 @@ namespace LX.TestPad.Business.Services
             var question = await _questionRepository.GetByIdAsync(id);
             var answers = await GetAllAnswersByQuestionIdAsync(question.Id);
 
-            return Mapper.QuestionWithAnswers(question, answers);
+            return Mapper.MapQuestionWithAnswers(question, answers);
         }
         public async Task<QuestionWithAnswersModel> GetByIdIcludingAnswersWithoutIsCorrectAsync(int id)
         {
@@ -51,7 +51,7 @@ namespace LX.TestPad.Business.Services
 
             var question = await _questionRepository.GetByIdAsync(id);
             var answers = await _answerRepository.GetAllByQuestionIdAsync(question.Id);
-            return Mapper.QuestionWithAnswers(question,
+            return Mapper.MapQuestionWithAnswers(question,
                 answers.Select(Mapper.AnswerToAnswerModelWithoutIsCorrect).ToList());
         }
 

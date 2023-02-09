@@ -186,7 +186,7 @@ namespace LX.TestPad.Tests.ServiceTests
         public void QuestionWithAnswers_MappedFromQuestionEntityAndListOfAnswerEntities_IsCorrect()
         {
             var testList = new List<AnswerModel> { answerModel };
-            var actualResult = Mapper.QuestionWithAnswers(questionEntity, testList);
+            var actualResult = Mapper.MapQuestionWithAnswers(questionEntity, testList);
 
             var expectedAnswers = new List<AnswerModel> { answerModel };
             var expectedResult = new QuestionWithAnswersModel { Id = questionEntity.Id, Text = questionEntity.Text, Answers = expectedAnswers };

@@ -5,27 +5,50 @@
 
 <div class="text-center">
     <h1 class="display-4">@Model.Text</h1>
+    <p style=" text-align: center; font-size: 60px; margin-top: 0px;" id="timer"> 9:59:59</p>
 </div>
 
 <form asp-action="SendUserAnswer" asp-route-resultId="@ViewBag.resultId"
- asp-route-questionNumber="@ViewBag.questionNumber" method="post">
-@foreach(var answer in Model.Answers){
-<div style="height:auto">
-  <input type="checkbox" id="@answer.Id" value="@answer.Id" name="answersIds">
-  <label for="@answer.Id" >@answer.Text</label>
-</div>
-}
-<button type="submit" class="btn btn-success" id="Nextbtn" disabled>Next</button>
+      asp-route-questionNumber="@ViewBag.questionNumber" method="post">
+    @foreach (var answer in Model.Answers)
+    {
+        <div style="height:auto">
+            <input type="checkbox" id="@answer.Id" value="@answer.Id" name="answersIds">
+            <label for="@answer.Id">@answer.Text</label>
+        </div>
+    }
+    <button type="submit" class="btn btn-success" id="Nextbtn" disabled>Next</button>
 </form>
 
 @section scripts {
     <script>
-        $('input[type="checkbox"]').change(function() {
-        if ($('input[type="checkbox"]:checked').length > 0) {
-            $('#Nextbtn').prop('disabled', false);
-        } else {
-            $('#Nextbtn').prop('disabled', true);
-        }
+        var countDownDate = new Date("@ViewBag.endedAt").getTime();
+        var x = setInterval(function () {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("timer").innerHTML = hours + ":" + minutes + ":" + seconds;
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("timer").innerHTML = "EXPIRED";
+                var ResultUrl = window.location.origin + "/Result?resultId=@ViewBag.resultId&isExpired=true";
+                window.location.replace(ResultUrl);
+            }
+        }, 1000);
+    </script>
+
+    <script>
+        $('input[type="checkbox"]').change(function () {
+            if ($('input[type="checkbox"]:checked').length > 0) {
+                $('#Nextbtn').prop('disabled', false);
+            } else {
+                $('#Nextbtn').prop('disabled', true);
+            }
         });
     </script>
 }

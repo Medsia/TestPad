@@ -6,8 +6,6 @@ namespace LX.TestPad.Business.Interfaces
     {
         Task<AnswerModel> GetByIdAsync(int id);
         Task<List<AnswerModel>> GetAllByQuestionIdAsync(int questionId);
-        Task<List<AnswerModelWithoutIsCorrect>> GetAllWithoutIsCorrectByQuestionIdAsync(int questionId);
-
         Task DeleteAllByQuestionIdAsync(int questionId);
     }
 }

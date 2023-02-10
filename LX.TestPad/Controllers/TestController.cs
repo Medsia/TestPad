@@ -1,6 +1,7 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace LX.TestPad.Controllers
 {
@@ -38,41 +39,50 @@ namespace LX.TestPad.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePreliminaryUserResultForTest(TestModel testModel)
+        public async Task<IActionResult> CreatePreliminaryUserResultForTest(ResultModel resultModel)
         {
-            var resultModel = await _resultService.CreateAsync(new ResultModel {
-                TestId = testModel.Id,
-                UserName = testModel.UserName + testModel.UserSurname,
+            var emptyUserResult = await _resultService.CreateAsync(new ResultModel
+            {
+                TestId = resultModel.TestId,
+                UserName = resultModel.UserName,
+                UserSurname = resultModel.UserSurname,
                 Score = 0,
-                StartedAt = DateTime.Now,
+                StartedAt = DateTime.Now.ToUniversalTime(),
                 FinishedAt = DateTime.MinValue
             });
 
-            return RedirectToAction(nameof(Question), new { @resultId = resultModel.Id });
+            return RedirectToAction(nameof(Question), new UserTestQuestion { ResultId = emptyUserResult.Id });
         }
 
-        public async Task<IActionResult> Question(int resultId, int questionNumber)
+        public async Task<IActionResult> Question(UserTestQuestion userTestQuestion)
         {
-            var result = await _resultService.GetByIdAsync(resultId);
+            var result = await _resultService.GetByIdAsync(userTestQuestion.ResultId);
             var testQuestions = await _testQuestionService.GetAllByTestIdAsync(result.TestId);
-            if (questionNumber >= testQuestions.Count)
+
+            if (userTestQuestion.QuestionNumber >= testQuestions.Count)
                 return RedirectToAction(nameof(Result));
-            var question = await _questionService.GetByIdIcludingAnswersAsync(testQuestions[questionNumber].QuestionId);
 
-            ViewBag.resultId = resultId;
-            ViewBag.questionNumber = questionNumber;
-
+            var question = await _questionService.
+                GetByIdIcludingAnswersWithoutIsCorrectAsync(testQuestions[userTestQuestion.QuestionNumber].QuestionId);
+            var test = await _testService.GetByIdAsync(result.TestId);
+            
+            ViewBag.resultId = result.Id;
+            ViewBag.questionNumber = userTestQuestion.QuestionNumber;
+            ViewBag.endedAt = result.StartedAt.AddSeconds(test.TestDuration).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
             return View(question);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SendUserAnswer(int resultId,
-            int[] answersIds, int questionNumber)
+        public async Task<IActionResult> SendUserAnswer(UserAnswerModel UserAnswerModel)
         {
-            await _resultAnswerService.AddUserResultAnswersAsync(resultId, answersIds);
-
-            return RedirectToAction(nameof(Question), new { @resultId = resultId, @questionNumber = questionNumber + 1 });
+            await _resultAnswerService.AddUserResultAnswersAsync(UserAnswerModel.ResultId,
+                UserAnswerModel.AnswersIds);
+            return RedirectToAction(nameof(Question), new UserTestQuestion
+            {
+                ResultId = UserAnswerModel.ResultId,
+                QuestionNumber = UserAnswerModel.QuestionNumber + 1
+            });
         }
 
 

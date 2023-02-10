@@ -36,6 +36,14 @@ namespace LX.TestPad.Business.Services
             return Mapper.QuestionToModel(item);
         }
 
+        public async Task<List<QuestionModel>> GetAllAsync()
+        {
+            var item = await _questionRepository.GetAllAsync();
+
+            return item.Select(Mapper.QuestionToModel)
+                       .ToList();
+        }
+
         public async Task<QuestionWithAnswersModel> GetByIdIcludingAnswersAsync(int id)
         {
             ExceptionChecker.SQLKeyIdCheck(id);
@@ -43,7 +51,12 @@ namespace LX.TestPad.Business.Services
             var question = await _questionRepository.GetByIdAsync(id);
             var answers = await GetAllAnswersByQuestionIdAsync(question.Id);
 
-            return Mapper.QuestionWithAnswers(question, answers);
+            return Mapper.MapQuestionWithAnswers(question, answers);
+        }
+        public async Task<QuestionWithAnswersModel> GetByIdIcludingAnswersWithoutIsCorrectAsync(int id)
+        {
+            var questionWithAnswers = await GetByIdIcludingAnswersAsync(id);
+            return Mapper.QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(questionWithAnswers);
         }
 
         public async Task<QuestionModel> CreateAsync(QuestionModel questionModel)

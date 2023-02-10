@@ -76,15 +76,20 @@ namespace LX.TestPad.Controllers
         }
 
 
-        [Route("Result")]
-        public async Task<IActionResult> Result(int resultId, bool isExpired)
+        [HttpGet(@"Result{resultId}{isExpired}")]
+        public async Task<IActionResult> ResultEnd(int resultId, bool isExpired)
         {
             ViewBag.ResultId = resultId;
             ViewBag.IsExpired = isExpired ? 1: 0;
 
             var result = await _resultService.GetByIdAsync(resultId);
+            if (result.Score == null) CalculateScore(resultId);
 
-            return View(result);
+            return View("Result", result);
+        }
+        public void CalculateScore(int resultId)
+        {
+
         }
     }
 }

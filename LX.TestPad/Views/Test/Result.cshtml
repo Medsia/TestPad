@@ -4,11 +4,12 @@
 @{
     ViewData["Title"] = "Test result";
 
+    var testScore = @Model.Score;
 }
 
 <div class="text-center">
     <h1 class="display-4">Test Result</h1>
-    <h4 class="display-4">@Model.Score</h4>
+    <h4 class="display-4">@testScore%</h4>
 
 </div>
 
@@ -16,17 +17,15 @@
     <canvas id="pieChart"></canvas>
 </div>
 
-<p>
-    <a href="@Url.Action("Index", "Home")">Back to tests</a>.
-</p>
 
+<a class="btn btn-outline-primary" href="@Url.Action("Index", "Home")">Back to tests</a>
 
 <button class="btn btn-outline-secondary" onclick="copyResultLink()">Share result</button>
 
 
+<div id="message" style="display: none;">Time's up</div>
 
-
-<div id="notification" style="display: none;"></div>
+<div id="notification" style="display: none;">Link to your result was copied to clipboard</div>
 
 
 @section scripts{
@@ -36,27 +35,46 @@
         var isTestExpired = @ViewBag.IsExpired;
 
         $(document).ready(function () {
-            var scorePercent = @Model.Score;
+            var scorePercent = @testScore;
             renderPieChart('pieChart', scorePercent);
-            $("#notification").append('Link to your result was copied to clipboard');
+
+            if (isTestExpired == 1){
+                showResultExpired();
+            }
         })
 
 
-
+        
+        var isExpiredMsgShown = false;
         function showResultExpired(){
+            if(!isExpiredMsgShown){
+                isExpiredMsgShown = true;
+                var popupRemainFor = 2; //seconds
 
+                $("#message").fadeIn("slow");
+
+                var sec = 0;
+                var timer = setInterval(function() { 
+                    if(sec++ >= popupRemainFor){
+                        $("#message").fadeOut("slow");
+                        clearInterval(timer);
+                        isExpiredMsgShown = false;
+                        return;
+                    }
+                }, 1000);
+            }
         }
 
 
 
-        var isShown = false;
+        var isCopiedMsgShown = false;
         function copyResultLink(){
 
             var resultLink = window.location.origin + "/Result?resultId=" + thisResultId;
             navigator.clipboard.writeText(resultLink);
 
-            if(!isShown){
-                isShown = true;
+            if(!isCopiedMsgShown){
+                isCopiedMsgShown = true;
                 var popupRemainFor = 3; //seconds
 
                 $("#notification").fadeIn("slow");
@@ -66,7 +84,7 @@
                     if(sec++ >= popupRemainFor){
                         $("#notification").fadeOut("slow");
                         clearInterval(timer);
-                        isShown = false;
+                        isCopiedMsgShown = false;
                         return;
                     }
                 }, 1000);
@@ -99,7 +117,6 @@
             drawSlicePercentage(chartCanvas, ctx, scorePercent);
 
             drawPieSlice(ctx, centerX, centerY, pieRadius, angle, fillPoint, wrongAnswersColor);
-            drawSlicePercentage(chartCanvas, ctx, total_value-scorePercent);
         }
 
 

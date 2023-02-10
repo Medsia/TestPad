@@ -47,12 +47,8 @@ namespace LX.TestPad.Business.Services
         }
         public async Task<QuestionWithAnswersModel> GetByIdIcludingAnswersWithoutIsCorrectAsync(int id)
         {
-            ExceptionChecker.SQLKeyIdCheck(id);
-
-            var question = await _questionRepository.GetByIdAsync(id);
-            var answers = await _answerRepository.GetAllByQuestionIdAsync(question.Id);
-            return Mapper.MapQuestionWithAnswers(question,
-                answers.Select(Mapper.AnswerToAnswerModelWithoutIsCorrect).ToList());
+            var questionWithAnswers = await GetByIdIcludingAnswersAsync(id);
+            return Mapper.QuestionWithAnswersWithoutIsCorrect(questionWithAnswers);
         }
 
         public async Task<QuestionModel> CreateAsync(QuestionModel questionModel)

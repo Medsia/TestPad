@@ -20,7 +20,6 @@ namespace LX.TestPad.Tests.ServiceTests
 
         static Answer answerEntity { get; } = new Answer { Id = 13, QuestionId = 3, Text = "Some answer text", IsCorrect = false };
         static AnswerModel answerModel { get; } = new AnswerModel { Id = 13, QuestionId = 3, Text = "Some answer text", IsCorrect = false };
-        static AnswerModelWithoutIsCorrect answerModelWithoutIsCorrect { get; } = new AnswerModelWithoutIsCorrect { Id = 13, QuestionId = 3, Text = "Some answer text" };
 
         static DateTime dateTimeStarted = DateTime.Now;
         static DateTime dateTimeFinished = DateTime.Now.AddMinutes(10.0);
@@ -207,13 +206,23 @@ namespace LX.TestPad.Tests.ServiceTests
 
 
         [Fact]
-        public void AnswerWithoutIsCorrectModel_MappedFromAnswer_IsCorrect()
+        public void QuestionWithAnswersWithoutIsCorrect_MappedFromQuetionWithAnswers_IsCorrect()
         {
-            var actualModel = Mapper.AnswerToAnswerModelWithoutIsCorrect(answerEntity);
+            var actualModel = new QuestionWithAnswersModel
+            {
+                Id = questionEntity.Id,
+                Text = questionEntity.Text,
+                Answers = new List<AnswerModel> { answerModel }
+            };
 
-            Assert.Equal(answerModelWithoutIsCorrect.Id, actualModel.Id);
-            Assert.Equal(answerModelWithoutIsCorrect.QuestionId, actualModel.QuestionId);
-            Assert.Equal(answerModelWithoutIsCorrect.Text, actualModel.Text);
+            Mapper.QuestionWithAnswersWithoutIsCorrect(actualModel);
+
+            Assert.Equal(questionModel.Id, actualModel.Id);
+            Assert.Equal(questionModel.Text, actualModel.Text);
+            Assert.Equal(answerModel.Text, actualModel.Answers[0].Text);
+            Assert.Equal(answerModel.Id, actualModel.Answers[0].Id);
+            Assert.Equal(answerModel.QuestionId, actualModel.Answers[0].QuestionId);
+            Assert.Null(answerModel.IsCorrect);
         }
     }
 }

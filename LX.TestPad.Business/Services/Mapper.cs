@@ -37,13 +37,15 @@ namespace LX.TestPad.Business.Services
         }
         public static ResultModel ResultToModel(Result entity)
         {
+            var userName = entity.UserName.Substring(0, entity.UserName.IndexOf(' '));
+            var userSurname = entity.UserName.Substring(entity.UserName.IndexOf(' ') + 1);
             return new ResultModel
             {
                 Id = entity.Id,
                 Score = entity.Score,
                 TestId = entity.TestId,
-                UserName = entity.UserName.Substring(0, entity.UserName.IndexOf(' ')),
-                UserSurname = entity.UserName.Substring(entity.UserName.IndexOf(' ') + 1),
+                UserName = userName,
+                UserSurname = userSurname,
                 StartedAt = entity.StartedAt,
                 FinishedAt = entity.FinishedAt,
             };
@@ -86,7 +88,7 @@ namespace LX.TestPad.Business.Services
             {
                 Id = model.Id,
                 Text = model.Text,
-                IsCorrect = (bool)model.IsCorrect,
+                IsCorrect = model.IsCorrect ?? false,
                 QuestionId = model.QuestionId,
             };
         }
@@ -134,36 +136,14 @@ namespace LX.TestPad.Business.Services
                 Answers = answerEntities,
             };
         }
-        public static QuestionWithAnswersModel MapQuestionWithAnswers(Question questionEntity, List<AnswerModelWithoutIsCorrect> answerEntities)
+
+        public static QuestionWithAnswersModel QuestionWithAnswersWithoutIsCorrect(QuestionWithAnswersModel questionWithAnswers)
         {
-            return new QuestionWithAnswersModel
+            foreach(var answer in questionWithAnswers.Answers)
             {
-                Id = questionEntity.Id,
-                Text = questionEntity.Text,
-                Answers = AnswerModelsWithoutIsCorrectToAnswerModels(answerEntities),
-            };
-        }
-        public static AnswerModelWithoutIsCorrect AnswerToAnswerModelWithoutIsCorrect(Answer entity)
-        {
-            return new AnswerModelWithoutIsCorrect
-            {
-                Id = entity.Id,
-                Text = entity.Text,
-                QuestionId = entity.QuestionId,
-            };
-        }
-        public static List<AnswerModel> AnswerModelsWithoutIsCorrectToAnswerModels(List<AnswerModelWithoutIsCorrect> answerModelsWithoutIs)
-        {
-            var answerModels = new List<AnswerModel>();
-            foreach (AnswerModelWithoutIsCorrect answerModelWithoutIsCorrect in answerModelsWithoutIs)
-            {
-                answerModels.Add(new AnswerModel{
-                    Id = answerModelWithoutIsCorrect.Id,
-                    QuestionId = answerModelWithoutIsCorrect.QuestionId,
-                    Text = answerModelWithoutIsCorrect.Text,
-                });
+                answer.IsCorrect = null;
             }
-            return answerModels;
+            return questionWithAnswers;
         }
     }
 }

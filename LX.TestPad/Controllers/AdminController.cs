@@ -12,13 +12,15 @@ namespace LX.TestPad.Controllers
         private readonly ITestQuestionService _testQuestionService;
         private readonly ITestService _testService;
         private readonly IQuestionService _questionService;
+        private readonly IAnswerService _answerService;
 
         public AdminController(ITestQuestionService testQuestionService, ITestService testService,
-            IQuestionService questionService)
+            IQuestionService questionService, IAnswerService answerService)
         {
             _testQuestionService = testQuestionService;
             _testService = testService;
             _questionService = questionService;
+            _answerService = answerService;
         }
 
         public async Task<IActionResult> Index()
@@ -56,15 +58,31 @@ namespace LX.TestPad.Controllers
             return RedirectToAction(nameof(TestDetails), new { @id = @test.Id });
         }
 
-        public async Task<IActionResult> Questions(int testId)
+        public async Task<IActionResult> TestQuestions(int testId)
         {
             var testQuestions = await _testQuestionService.GetAllByTestIdIncludedAsync(testId);
             return View(testQuestions);
         }
 
-        public IActionResult CreateAnswer()
+        public IActionResult CreateAnswer(int questionId, int testId)
         {
-            return View();
+            return View(new AnswerModel { QuestionId = questionId, TestId = testId});
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateAnswer(AnswerModel answerModel)
+        {
+            await _answerService.CreateAsync(answerModel);
+            return RedirectToAction(nameof(TestQuestions), new { @testId = answerModel.TestId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAnswer(int id, int testId)
+        {
+            await _answerService.DeleteAsync(id);
+            return RedirectToAction(nameof(TestQuestions), new { @testId = testId });
         }
 
         public async Task<IActionResult> DeleteTest(int? id)
@@ -86,7 +104,6 @@ namespace LX.TestPad.Controllers
         }
 
         public async Task<IActionResult> TestDetails(int id)
-        
         {
             var @test = await _testService.GetByIdAsync(id);
             return View(@test);

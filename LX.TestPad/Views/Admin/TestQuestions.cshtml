@@ -5,25 +5,30 @@
 <div class="text-center">
     <h1 class="display-4">Questions</h1>
 </div>
+<div>
+    <a asp-action="CreateQuestion" class="btn btn-outline-info">Create Question</a>
+</div>
 @foreach(var testQuestion in @Model){
 
 <div class="flex-lg-wrap" style="height:auto">
 
   <label style="font-weight: bold">@testQuestion.QuestionWithAnswersModel.Text</label>
-        <a asp-action="CreateAnswer" class="text-info">Add Answer</a>
+        <a asp-action="CreateAnswer" asp-route-questionId="@testQuestion.QuestionId" asp-route-testId="@testQuestion.TestId" class="text-info">Add Answer</a>
         <a asp-action="DeleteQuestion" class="text-danger">Delete Question</a><br>
         @foreach(var answer in testQuestion.QuestionWithAnswersModel.Answers)
         {
-            if(answer.IsCorrect == true)
+            <form asp-action="DeleteAnswer" asp-route-id="@answer.Id" asp-route-testId="@testQuestion.TestId" method="post">
+            @if(answer.IsCorrect == true)
             {
                 <label>• @answer.Text (✅)</label>
-                <a asp-action="DeleteAnswer" class="text-danger">✗</a><br>
             }
             else
             {
-                <label>• @answer.Text</label>
-                <a asp-action="DeleteAnswer" class="text-danger">✗</a><br>
-            }
+                <label>• @answer.Text</label>               
+            }        
+                <input type="submit" class="text-danger" value="✗" />
+            </form>
+
         }
 
 </div>

@@ -1,6 +1,7 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace LX.TestPad.Controllers
 {
@@ -46,7 +47,7 @@ namespace LX.TestPad.Controllers
                 UserName = resultModel.UserName,
                 UserSurname = resultModel.UserSurname,
                 Score = 0,
-                StartedAt = DateTime.Now,
+                StartedAt = DateTime.Now.ToUniversalTime(),
                 FinishedAt = DateTime.MinValue
             });
 
@@ -63,10 +64,11 @@ namespace LX.TestPad.Controllers
 
             var question = await _questionService.
                 GetByIdIcludingAnswersWithoutIsCorrectAsync(testQuestions[userTestQuestion.QuestionNumber].QuestionId);
-
+            var test = await _testService.GetByIdAsync(result.TestId);
+            
             ViewBag.resultId = result.Id;
             ViewBag.questionNumber = userTestQuestion.QuestionNumber;
-
+            ViewBag.endedAt = result.StartedAt.AddSeconds(test.TestDuration).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
             return View(question);
         }
 

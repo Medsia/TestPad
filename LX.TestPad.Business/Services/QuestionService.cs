@@ -36,6 +36,14 @@ namespace LX.TestPad.Business.Services
             return Mapper.QuestionToModel(item);
         }
 
+        public async Task<List<QuestionModel>> GetAllAsync()
+        {
+            var item = await _questionRepository.GetAllAsync();
+
+            return item.Select(Mapper.QuestionToModel)
+                       .ToList();
+        }
+
         public async Task<QuestionWithAnswersModel> GetByIdIcludingAnswersAsync(int id)
         {
             ExceptionChecker.SQLKeyIdCheck(id);

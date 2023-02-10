@@ -7,10 +7,18 @@ namespace LX.TestPad.Business.Services
     public class ResultService : IResultService
     {
         private readonly IResultRepository _resultRepository;
+        private readonly IResultAnswerRepository _resultAnswerRepository;
+        private readonly ITestQuestionRepository _testQuestionRepository;
+        private readonly IAnswerRepository _answerRepository;
 
-        public ResultService(IResultRepository resultRepository)
+
+        public ResultService(IResultRepository resultRepository, IResultAnswerRepository resultAnswerRepository,
+                                ITestQuestionRepository testQuestionRepository, IAnswerRepository answerRepository)
         {
             _resultRepository = resultRepository;
+            _resultAnswerRepository = resultAnswerRepository;
+            _testQuestionRepository = testQuestionRepository;
+            _answerRepository = answerRepository;
         }
 
 
@@ -61,6 +69,31 @@ namespace LX.TestPad.Business.Services
             ExceptionChecker.ListOfSQLKeyIdsCheck(ids);
 
             await _resultRepository.DeleteManyAsync(ids);
+        }
+
+        public async Task<int> CalculateScore(int resultId)
+        {
+            ExceptionChecker.SQLKeyIdCheck(resultId);
+
+            int score = 0;
+
+            var result = await _resultRepository.GetByIdAsync(resultId);
+            var correctResultAnswersCount = (await _resultAnswerRepository.GetAllCorrectByResultIdAsync(resultId)).Count;
+
+            var questions = await _testQuestionRepository.GetAllByTestIdAsync(result.TestId);
+
+            int totalCorrectAnswersCount = 0;
+            foreach (var question in questions)
+            {
+                totalCorrectAnswersCount += (await _answerRepository.GetAllCorrectByQuestionIdAsync(question.Id)).Count;
+            }
+
+            score = correctResultAnswersCount * 100 / totalCorrectAnswersCount;
+
+            result.Score = score;
+            await _resultRepository.UpdateAsync(result);
+
+            return score;
         }
     }
 }

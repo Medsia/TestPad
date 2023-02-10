@@ -46,7 +46,7 @@ namespace LX.TestPad.Controllers
                 TestId = resultModel.TestId,
                 UserName = resultModel.UserName,
                 UserSurname = resultModel.UserSurname,
-                Score = 0,
+                Score = -1,
                 StartedAt = DateTime.Now.ToUniversalTime(),
                 FinishedAt = DateTime.MinValue
             });
@@ -60,7 +60,7 @@ namespace LX.TestPad.Controllers
             var testQuestions = await _testQuestionService.GetAllByTestIdAsync(result.TestId);
 
             if (userTestQuestion.QuestionNumber >= testQuestions.Count)
-                return RedirectToAction(nameof(Result));
+                return RedirectToAction(nameof(Result), new { resultId = result.Id });
 
             var question = await _questionService.
                 GetByIdIcludingAnswersWithoutIsCorrectAsync(testQuestions[userTestQuestion.QuestionNumber].QuestionId);
@@ -86,20 +86,16 @@ namespace LX.TestPad.Controllers
         }
 
 
-        [HttpGet(@"Result{resultId}{isExpired}")]
-        public async Task<IActionResult> ResultEnd(int resultId, bool isExpired)
+        [HttpGet]
+        public async Task<IActionResult> Result(int resultId, bool isExpired)
         {
             ViewBag.ResultId = resultId;
             ViewBag.IsExpired = isExpired ? 1: 0;
 
             var result = await _resultService.GetByIdAsync(resultId);
-            if (result.Score == null) CalculateScore(resultId);
+            if (result.Score < 0) result.Score = await _resultService.CalculateScore(resultId);
 
             return View("Result", result);
-        }
-        public void CalculateScore(int resultId)
-        {
-
         }
     }
 }

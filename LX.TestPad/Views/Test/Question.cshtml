@@ -7,7 +7,7 @@
         <h1 class="display-4" style=" text-align: left;">@Model.Text</h1>
     </li>
     <li class="list-group-item" style=" text-align: left;">
-        <b style=" text-align: center; font-size: 24px; margin-top: 0px;" id="timer"> 9:59:59</b>
+        <b style=" text-align: center; font-size: 24px; margin-top: 0px;" id="timer"> </b>
     </li>
     <form asp-action="SendUserAnswer" asp-route-resultId="@ViewBag.resultId"
           asp-route-questionNumber="@ViewBag.questionNumber" method="post">
@@ -27,9 +27,8 @@
     <script>
         var countDownDate = new Date("@ViewBag.endedAt").getTime();
         var x = setInterval(function () {
-            var now = new Date().getTime();
+            var now = new Date(new Date().toISOString()).getTime();
             var distance = countDownDate - now;
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);

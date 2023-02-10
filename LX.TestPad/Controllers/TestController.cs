@@ -46,7 +46,7 @@ namespace LX.TestPad.Controllers
                 TestId = testModel.Id,
                 UserName = testModel.UserName + testModel.UserSurname,
                 Score = 0,
-                StartedAt = DateTime.Now,
+                StartedAt = DateTime.Now.ToUniversalTime(),
                 FinishedAt = DateTime.MinValue
             });
 
@@ -64,7 +64,7 @@ namespace LX.TestPad.Controllers
 
             ViewBag.resultId = resultId;
             ViewBag.questionNumber = questionNumber;
-            ViewBag.endedAt = result.StartedAt.AddSeconds(test.TestDuration).ToString("F", new CultureInfo("en-US"));
+            ViewBag.endedAt = result.StartedAt.AddSeconds(test.TestDuration).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
             return View(question);
         }
 

@@ -8,5 +8,5 @@
 
         public TestModel TestModel { get; set; }
         public QuestionWithAnswersModel QuestionWithAnswersModel {get; set; }
-}
+    }
 }

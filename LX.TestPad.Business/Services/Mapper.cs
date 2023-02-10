@@ -88,7 +88,7 @@ namespace LX.TestPad.Business.Services
             {
                 Id = model.Id,
                 Text = model.Text,
-                IsCorrect = model.IsCorrect ?? false,
+                IsCorrect = model.IsCorrect,
                 QuestionId = model.QuestionId,
             };
         }
@@ -141,7 +141,7 @@ namespace LX.TestPad.Business.Services
         {
             foreach(var answer in questionWithAnswers.Answers)
             {
-                answer.IsCorrect = null;
+                answer.IsCorrect = false;
             }
             return questionWithAnswers;
         }

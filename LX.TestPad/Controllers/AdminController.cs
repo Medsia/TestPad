@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LX.TestPad.Controllers
 {
-    [Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
+    //[Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
     public class AdminController : Controller
     {
         private readonly ITestQuestionService _testQuestionService;
@@ -106,7 +106,7 @@ namespace LX.TestPad.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteTestQuestion(int id, int testId)
         {
-            await _testQuestionService.DeleteByQuestionIdAsync(id);
+            await _testQuestionService.DeleteAsync(testId, id);
 
             return RedirectToAction(nameof(TestQuestions), new { @testId = testId });
         }

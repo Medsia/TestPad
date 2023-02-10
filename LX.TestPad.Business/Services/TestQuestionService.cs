@@ -57,7 +57,7 @@ namespace LX.TestPad.Business.Services
                 var question = await _questionRepository.GetByIdAsync(testQuestion.QuestionId);
                 var answers = await _answerRepository.GetAllByQuestionIdAsync(testQuestion.QuestionId);
                 var answerModels = answers.Select(Mapper.AnswerToModel).ToList();
-                testQuestion.QuestionWithAnswersModel = Mapper.QuestionWithAnswers(question, answerModels);
+                testQuestion.QuestionWithAnswersModel = Mapper.MapQuestionWithAnswers(question, answerModels);
             }
             return items;
         }

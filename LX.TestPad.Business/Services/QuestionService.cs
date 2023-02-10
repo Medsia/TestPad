@@ -48,7 +48,7 @@ namespace LX.TestPad.Business.Services
         public async Task<QuestionWithAnswersModel> GetByIdIcludingAnswersWithoutIsCorrectAsync(int id)
         {
             var questionWithAnswers = await GetByIdIcludingAnswersAsync(id);
-            return Mapper.QuestionWithAnswersWithoutIsCorrect(questionWithAnswers);
+            return Mapper.MapQuestionWithAnswersWithoutIsCorrect(questionWithAnswers);
         }
 
         public async Task<QuestionModel> CreateAsync(QuestionModel questionModel)

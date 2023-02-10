@@ -215,7 +215,7 @@ namespace LX.TestPad.Tests.ServiceTests
                 Answers = new List<AnswerModel> { answerModel }
             };
 
-            Mapper.QuestionWithAnswersWithoutIsCorrect(actualModel);
+            Mapper.MapQuestionWithAnswersWithoutIsCorrect(actualModel);
 
             Assert.Equal(questionModel.Id, actualModel.Id);
             Assert.Equal(questionModel.Text, actualModel.Text);

@@ -137,7 +137,7 @@ namespace LX.TestPad.Business.Services
             };
         }
 
-        public static QuestionWithAnswersModel QuestionWithAnswersWithoutIsCorrect(QuestionWithAnswersModel questionWithAnswers)
+        public static QuestionWithAnswersModel MapQuestionWithAnswersWithoutIsCorrect(QuestionWithAnswersModel questionWithAnswers)
         {
             foreach(var answer in questionWithAnswers.Answers)
             {

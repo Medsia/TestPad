@@ -14,7 +14,7 @@
 
   <label style="font-weight: bold">@testQuestion.QuestionWithAnswersModel.Text</label>
         <a asp-action="CreateAnswer" asp-route-questionId="@testQuestion.QuestionId" asp-route-testId="@testQuestion.TestId" class="text-info">Add Answer</a>
-        <form asp-action="DeleteTestQuestion" asp-route-id="@testQuestion.QuestionId" asp-route-testId="@testQuestion.TestId" method="post">
+        <form asp-action="DeleteTestQuestion" asp-route-id="@testQuestion.QuestionId" asp-route-testId="@testQuestion.TestId" style="display: inline" method="post">
                     <input type="submit" class="text-danger" value="Delete Question">
         </form>
 
@@ -37,5 +37,5 @@
 </div>
 }
 <p>
-    <a href="@Url.Action("Index", "Admin")">Back to tests</a>.
+    <a href="@Url.Action("Index", "Admin")">Back to tests</a>
 </p>

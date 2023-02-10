@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LX.TestPad.Controllers
 {
-    //[Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
+    [Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
     public class AdminController : Controller
     {
         private readonly ITestQuestionService _testQuestionService;
@@ -29,7 +29,10 @@ namespace LX.TestPad.Controllers
 
             return View(tests);
         }
-
+        public IActionResult ExistingQuestions(int testId)
+        {
+            return View(testId);
+        }
         public IActionResult TestResults()
         {
             return View();

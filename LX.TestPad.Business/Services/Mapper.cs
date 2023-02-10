@@ -68,7 +68,7 @@ namespace LX.TestPad.Business.Services
                 Id = model.Id,
                 Name = model.Name,
                 Description = model.Description,
-                TestDuration = model.TestDuration
+                TestDuration = 60 * model.TestDuration
             };
         }
         public static Question QuestionModelToEntity(QuestionModel model)

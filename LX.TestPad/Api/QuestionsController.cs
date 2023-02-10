@@ -18,14 +18,18 @@ namespace LX.TestPad.Api
             _testQuestionService = testQuestionService;
         }
 
+        [HttpGet("unused")]
+        public async Task<IActionResult> GetUnusedQuestions()
+        {
+            var items = await _testQuestionService.GetAllUnusedQuestionsAsync();
+            return Ok(items);
+        }
+
         [HttpGet("{testId}")]
         public async Task<IActionResult> GetQuestions(int testId)
         {
-            List<QuestionModel> items;
-            if (testId <= 0) items = await _testQuestionService.GetAllUnusedQuestionsAsync();
-            else items = await _testQuestionService.GetAllQuestionsByTestIdAsync(testId);
-
-            return new OkObjectResult(items);
+            var items = await _testQuestionService.GetAllQuestionsByTestIdAsync(testId);
+            return Ok(items);
         }
     }
 }

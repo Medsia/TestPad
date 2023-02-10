@@ -174,9 +174,17 @@
 
             $('div#loadingQuestions').show();
 
+            var apiUrl = '';
+            if (testId > 0) {
+                apiUrl = api+'questions/'+testId;
+            }
+            else if (testId == 0){
+                apiUrl = api+'questions/unused';
+            }
+
             $.ajax({
                 type: 'GET',
-                url: api+'questions/'+testId,
+                url: apiUrl,
                 success: function (data, textstatus) {
                     if (data.length > 0) {
                         var htmlLine = "";

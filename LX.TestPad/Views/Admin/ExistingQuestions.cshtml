@@ -27,7 +27,7 @@
         <div class="text-center">
             <div class="my-2">
                 <div class="mb-2 border">
-                    <button id="test0" class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%; font-weight: bold;" onclick="loadUnusedItems()">Unused questions</button>
+                    <button id="test0" class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%; font-weight: bold;" onclick="loadItems(0)">Unused questions</button>
                 </div>
 
                 <div id="TestsTable">
@@ -110,7 +110,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: api+'tests/all',
+                url: api+'tests',
                 success: function (data, textstatus) {
                     if (data.length > 0) {
                         var htmlLine = "";
@@ -162,43 +162,9 @@
         btn.classList.add("btn-outline-primary");
     }
 
-    function loadUnusedItems() {
-        if (!_inCallback) {
-            _inCallback = true;
-
-            selectedTestOptionId = 0;
-            btnSelection('test0');
-
-            document.getElementById('QuestionsTable').innerHTML = "";
-
-            $('div#loadingQuestions').show();
-
-            $.ajax({
-                type: 'GET',
-                url: api+'questions/unused',
-                success: function (data, textstatus) {
-                    if (data.length > 0) {
-                        var htmlLine = "";
-                        $.each(data, function (index, item) {
-                            htmlLine +=
-                                '<div class="mb-2 border">' + 
-                                    '<button class="text-center text-wrap btn" style="box-sizing: border-box; width: 100%;" onclick="addQuestionToTest('+item.id+')">' + item.text + '</button>' + 
-                                '</div>';
-                        })
-
-                        $("#QuestionsTable").append(htmlLine);
-                    }
-
-                    _inCallback = false;
-                    $("div#loadingQuestions").hide();
-                }
-            });
-        }
-    }
-
 
     function loadItems(testId) {
-        if (testId>0 && !_inCallback) {
+        if (testId>=0 && !_inCallback) {
             _inCallback = true;
 
             selectedTestOptionId = testId;
@@ -236,9 +202,6 @@
                     $("div#loadingQuestions").hide();
                 }
             });
-        }
-        else if (testId == 0){
-            loadUnusedItems();
         }
     }
 

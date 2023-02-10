@@ -22,11 +22,11 @@ namespace LX.TestPad.Api
         }
 
 
-        [HttpGet("all")]
-        public async Task<ActionResult<List<TestModel>>> GetAllTests()
+        [HttpGet]
+        public async Task<IActionResult> GetAllTests()
         {
             var items = await _testService.GetAllAsync();
-            return new ObjectResult(items);
+            return new OkObjectResult(items);
         }
 
         [HttpPut("{questionId}/{testId}")]

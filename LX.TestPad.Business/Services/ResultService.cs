@@ -10,15 +10,18 @@ namespace LX.TestPad.Business.Services
         private readonly IResultAnswerRepository _resultAnswerRepository;
         private readonly ITestQuestionRepository _testQuestionRepository;
         private readonly IAnswerRepository _answerRepository;
+        private readonly ITestRepository _testRepository;
 
 
         public ResultService(IResultRepository resultRepository, IResultAnswerRepository resultAnswerRepository,
-                                ITestQuestionRepository testQuestionRepository, IAnswerRepository answerRepository)
+                                ITestQuestionRepository testQuestionRepository, IAnswerRepository answerRepository,
+                                ITestRepository testRepository)
         {
             _resultRepository = resultRepository;
             _resultAnswerRepository = resultAnswerRepository;
             _testQuestionRepository = testQuestionRepository;
             _answerRepository = answerRepository;
+            _testRepository = testRepository;
         }
 
 
@@ -94,6 +97,29 @@ namespace LX.TestPad.Business.Services
             await _resultRepository.UpdateAsync(result);
 
             return score;
+        }
+
+        public async Task<DateTime> CalculateFinishTime(int resultId)
+        {
+            ExceptionChecker.SQLKeyIdCheck(resultId);
+
+            var dateTime = DateTime.Now.ToUniversalTime();
+
+            var result = await _resultRepository.GetByIdAsync(resultId);
+            var testDuration = (await _testRepository.GetByIdAsync(result.TestId)).TestDuration;
+
+            DateTime finishedAt = dateTime;
+            if ((result.StartedAt - dateTime).TotalSeconds >= testDuration)
+            {
+                finishedAt = result.StartedAt;
+                finishedAt.AddSeconds(testDuration);
+            }
+
+            result.FinishedAt = finishedAt;
+
+            await _resultRepository.UpdateAsync(result);
+
+            return finishedAt;
         }
     }
 }

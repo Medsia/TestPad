@@ -10,21 +10,30 @@
 <div class="text-center">
     <h1 class="display-4">Test Result</h1>
     <h4 class="display-4">@testScore%</h4>
-
 </div>
 
-<div class="my-5">
-    <canvas id="pieChart"></canvas>
+<div class="row">
+    <div class="col-6 my-auto" style="padding-left: 20%">
+        <h1 class="my-3" style="font-size: 22px;">@Model.UserName @Model.UserSurname</h1>
+        <p class="my-3" style="font-size: 18px;">Test started: @Model.StartedAt</p>
+        <p class="my-3" style="font-size: 18px;">Test finished: @Model.FinishedAt</p>
+    </div>
+    
+    <div class="col-6 text-center">
+        <canvas id="pieChart"></canvas>
+    </div>
 </div>
 
 
-<a class="btn btn-outline-primary" href="@Url.Action("Index", "Home")">Back to tests</a>
 
-<button class="btn btn-outline-secondary" onclick="copyResultLink()">Share result</button>
+<div class="text-center">
+    <button class="btn btn-outline-secondary mx-3 my-3" onclick="copyResultLink()">Share result</button><br />
+    <a class="btn btn-outline-primary mx-3 my-3" href="@Url.Action("Index", "Home")">Back to tests</a>
+</div>
+
 
 
 <div id="message" style="display: none;">Time's up</div>
-
 <div id="notification" style="display: none;">Link to your result was copied to clipboard</div>
 
 

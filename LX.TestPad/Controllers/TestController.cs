@@ -93,7 +93,11 @@ namespace LX.TestPad.Controllers
             ViewBag.IsExpired = isExpired ? 1: 0;
 
             var result = await _resultService.GetByIdAsync(resultId);
-            if (result.Score < 0) result.Score = await _resultService.CalculateScore(resultId);
+            if (result.Score < 0)
+            {
+                result.Score = await _resultService.CalculateScore(resultId);
+                result.FinishedAt = await _resultService.CalculateFinishTime(resultId);
+            }
 
             return View("Result", result);
         }

@@ -9,5 +9,6 @@ namespace LX.TestPad.Business.Interfaces
 
 
         Task<int> CalculateScore(int resultId);
+        Task<DateTime> CalculateFinishTime(int resultId);
     }
 }

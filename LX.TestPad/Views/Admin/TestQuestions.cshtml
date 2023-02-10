@@ -6,7 +6,7 @@
     <h1 class="display-4">Questions</h1>
 </div>
 <div>
-    <a asp-action="CreateQuestion" class="btn btn-outline-info">Create Question</a>
+    <a asp-action="CreateQuestion" asp-route-testId="@ViewBag.TestId" class="btn btn-outline-info">Create Question</a>
 </div>
 @foreach(var testQuestion in @Model){
 
@@ -14,7 +14,10 @@
 
   <label style="font-weight: bold">@testQuestion.QuestionWithAnswersModel.Text</label>
         <a asp-action="CreateAnswer" asp-route-questionId="@testQuestion.QuestionId" asp-route-testId="@testQuestion.TestId" class="text-info">Add Answer</a>
-        <a asp-action="DeleteQuestion" class="text-danger">Delete Question</a><br>
+        <form asp-action="DeleteTestQuestion" asp-route-id="@testQuestion.QuestionId" asp-route-testId="@testQuestion.TestId" method="post">
+                    <input type="submit" class="text-danger" value="Delete Question">
+        </form>
+
         @foreach(var answer in testQuestion.QuestionWithAnswersModel.Answers)
         {
             <form asp-action="DeleteAnswer" asp-route-id="@answer.Id" asp-route-testId="@testQuestion.TestId" method="post">
@@ -33,4 +36,6 @@
 
 </div>
 }
-<a class="btn btn-outline-danger" href="javascript:history.back()">Back</a>
+<p>
+    <a href="@Url.Action("Index", "Admin")">Back to tests</a>.
+</p>

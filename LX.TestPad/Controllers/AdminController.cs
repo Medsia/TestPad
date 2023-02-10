@@ -61,7 +61,22 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> TestQuestions(int testId)
         {
             var testQuestions = await _testQuestionService.GetAllByTestIdIncludedAsync(testId);
+            ViewBag.TestId = testId;
             return View(testQuestions);
+        }
+        public IActionResult CreateQuestion(int testId)
+        {
+            return View(new QuestionModel {TestId = testId});
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateQuestion(QuestionModel questionModel)
+        {
+            var question = await _questionService.CreateAsync(questionModel);
+            await _testQuestionService.CreateAsync(question.Id, questionModel.TestId);
+
+            return RedirectToAction(nameof(TestQuestions), new { @testId = questionModel.TestId });
         }
 
         public IActionResult CreateAnswer(int questionId, int testId)
@@ -85,6 +100,14 @@ namespace LX.TestPad.Controllers
             return RedirectToAction(nameof(TestQuestions), new { @testId = testId });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteTestQuestion(int id, int testId)
+        {
+            await _testQuestionService.DeleteByQuestionIdAsync(id);
+
+            return RedirectToAction(nameof(TestQuestions), new { @testId = testId });
+        }
         public async Task<IActionResult> DeleteTest(int? id)
         {
             if (id == null) return NotFound();

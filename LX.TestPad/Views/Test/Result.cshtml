@@ -1,11 +1,15 @@
-﻿
+﻿@using LX.TestPad.Business.Models;
+@model ResultModel
+
 @{
-    
+    ViewData["Title"] = "Test result";
+
 }
 
 <div class="text-center">
     <h1 class="display-4">Test Result</h1>
-    <h4 class="display-4">60%</h4>
+    <h4 class="display-4">@Model.Score</h4>
+
 </div>
 
 <div class="my-5">
@@ -17,7 +21,7 @@
 </p>
 
 
-<button onclick="copyResultLink()">TEST POPUP</button>
+<button class="btn btn-outline-secondary" onclick="copyResultLink()">Share result</button>
 
 
 
@@ -28,17 +32,28 @@
 @section scripts{
     <script type="text/javascript">
 
+        var thisResultId = @ViewBag.ResultId;
+        var isTestExpired = @ViewBag.IsExpired;
+
         $(document).ready(function () {
-            var scorePercent = 60;
+            var scorePercent = @Model.Score;
             renderPieChart('pieChart', scorePercent);
             $("#notification").append('Link to your result was copied to clipboard');
         })
 
 
+
+        function showResultExpired(){
+
+        }
+
+
+
         var isShown = false;
         function copyResultLink(){
 
-            navigator.clipboard.writeText(window.location.href);
+            var resultLink = window.location.origin + "/Result?resultId=" + thisResultId;
+            navigator.clipboard.writeText(resultLink);
 
             if(!isShown){
                 isShown = true;
@@ -58,8 +73,6 @@
             }
         }
 
-
-        
 
 
         var start_angle = 0;

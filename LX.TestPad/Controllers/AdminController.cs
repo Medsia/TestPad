@@ -1,4 +1,4 @@
-﻿using LX.TestPad.Business.Interfaces;
+using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
 using LX.TestPad.Authorization;
 using Microsoft.AspNetCore.Authorization;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LX.TestPad.Controllers
 {
-    //[Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
+    [Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
     public class AdminController : Controller
     {
         private readonly ITestQuestionService _testQuestionService;
@@ -59,11 +59,13 @@ namespace LX.TestPad.Controllers
         }
 
         public async Task<IActionResult> TestQuestions(int testId)
+
         {
             var testQuestions = await _testQuestionService.GetAllByTestIdIncludedAsync(testId);
             ViewBag.TestId = testId;
             return View(testQuestions);
         }
+
         public IActionResult CreateQuestion(int testId)
         {
             return View(new QuestionModel {TestId = testId});
@@ -108,6 +110,7 @@ namespace LX.TestPad.Controllers
 
             return RedirectToAction(nameof(TestQuestions), new { @testId = testId });
         }
+        
         public async Task<IActionResult> DeleteTest(int? id)
         {
             if (id == null) return NotFound();

@@ -2,6 +2,7 @@
 using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
+using System.Security.Cryptography;
 
 namespace LX.TestPad.Business.Services
 {
@@ -61,17 +62,22 @@ namespace LX.TestPad.Business.Services
             return items;
         }
 
-        private async Task<int> GetNewNumberByTestIdAsync(int testId)
+        private async Task<int> GetNewQuestionSequenceNumberByTestIdAsync(int testId)
         {
             var lastQuestion = (await _testQuestionRepository.GetAllByTestIdAsync(testId)).LastOrDefault();
-            int newNumber;
-            if (lastQuestion != null) newNumber = lastQuestion.Number + 1;
-            else newNumber = 1;
-
-            return newNumber;
+            return lastQuestion == null ? 1 : lastQuestion.Number + 1;
         }
 
 
+        public async Task<List<QuestionModel>> GetAllUnusedQuestionsAsync()
+        {
+            var items = await _questionRepository.GetAllUnusedAsync();
+
+            if (items.Count== 0) return new List<QuestionModel>();
+
+            return items.Select(Mapper.QuestionToModel)
+                        .ToList();
+        }
 
         public async Task<List<QuestionModel>> GetAllQuestionsByTestIdAsync(int testId)
         {
@@ -82,7 +88,7 @@ namespace LX.TestPad.Business.Services
             List<QuestionModel> result = new List<QuestionModel>();
             foreach (var item in items)
             {
-                var resultItem = await GetQuestionByIdAsync(item.Id);
+                var resultItem = await GetQuestionByIdAsync(item.QuestionId);
                 result.Add(resultItem);
             }
 
@@ -110,16 +116,20 @@ namespace LX.TestPad.Business.Services
             ExceptionChecker.SQLKeyIdCheck(questionId);
             ExceptionChecker.SQLKeyIdCheck(testId);
 
-            var newNumber = await GetNewNumberByTestIdAsync(testId);
-
-            var item = new TestQuestion
+            var existingTestQuestion = await _testQuestionRepository.GetSingleOrDefaultAsync(testId, questionId);
+            if (existingTestQuestion == null)
             {
-                QuestionId = questionId,
-                TestId = testId,
-                Number = newNumber,
-            };
+                var newNumber = await GetNewQuestionSequenceNumberByTestIdAsync(testId);
 
-            await _testQuestionRepository.CreateAsync(item);
+                var item = new TestQuestion
+                {
+                    QuestionId = questionId,
+                    TestId = testId,
+                    Number = newNumber,
+                };
+
+                await _testQuestionRepository.CreateAsync(item);
+            }
         }
 
         public async Task CreateAsync(List<int> questionIds, int testId)
@@ -129,7 +139,7 @@ namespace LX.TestPad.Business.Services
 
             foreach (var questionId in questionIds)
             {
-                var newNumber = await GetNewNumberByTestIdAsync(testId);
+                var newNumber = await GetNewQuestionSequenceNumberByTestIdAsync(testId);
 
                 var item = new TestQuestion
                 {
@@ -161,7 +171,15 @@ namespace LX.TestPad.Business.Services
             }
         }
 
-        public async Task DeleteByQuestionIdAsync(int questionId)
+        public async Task DeleteAsync(int testId, int questionId)
+        {
+            ExceptionChecker.SQLKeyIdCheck(testId);
+            ExceptionChecker.SQLKeyIdCheck(questionId);
+
+            await _testQuestionRepository.DeleteSingleAsync(testId, questionId);
+        }
+
+        public async Task DeleteAllByQuestionIdAsync(int questionId)
         {
             ExceptionChecker.SQLKeyIdCheck(questionId);
 

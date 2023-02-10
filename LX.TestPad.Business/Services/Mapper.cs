@@ -37,12 +37,15 @@ namespace LX.TestPad.Business.Services
         }
         public static ResultModel ResultToModel(Result entity)
         {
+            var userName = entity.UserName.Substring(0, entity.UserName.IndexOf(' '));
+            var userSurname = entity.UserName.Substring(entity.UserName.IndexOf(' ') + 1);
             return new ResultModel
             {
                 Id = entity.Id,
-                UserName = entity.UserName,
                 Score = entity.Score,
                 TestId = entity.TestId,
+                UserName = userName,
+                UserSurname = userSurname,
                 StartedAt = entity.StartedAt,
                 FinishedAt = entity.FinishedAt,
             };
@@ -85,7 +88,7 @@ namespace LX.TestPad.Business.Services
             {
                 Id = model.Id,
                 Text = model.Text,
-                IsCorrect = model.IsCorrect,
+                IsCorrect = model.IsCorrect ?? false,
                 QuestionId = model.QuestionId,
             };
         }
@@ -94,7 +97,7 @@ namespace LX.TestPad.Business.Services
             return new Result
             {
                 Id = model.Id,
-                UserName = model.UserName,
+                UserName = model.UserName +' '+ model.UserSurname,
                 Score = model.Score,
                 TestId = model.TestId,
                 StartedAt = model.StartedAt,
@@ -124,7 +127,7 @@ namespace LX.TestPad.Business.Services
                 QuestionId = entity.QuestionId,
             };
         }
-        public static QuestionWithAnswersModel QuestionWithAnswers(Question questionEntity, List<AnswerModel> answerEntities)
+        public static QuestionWithAnswersModel MapQuestionWithAnswers(Question questionEntity, List<AnswerModel> answerEntities)
         {
             return new QuestionWithAnswersModel
             {
@@ -133,14 +136,14 @@ namespace LX.TestPad.Business.Services
                 Answers = answerEntities,
             };
         }
-        public static AnswerModelWithoutIsCorrect AnswerToAnswerModelWithoutIsCorrect(Answer entity)
+
+        public static QuestionWithAnswersModel QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(QuestionWithAnswersModel questionWithAnswers)
         {
-            return new AnswerModelWithoutIsCorrect
+            foreach(var answer in questionWithAnswers.Answers)
             {
-                Id = entity.Id,
-                Text = entity.Text,
-                QuestionId = entity.QuestionId,
-            };
+                answer.IsCorrect = null;
+            }
+            return questionWithAnswers;
         }
     }
 }

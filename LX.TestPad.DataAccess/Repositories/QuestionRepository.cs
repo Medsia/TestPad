@@ -68,6 +68,20 @@ namespace LX.TestPad.DataAccess.Repositories
             return await dbContext.Questions.ToListAsync();
         }
 
+        public async Task<List<Question>> GetAllUnusedAsync()
+        {
+            var items = await dbContext.Questions.ToListAsync();
+
+            var result = new List<Question>();
+            foreach (var item in items)
+            {
+                var isAnyDBRecord = await dbContext.TestQuestion.AnyAsync(x => x.QuestionId == item.Id);
+                if (!isAnyDBRecord) result.Add(item);
+            }
+
+            return result;
+        }
+
         public async Task<Question> GetByIdAsync(int id)
         {
             return await dbContext.Questions.FirstOrDefaultAsync(x => x.Id == id);

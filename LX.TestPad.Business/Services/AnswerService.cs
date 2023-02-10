@@ -33,16 +33,6 @@ namespace LX.TestPad.Business.Services
                         .ToList();
         }
 
-        public async Task<List<AnswerModelWithoutIsCorrect>> GetAllWithoutIsCorrectByQuestionIdAsync(int questionId)
-        {
-            ExceptionChecker.SQLKeyIdCheck(questionId);
-
-            var items = await _answerRepository.GetAllByQuestionIdAsync(questionId);
-
-            return items.Select(Mapper.AnswerToAnswerModelWithoutIsCorrect).ToList();
-        }
-
-
         public async Task<AnswerModel> CreateAsync(AnswerModel testModel)
         {
             var item = Mapper.AnswerModelToEntity(testModel);

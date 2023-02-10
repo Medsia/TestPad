@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LX.TestPad.Controllers
 {
-    [Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
+    //[Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
     public class AdminController : Controller
     {
         private readonly ITestQuestionService _testQuestionService;
@@ -56,9 +56,10 @@ namespace LX.TestPad.Controllers
             return RedirectToAction(nameof(TestDetails), new { @id = @test.Id });
         }
 
-        public IActionResult Questions()
+        public async Task<IActionResult> Questions(int testId)
         {
-            return View();
+            var testQuestions = await _testQuestionService.GetAllByTestIdIncludedAsync(testId);
+            return View(testQuestions);
         }
 
         public IActionResult CreateAnswer()

@@ -10,13 +10,15 @@ namespace LX.TestPad.Business.Services
         private readonly ITestQuestionRepository _testQuestionRepository;
         private readonly IQuestionRepository _questionRepository;
         private readonly ITestRepository _testRepository;
+        private readonly IAnswerRepository _answerRepository;
 
         public TestQuestionService(ITestQuestionRepository testQuestionRepository, IQuestionRepository questionRepository, 
-                                        ITestRepository testRepository)
+                                        ITestRepository testRepository, IAnswerRepository answerRepository)
         {
             _testQuestionRepository = testQuestionRepository;
             _questionRepository = questionRepository;
             _testRepository = testRepository;
+            _answerRepository = answerRepository;
         }
 
 
@@ -44,6 +46,19 @@ namespace LX.TestPad.Business.Services
 
             return items.Select(Mapper.TestQuestionToModel)
                         .ToList();
+        }
+
+        public async Task<List<TestQuestionModel>> GetAllByTestIdIncludedAsync(int testId)
+        {
+            var items = await GetAllByTestIdAsync(testId);
+            foreach(var testQuestion in items)
+            {
+                var question = await _questionRepository.GetByIdAsync(testQuestion.QuestionId);
+                var answers = await _answerRepository.GetAllByQuestionIdAsync(testQuestion.QuestionId);
+                var answerModels = answers.Select(Mapper.AnswerToModel).ToList();
+                testQuestion.QuestionWithAnswersModel = Mapper.QuestionWithAnswers(question, answerModels);
+            }
+            return items;
         }
 
         private async Task<int> GetNewNumberByTestIdAsync(int testId)

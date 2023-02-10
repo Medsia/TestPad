@@ -1,40 +1,27 @@
-﻿@{
+﻿@model List<LX.TestPad.Business.Models.TestQuestionModel>
+@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-@{
-    var answers = new[]
-    {
-    new {Text="Yes"},
-    new {Text="No"},
-    };
-
-    var questions = new[]
-    {
-    new {Text="What language do people speak in Australia?", Answers = answers},
-    new {Text="What?", Answers = answers},
-    new {Text="What language do people speak?", Answers = answers},
-    new {Text="What is Australia?", Answers = answers},
-    new {Text="What people in Australia?", Answers = answers},
-    new {Text="What is australia s form of government?", Answers = answers},
-    };
-}
-@foreach(var question in questions){
+<div class="text-center">
+    <h1 class="display-4">Questions</h1>
+</div>
+@foreach(var testQuestion in @Model){
 
 <div class="flex-lg-wrap" style="height:auto">
 
-  <label>@question.Text</label>
+  <label style="font-weight: bold">@testQuestion.QuestionWithAnswersModel.Text</label>
         <a asp-action="CreateAnswer" class="text-info">Add Answer</a>
         <a asp-action="DeleteQuestion" class="text-danger">Delete Question</a><br>
-        @foreach(var answer in question.Answers)
+        @foreach(var answer in testQuestion.QuestionWithAnswersModel.Answers)
         {
-            if(answer.Text == "Yes")
+            if(answer.IsCorrect == true)
             {
-                <label>Answer: @answer.Text✅</label>
+                <label>• @answer.Text (✅)</label>
                 <a asp-action="DeleteAnswer" class="text-danger">✗</a><br>
             }
             else
             {
-                <label>Answer: @answer.Text</label>
+                <label>• @answer.Text</label>
                 <a asp-action="DeleteAnswer" class="text-danger">✗</a><br>
             }
         }

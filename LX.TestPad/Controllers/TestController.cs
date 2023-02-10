@@ -1,6 +1,7 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace LX.TestPad.Controllers
 {
@@ -40,11 +41,12 @@ namespace LX.TestPad.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePreliminaryUserResultForTest(TestModel testModel)
         {
-            var resultModel = await _resultService.CreateAsync(new ResultModel {
+            var resultModel = await _resultService.CreateAsync(new ResultModel
+            {
                 TestId = testModel.Id,
                 UserName = testModel.UserName + testModel.UserSurname,
                 Score = 0,
-                StartedAt = DateTime.Now,
+                StartedAt = DateTime.Now.ToUniversalTime(),
                 FinishedAt = DateTime.MinValue
             });
 
@@ -58,10 +60,11 @@ namespace LX.TestPad.Controllers
             if (questionNumber >= testQuestions.Count)
                 return RedirectToAction(nameof(Result));
             var question = await _questionService.GetByIdIcludingAnswersAsync(testQuestions[questionNumber].QuestionId);
+            var test = await _testService.GetByIdAsync(result.TestId);
 
             ViewBag.resultId = resultId;
             ViewBag.questionNumber = questionNumber;
-
+            ViewBag.endedAt = result.StartedAt.AddSeconds(test.TestDuration).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
             return View(question);
         }
 

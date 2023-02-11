@@ -61,6 +61,14 @@ namespace LX.TestPad.Controllers
             return RedirectToAction(nameof(TestDetails), new { @id = @test.Id });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateTest(TestModel test)
+        {
+            await _testService.UpdateAsync(test);
+            return RedirectToAction(nameof(TestDetails), new { @id = @test.Id }); ;
+        }
+
         public async Task<IActionResult> TestQuestions(int testId)
 
         {

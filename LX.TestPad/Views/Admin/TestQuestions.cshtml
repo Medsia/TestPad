@@ -2,40 +2,141 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<div class="text-center">
-    <h1 class="display-4">Questions</h1>
-</div>
-<div>
+
+<h2>Questions</h2>
+
+<div class="header-buttons">
     <a asp-action="CreateQuestion" asp-route-testId="@ViewBag.TestId" class="btn btn-outline-info">Create Question</a>
+    <a href="/Admin/ExistingQuestions?testId=@ViewBag.TestId" class="btn btn-outline-info">Add Question from existing test</a><br />
 </div>
-@foreach(var testQuestion in @Model){
-
-<div class="flex-lg-wrap" style="height:auto">
-
-  <label style="font-weight: bold">@testQuestion.QuestionWithAnswersModel.Text</label>
-        <a asp-action="CreateAnswer" asp-route-questionId="@testQuestion.QuestionId" asp-route-testId="@testQuestion.TestId" class="text-info">Add Answer</a>
-        <form asp-action="DeleteTestQuestion" asp-route-id="@testQuestion.QuestionId" asp-route-testId="@testQuestion.TestId" style="display: inline" method="post">
-                    <input type="submit" class="text-danger" value="Delete Question">
-        </form>
-
-        @foreach(var answer in testQuestion.QuestionWithAnswersModel.Answers)
+<table>
+    <thead>
+        <tr>
+            <th>Question</th>
+            <th>Answers</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var testQuestion in Model.OrderByDescending(tq => tq.QuestionId))
         {
-            <form asp-action="DeleteAnswer" asp-route-id="@answer.Id" asp-route-testId="@testQuestion.TestId" method="post">
-            @if(answer.IsCorrect == true)
-            {
-                <label>• @answer.Text (✅)</label>
-            }
-            else
-            {
-                <label>• @answer.Text</label>               
-            }        
-                <input type="submit" class="text-danger" value="✗" />
-            </form>
-
+            var questionId = testQuestion.Id;
+            <tr>
+                <td>
+                    <form asp-action="UpdateQuestion" asp-route-id="@testQuestion.QuestionId"
+                    asp-route-TestId="@testQuestion.TestId" method="post">
+                    <div class="question-header">
+                        <p id="Question-text-@questionId">@testQuestion.QuestionWithAnswersModel.Text</p>
+                        <input type="text" name="Text" asp-for="@testQuestion.QuestionWithAnswersModel.Text" id="Question-@questionId" style="display:none"/>                       
+                        <div>
+                            <input type="submit" value="Save" id="saveButton-@questionId" style="display:none"/>
+                            <input type="button" value="Edit" id="editButton-@questionId" onclick="toggleEditing(@questionId)" />
+                        </div>
+                    </div>
+                    </form>
+                </td>
+                <td>
+                    <ul>
+                        @foreach (var answer in testQuestion.QuestionWithAnswersModel.Answers)
+                        {
+                            <li class="answer-row">
+                                <span class="answer-icon @(answer.IsCorrect ? "correct" : "")">
+                                    @if (answer.IsCorrect)
+                                    {
+                                        <span>&#10003;</span>
+                                    }
+                                </span>
+                                @answer.Text
+                                <form asp-action="DeleteAnswer" asp-route-id="@answer.Id"
+                                asp-route-testId="@testQuestion.TestId" method="post">
+                                <button class="delete-answer-button" type="submit">X</button>
+                                </form>
+                            </li>
+                        }
+                    </ul>
+                    <a class="add-answer-button" asp-action="CreateAnswer" asp-route-questionId="@testQuestion.QuestionId"
+                    asp-route-testId="@testQuestion.TestId" class="text-info">Add Answer</a>
+                </td>
+                <td class="delete-question-cell">
+                    <form asp-action="DeleteTestQuestion" asp-route-id="@testQuestion.QuestionId"
+                    asp-route-testId="@testQuestion.TestId" style="display: inline" method="post">
+                    <button type="submit" class="delete-question-button">
+                        <span class="delete-question-cross">&times;</span>
+                    </button>
+                    </form>
+                </td>
+            </tr>
         }
+    </tbody>
+</table>
+<a href="@Url.Action("Index", "Admin")">Return to Tests</a>
 
-</div>
+<script>
+function toggleEditing(id) {
+    var Questiontext = document.getElementById("Question-text-" + id);
+    var Question = document.getElementById("Question-" + id);
+    var saveButton = document.getElementById("saveButton-" + id);
+    var editButton = document.getElementById("editButton-" + id);
+
+    if (Question.style.display === "none") {
+        Questiontext.style.display = "none";
+        Question.style.display = "inline";
+        saveButton.style.display = "inline";
+        editButton.style.display = "none";
+    } else {
+        Questiontext.style.display = "inline";
+        Question.style.display = "none";
+        saveButton.style.display = "none";
+        editButton.style.display = "inline";
+    }
 }
-<p>
-    <a href="@Url.Action("Index", "Admin")">Back to tests</a>
-</p>
+</script>
+
+<style>
+    .header-buttons {
+        float: left;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid gray;
+        padding: 8px;
+    }
+    .correct {
+        color: green;
+        font-weight: bold;
+    }
+    .answer-row {
+        display: flex;
+        align-items: center;
+    }
+    .answer-icon {
+        width: 20px;
+        margin-right: 8px;
+    }
+    .delete-answer-button {
+        margin-left: auto;
+    }
+    .add-answer-button {
+        display: block;
+        margin-top: 8px;
+    }
+    .delete-question-cell {
+        text-align: center;
+    }
+    .delete-question-button {
+        background-color: Transparent;
+        background-repeat:no-repeat;
+        border: none;
+        cursor:pointer;
+        overflow: hidden;
+        outline:none;
+    }
+    .delete-question-cross {
+        color: red;
+        font-size: 18px;
+        font-weight: bold;
+    }
+</style>

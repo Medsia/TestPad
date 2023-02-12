@@ -46,7 +46,7 @@
                                         <span>&#10003;</span>
                                     }
                                 </span>
-                                @answer.Text
+                                @answer.Text;
                                 <form asp-action="DeleteAnswer" asp-route-id="@answer.Id"
                                 asp-route-testId="@testQuestion.TestId" method="post">
                                 <button class="delete-answer-button" type="submit">X</button>

@@ -9,6 +9,5 @@ namespace LX.TestPad.Business.Models
     public class UserTestQuestion
     {
         public int ResultId { get; set; }   
-        public int QuestionNumber { get; set; }
     }
 }

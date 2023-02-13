@@ -30,8 +30,10 @@ namespace LX.TestPad.Controllers
             return View(tests);
         }
 
+        [Route("StartTest/{id}")]
         public async Task<IActionResult> EnterUserName(int id)
         {
+            TempData.Clear();
             var test = await _testService.GetByIdAsync(id);
 
             return View(test);
@@ -50,24 +52,29 @@ namespace LX.TestPad.Controllers
                 StartedAt = DateTime.Now.ToUniversalTime(),
                 FinishedAt = DateTime.MinValue
             });
-
-            return RedirectToAction(nameof(Question), new UserTestQuestion { ResultId = emptyUserResult.Id });
+            return RedirectToAction(nameof(Question), new { resultId = emptyUserResult.Id });
         }
 
-        public async Task<IActionResult> Question(UserTestQuestion userTestQuestion)
+        [Route("{resultId}")]
+        public async Task<IActionResult> Question(int resultId)
         {
-            var result = await _resultService.GetByIdAsync(userTestQuestion.ResultId);
+            var result = await _resultService.GetByIdAsync(resultId);
             var testQuestions = await _testQuestionService.GetAllByTestIdAsync(result.TestId);
+            int questionNumber = (int?)TempData["questionNumber"] ?? 0;
 
-            if (userTestQuestion.QuestionNumber >= testQuestions.Count)
+            if (questionNumber >= testQuestions.Count)
+            {
+                TempData.Clear();
                 return RedirectToAction(nameof(Result));
+            }
+
+            TempData["questionNumber"] = questionNumber;
 
             var question = await _questionService.
-                GetByIdIcludingAnswersWithoutIsCorrectAsync(testQuestions[userTestQuestion.QuestionNumber].QuestionId);
+                GetByIdIcludingAnswersWithoutIsCorrectAsync(testQuestions[questionNumber].QuestionId);
             var test = await _testService.GetByIdAsync(result.TestId);
             
             ViewBag.resultId = result.Id;
-            ViewBag.questionNumber = userTestQuestion.QuestionNumber;
             ViewBag.endedAt = result.StartedAt.AddSeconds(test.TestDuration).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
             return View(question);
         }
@@ -76,13 +83,13 @@ namespace LX.TestPad.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendUserAnswer(UserAnswerModel UserAnswerModel)
         {
+            int questionNumber = (int)TempData["questionNumber"];
+            TempData["questionNumber"] = ++questionNumber;
+
             await _resultAnswerService.AddUserResultAnswersAsync(UserAnswerModel.ResultId,
                 UserAnswerModel.AnswersIds);
-            return RedirectToAction(nameof(Question), new UserTestQuestion
-            {
-                ResultId = UserAnswerModel.ResultId,
-                QuestionNumber = UserAnswerModel.QuestionNumber + 1
-            });
+
+            return RedirectToAction(nameof(Question), new { resultId = UserAnswerModel.ResultId });
         }
 
         [Route("Result")]

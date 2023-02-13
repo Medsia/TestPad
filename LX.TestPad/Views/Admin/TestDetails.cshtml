@@ -31,34 +31,27 @@
 <a asp-action="DeleteTest" asp-route-id="@Model.Id" class="text-danger">Delete Test</a><br>
 
 <script>
-function toggleEditing() {
-    var NameText = document.getElementById("Name-text");
-    var DescriptionText = document.getElementById("Description-text");
-    var TestDurationText = document.getElementById("TestDuration-text");
-    var Name = document.getElementById("Name");
-    var Description = document.getElementById("Description");
-    var TestDuration = document.getElementById("TestDuration");
-    var saveButton = document.getElementById("saveButton");
-    var editButton = document.getElementById("editButton");
+function applyInlineStyleFor(identifiers) {
+    for (var i = 0; i < identifiers.length; i++) {
+        var element = document.getElementById(identifiers[i]);
+        element.style.display = "inline";
+    }
+}
 
-    if (Name.style.display === "none") {
-        NameText.style.display = "none";
-        DescriptionText.style.display = "none";
-        TestDurationText.style.display = "none";
-        Name.style.display = "inline";
-        Description.style.display = "inline";
-        TestDuration.style.display = "inline";
-        saveButton.style.display = "inline";
-        editButton.style.display = "none";
+function toggleEditing() {
+    var inputElements = ["Name", "Description", "TestDuration"];
+    var saveButton = "saveButton";
+
+    if (document.getElementById("Name").style.display === "none") {
+        applyInlineStyleFor(inputElements.concat(saveButton));
+        document.getElementById("editButton").style.display = "none";
     } else {
-        NameText.style.display = "inline";
-        DescriptionText.style.display = "inline";
-        TestDurationText.style.display = "inline";
-        Name.style.display = "none";
-        Description.style.display = "none";
-        TestDuration.style.display = "none";
-        saveButton.style.display = "none";
-        editButton.style.display = "inline";
+        for (var i = 0; i < inputElements.length; i++) {
+            var element = document.getElementById(inputElements[i]);
+            element.style.display = "none";
+        }
+        document.getElementById("saveButton").style.display = "none";
+        document.getElementById("editButton").style.display = "inline";
     }
 }
 </script>

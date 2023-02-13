@@ -58,7 +58,7 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> CreateTest(TestModel testModel)
         {
             var @test = await _testService.CreateAsync(testModel);
-            return RedirectToAction(nameof(TestDetails), new { @id = @test.Id });
+            return RedirectToAction(nameof(TestDetails), new { id = @test.Id });
         }
 
         [HttpPost]
@@ -66,7 +66,7 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> UpdateTest(TestModel test)
         {
             await _testService.UpdateAsync(test);
-            return RedirectToAction(nameof(TestDetails), new { @id = @test.Id }); ;
+            return RedirectToAction(nameof(TestDetails), new { id = @test.Id }); ;
         }
 
         public async Task<IActionResult> TestQuestions(int testId)
@@ -82,7 +82,7 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> UpdateQuestion(QuestionModel question)
         {
             await _questionService.UpdateAsync(question);
-            return RedirectToAction(nameof(TestQuestions), new { @testId = question.TestId }); ;
+            return RedirectToAction(nameof(TestQuestions), new { testId = question.TestId }); ;
         }
 
         public IActionResult CreateQuestion(int testId)
@@ -97,7 +97,7 @@ namespace LX.TestPad.Controllers
             var question = await _questionService.CreateAsync(questionModel);
             await _testQuestionService.CreateAsync(question.Id, questionModel.TestId);
 
-            return RedirectToAction(nameof(TestQuestions), new { @testId = questionModel.TestId });
+            return RedirectToAction(nameof(TestQuestions), new { testId = questionModel.TestId });
         }
 
         public IActionResult CreateAnswer(int questionId, int testId)
@@ -110,7 +110,7 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> CreateAnswer(AnswerModel answerModel)
         {
             await _answerService.CreateAsync(answerModel);
-            return RedirectToAction(nameof(TestQuestions), new { @testId = answerModel.TestId });
+            return RedirectToAction(nameof(TestQuestions), new { testId = answerModel.TestId });
         }
 
         [HttpPost]
@@ -118,7 +118,7 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> DeleteAnswer(int id, int testId)
         {
             await _answerService.DeleteAsync(id);
-            return RedirectToAction(nameof(TestQuestions), new { @testId = testId });
+            return RedirectToAction(nameof(TestQuestions), new { testId = testId });
         }
 
         [HttpPost]
@@ -127,7 +127,7 @@ namespace LX.TestPad.Controllers
         {
             await _testQuestionService.DeleteAsync(testId, id);
 
-            return RedirectToAction(nameof(TestQuestions), new { @testId = testId });
+            return RedirectToAction(nameof(TestQuestions), new { testId = testId });
         }
         
         public async Task<IActionResult> DeleteTest(int? id)

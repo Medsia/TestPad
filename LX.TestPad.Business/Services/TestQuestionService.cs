@@ -51,15 +51,15 @@ namespace LX.TestPad.Business.Services
 
         public async Task<List<TestQuestionModel>> GetAllByTestIdIncludeQuestionsWithAnswersAsync(int testId)
         {
-            var items = await GetAllByTestIdAsync(testId);
-            foreach(var testQuestion in items)
+            var testQuestionModels = await GetAllByTestIdAsync(testId);
+            foreach(var testQuestion in testQuestionModels)
             {
                 var question = await _questionRepository.GetByIdAsync(testQuestion.QuestionId);
                 var answers = await _answerRepository.GetAllByQuestionIdAsync(testQuestion.QuestionId);
                 var answerModels = answers.Select(Mapper.AnswerToModel).ToList();
                 testQuestion.QuestionWithAnswersModel = Mapper.MapQuestionWithAnswers(question, answerModels);
             }
-            return items;
+            return testQuestionModels;
         }
 
         private async Task<int> GetNewQuestionSequenceNumberByTestIdAsync(int testId)

@@ -41,7 +41,10 @@
     
     <div class="text-center border">
         <button class="btn btn-outline-secondary mx-3 my-3" onclick="copyResultLink()">Share result</button>
-        <a class="btn btn-outline-primary mx-3 my-3" href="@Url.Action("Index", "Home")">Restart this test</a>
+        @if (test != null)
+        {
+            <a class="btn btn-outline-primary mx-3 my-3" href="@Url.Action("EnterUserName", "Test", new { id = test.Id})">Restart this test</a>
+        }
         <a class="btn btn-outline-primary mx-3 my-3" href="@Url.Action("Index", "Home")">Back to tests</a>
     </div>
 </div>

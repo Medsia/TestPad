@@ -104,16 +104,16 @@ namespace LX.TestPad.Business.Services
         {
             ExceptionChecker.SQLKeyIdCheck(resultId);
 
-            var dateTime = DateTime.Now.ToUniversalTime();
+            var finishedAt = DateTime.Now.ToUniversalTime();
 
             var result = await _resultRepository.GetByIdAsync(resultId);
             var testDuration = (await _testRepository.GetByIdAsync(result.TestId)).TestDuration;
 
-            DateTime finishedAt = dateTime;
-            if ((result.StartedAt - dateTime).TotalSeconds >= testDuration)
+            var test = (finishedAt - result.StartedAt).TotalSeconds;
+            if (test >= testDuration)
             {
                 finishedAt = result.StartedAt;
-                finishedAt.AddSeconds(testDuration);
+                finishedAt = finishedAt.AddSeconds(testDuration);
             }
 
             result.FinishedAt = finishedAt;

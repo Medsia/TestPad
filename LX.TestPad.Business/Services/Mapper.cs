@@ -14,7 +14,7 @@ namespace LX.TestPad.Business.Services
                 Id = entity.Id,
                 Name = entity.Name,
                 Description = entity.Description,
-                TestDuration = entity.TestDuration / 60,
+                TestDuration = FromSecondsToMinutes(entity.TestDuration),
             };
         }
         public static QuestionModel QuestionToModel(Question entity)
@@ -71,7 +71,7 @@ namespace LX.TestPad.Business.Services
                 Id = model.Id,
                 Name = model.Name,
                 Description = model.Description,
-                TestDuration = 60 * model.TestDuration
+                TestDuration = FromMinutesToSeconds(model.TestDuration),
             };
         }
         public static Question QuestionModelToEntity(QuestionModel model)
@@ -144,6 +144,18 @@ namespace LX.TestPad.Business.Services
                 answer.IsCorrect = false;
             }
             return questionWithAnswers;
+        }
+
+        public static int FromMinutesToSeconds(int minutes)
+        {
+            const int secondsInOneMinute = 60;
+            return minutes * secondsInOneMinute;
+        }
+
+        public static int FromSecondsToMinutes(int seconds)
+        {
+            const int secondsInOneMinute = 60;
+            return seconds / secondsInOneMinute;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
+using LX.TestPad.Business.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 
@@ -68,7 +69,7 @@ namespace LX.TestPad.Controllers
             
             ViewBag.resultId = result.Id;
             ViewBag.questionNumber = userTestQuestion.QuestionNumber;
-            ViewBag.endedAt = result.StartedAt.AddSeconds(test.TestDuration).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
+            ViewBag.endedAt = result.StartedAt.AddSeconds(Mapper.FromMinutesToSeconds(test.TestDuration)).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
             return View(question);
         }
 

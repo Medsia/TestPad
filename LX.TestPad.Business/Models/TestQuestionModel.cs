@@ -8,5 +8,7 @@
 
         public TestModel TestModel { get; set; }
         public QuestionWithAnswersModel QuestionWithAnswersModel {get; set; }
+        public TestModel Test { get; set; }
+        public QuestionModel Question { get; set; }
     }
 }

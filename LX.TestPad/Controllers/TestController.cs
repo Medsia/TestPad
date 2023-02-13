@@ -14,6 +14,7 @@ namespace LX.TestPad.Controllers
         private readonly IQuestionService _questionService;
         private readonly IResultAnswerService _resultAnswerService;
 
+        private const string questionNumberKey = "questionNumber";
         public TestController(ITestQuestionService testQuestionService, ITestService testService,
             IResultService resultService, IQuestionService questionService, IResultAnswerService resultAnswerService)
         {
@@ -31,8 +32,10 @@ namespace LX.TestPad.Controllers
             return View(tests);
         }
 
+        [Route("StartTest/{id}")]
         public async Task<IActionResult> EnterUserName(int id)
         {
+            TempData.Clear();
             var test = await _testService.GetByIdAsync(id);
 
             return View(test);
@@ -48,48 +51,67 @@ namespace LX.TestPad.Controllers
                 UserName = resultModel.UserName,
                 UserSurname = resultModel.UserSurname,
                 Score = 0,
+                IsCalculated = false,
                 StartedAt = DateTime.Now.ToUniversalTime(),
                 FinishedAt = DateTime.MinValue
             });
-
-            return RedirectToAction(nameof(Question), new UserTestQuestion { ResultId = emptyUserResult.Id });
+            TempData[questionNumberKey] = 0;
+            return RedirectToAction(nameof(Question), new { resultId = emptyUserResult.Id });
         }
 
-        public async Task<IActionResult> Question(UserTestQuestion userTestQuestion)
+        [Route("{resultId}")]
+        public async Task<IActionResult> Question(int resultId)
         {
-            var result = await _resultService.GetByIdAsync(userTestQuestion.ResultId);
-            var testQuestions = await _testQuestionService.GetAllByTestIdAsync(result.TestId);
+            if (!TempData.ContainsKey(questionNumberKey))
+            {
+                RedirectToAction(nameof(Index));
+            }
+            var result = await _resultService.GetByIdAsync(resultId);
+            var testQuestions = await _testQuestionService.GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(result.TestId);
+            int questionNumber = (int)TempData[questionNumberKey];
 
-            if (userTestQuestion.QuestionNumber >= testQuestions.Count)
-                return RedirectToAction(nameof(Result));
+            if (questionNumber >= testQuestions.Count)
+            {
+                TempData.Clear();
+                return RedirectToAction(nameof(Result), new { resultId = result.Id });
+            }
 
-            var question = await _questionService.
-                GetByIdIcludingAnswersWithoutIsCorrectAsync(testQuestions[userTestQuestion.QuestionNumber].QuestionId);
-            var test = await _testService.GetByIdAsync(result.TestId);
+            TempData[questionNumberKey] = questionNumber;
             
             ViewBag.resultId = result.Id;
-            ViewBag.questionNumber = userTestQuestion.QuestionNumber;
-            ViewBag.endedAt = result.StartedAt.AddSeconds(Mapper.FromMinutesToSeconds(test.TestDuration)).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
-            return View(question);
+            ViewBag.endedAt = result.StartedAt.AddSeconds(Mapper.FromMinutesToSeconds(testQuestions.First().Test.TestDuration)).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
+            return View(testQuestions[questionNumber].Question);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendUserAnswer(UserAnswerModel UserAnswerModel)
         {
+            if (!TempData.ContainsKey(questionNumberKey))
+            {
+                RedirectToAction(nameof(Index));
+            }
+            int questionNumber = (int)TempData[questionNumberKey];
+            TempData[questionNumberKey] = ++questionNumber;
+
             await _resultAnswerService.AddUserResultAnswersAsync(UserAnswerModel.ResultId,
                 UserAnswerModel.AnswersIds);
-            return RedirectToAction(nameof(Question), new UserTestQuestion
-            {
-                ResultId = UserAnswerModel.ResultId,
-                QuestionNumber = UserAnswerModel.QuestionNumber + 1
-            });
+
+            return RedirectToAction(nameof(Question), new { resultId = UserAnswerModel.ResultId });
         }
 
-        [Route("Result")]
-        public IActionResult Result()
+
+        [HttpGet]
+        public async Task<IActionResult> Result(int resultId, bool isExpired)
         {
-            return View();
+            ViewBag.ResultId = resultId;
+            ViewBag.IsExpired = isExpired ? 1: 0;
+
+            var result = await _resultService.GetByIdAndCalculateAsync(resultId);
+
+            ViewBag.TestData = await _testService.GetByIdAsync(result.TestId);
+
+            return View("Result", result);
         }
     }
 }

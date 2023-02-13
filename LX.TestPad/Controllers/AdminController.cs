@@ -1,6 +1,7 @@
 using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
 using LX.TestPad.Authorization;
+using LX.TestPad.Business.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,29 +14,32 @@ namespace LX.TestPad.Controllers
         private readonly ITestService _testService;
         private readonly IQuestionService _questionService;
         private readonly IAnswerService _answerService;
-
+        private readonly IResultService _resultService;
         public AdminController(ITestQuestionService testQuestionService, ITestService testService,
-            IQuestionService questionService, IAnswerService answerService)
+            IQuestionService questionService, IAnswerService answerService, IResultService resultService)
         {
             _testQuestionService = testQuestionService;
             _testService = testService;
             _questionService = questionService;
             _answerService = answerService;
+            _resultService = resultService;
         }
 
         public async Task<IActionResult> Index()
         {
             var tests = await _testService.GetAllAsync();
-
+            
             return View(tests);
         }
         public IActionResult ExistingQuestions(int testId)
         {
             return View(testId);
         }
-        public IActionResult TestResults()
+
+        public async Task<IActionResult> TestResults()
         {
-            return View();
+            var results = await _resultService.GetAllIncludeTestAsync();
+            return View(results);
         }
 
         public IActionResult ShowTest()

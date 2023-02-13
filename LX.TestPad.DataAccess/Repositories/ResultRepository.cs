@@ -7,12 +7,12 @@ namespace LX.TestPad.DataAccess.Repositories
     public class ResultRepository : IResultRepository
     {
         private readonly DataContext dbContext;
-        
+
         public ResultRepository(DataContext dbContext)
         {
             this.dbContext = dbContext;
         }
-        
+
         public async Task<Result> CreateAsync(Result result)
         {
             await dbContext.Results.AddAsync(result);
@@ -61,6 +61,11 @@ namespace LX.TestPad.DataAccess.Repositories
         {
             dbContext.Results.Update(result);
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<Result>> GetAllIncludeTestAsync()
+        {
+            return await dbContext.Results.Include(x => x.Test).ToListAsync();
         }
     }
 }

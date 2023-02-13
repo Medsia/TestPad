@@ -6,6 +6,8 @@ namespace LX.TestPad.DataAccess.Interfaces
     {
         Task<TestQuestion> GetSingleOrDefaultAsync(int testId, int questionId);
         Task<List<TestQuestion>> GetAllByTestIdAsync(int testId);
+        Task<List<TestQuestion>> GetAllByTestIdIncludeQuestionsAsync(int testId);
+        Task<List<TestQuestion>> GetAllByTestIdIncludeQuestionAndAnswersAsync(int testId);
         Task<List<TestQuestion>> GetAllByQuestionIdAsync(int QuestionId);
 
         Task DeleteSingleAsync(int testQuestionId);

@@ -74,5 +74,10 @@ namespace LX.TestPad.DataAccess.Repositories
             dbContext.Answers.Update(answer);
             await dbContext.SaveChangesAsync();
         }
+
+        public async Task<List<Answer>> GetAllCorrectByQuestionIdAsync(int questionId)
+        {
+            return await dbContext.Answers.Where(x => x.QuestionId == questionId && x.IsCorrect).ToListAsync();
+        }
     }
 }

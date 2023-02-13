@@ -25,13 +25,13 @@
 
                 <h1 class="my-3" style="font-size: 22px;">Test: @test.Name</h1>
                 <p class="my-3" style="font-size: 18px;">Description: @test.Description</p>
-                <p class="mt-3 mb-5" style="font-size: 18px;">Duration: @testDuration.TimeOfDay.Hours:@testDuration.TimeOfDay.Minutes:@testDuration.TimeOfDay.Seconds</p>
+                    <p class="mt-3 mb-5" style="font-size: 18px;">Duration: @testDuration.ToString("HH:mm:ss")</p>
             }
 
             <h1 class="mt-5 mb-3" style="font-size: 22px;">@Model.UserName @Model.UserSurname</h1>
             <p class="my-3" style="font-size: 18px;">Test started: @Model.StartedAt</p>
             <p class="my-3" style="font-size: 18px;">Test finished: @Model.FinishedAt</p>
-            <p class="my-3" style="font-size: 18px;">Time spent: @time.Hours:@time.Minutes:@time.Seconds</p>
+            <p class="my-3" style="font-size: 18px;">Time spent: @time.ToString(@"hh\:mm\:ss")</p>
         </div>
     
         <div class="col-6 text-center">

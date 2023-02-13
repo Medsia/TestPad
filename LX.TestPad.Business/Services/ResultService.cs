@@ -27,7 +27,6 @@ namespace LX.TestPad.Business.Services
 
         public async Task<List<ResultModel>> GetAllAsync()
         {
-
             var items = await _resultRepository.GetAllAsync();
 
             return items.Select(Mapper.ResultToModel).ToList();

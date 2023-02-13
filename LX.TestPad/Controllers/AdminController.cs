@@ -1,5 +1,6 @@
 using LX.TestPad.Authorization;
 using LX.TestPad.Business.Interfaces;
+using LX.TestPad.Business.Models;
 using LX.TestPad.Business.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,9 @@ namespace LX.TestPad.Controllers
 
         public async Task<IActionResult> TestResults()
         {
+            var tests = await _testService.GetAllAsync();
             var results = await _resultService.GetAllAsync();
+            ViewBag.tests = tests;
             return View(results);
         }
 

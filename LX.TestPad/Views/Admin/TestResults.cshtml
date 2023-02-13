@@ -1,19 +1,15 @@
 ﻿@model List<LX.TestPad.Business.Models.ResultModel>
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var tests = new List<LX.TestPad.Business.Models.TestModel>();
+    tests = @ViewBag.tests;
 }
-@{
 
-    <form class="m-lg-5 text-lg-center" action="@Url.Action("SearchResult", "Admin")" method="get">
-        <input class="m-lg-0" type="search" style="width: 200px" maxlength="50" name="query" placeholder="Search Result" />
-        <button class="btn btn-primary" type="submit">Search</button>
-    </form>
-}
 <table class="table">
     <thead>
         <tr>
             <th>
-                <div class="text-center">Test id</div>
+                <div class="text-center">Test name</div>
             </th>
             <th>
                 <div class="text-center">UserName</div>
@@ -38,7 +34,7 @@
 
             <tr class="box-shadow">
                 <td>
-                    <div class="text-center">@result.TestId</div>
+                    <div class="text-center">@tests.Single(x => x.Id == @result.TestId).Name</div>
                 </td>
                 <td>
                     <div class="text-center">@result.UserName @result.UserSurname</div>

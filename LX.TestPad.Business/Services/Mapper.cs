@@ -23,6 +23,8 @@ namespace LX.TestPad.Business.Services
             {
                 Id = entity.Id,
                 Text = entity.Text,
+                Answers = entity.Answers.Select(Mapper.AnswerToModel)
+                        .ToList()
             };
         }
         public static AnswerModel AnswerToModel(Answer entity)
@@ -127,6 +129,9 @@ namespace LX.TestPad.Business.Services
                 Id = entity.Id,
                 TestId = entity.TestId,
                 QuestionId = entity.QuestionId,
+                Test = TestToModel(entity.Test),
+                Question = QuestionToModel(entity.Question),
+                
             };
         }
         public static QuestionWithAnswersModel MapQuestionWithAnswers(Question questionEntity, List<AnswerModel> answerEntities)
@@ -146,6 +151,14 @@ namespace LX.TestPad.Business.Services
                 answer.IsCorrect = null;
             }
             return questionWithAnswers;
+        }
+        public static List<Answer> AnswersToAnswersWithoutIsCorrect(List<Answer> answers)
+        {
+            foreach (var answer in answers)
+            {
+                answer.IsCorrect = false;
+            }
+            return answers;
         }
     }
 }

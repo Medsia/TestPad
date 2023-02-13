@@ -1,8 +1,6 @@
 ﻿@model List<LX.TestPad.Business.Models.ResultModel>
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    var tests = new List<LX.TestPad.Business.Models.TestModel>();
-    tests = @ViewBag.tests;
 }
 
 <table class="table">
@@ -34,7 +32,7 @@
 
             <tr class="box-shadow">
                 <td>
-                    <div class="text-center">@tests.Single(x => x.Id == @result.TestId).Name</div>
+                    <div class="text-center">@result.Test.Name</div>
                 </td>
                 <td>
                     <div class="text-center">@result.UserName @result.UserSurname</div>

@@ -31,9 +31,7 @@ namespace LX.TestPad.Controllers
 
         public async Task<IActionResult> TestResults()
         {
-            var tests = await _testService.GetAllAsync();
-            var results = await _resultService.GetAllAsync();
-            ViewBag.tests = tests;
+            var results = await _resultService.GetAllIncludeTestAsync();
             return View(results);
         }
 

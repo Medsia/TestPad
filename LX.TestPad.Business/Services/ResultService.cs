@@ -32,6 +32,13 @@ namespace LX.TestPad.Business.Services
             return items.Select(Mapper.ResultToModel).ToList();
         }
 
+        public async Task<List<ResultModel>> GetAllIncludeTestAsync()
+        {
+            var items = await _resultRepository.GetAllIncludeTestAsync();
+
+            return items.Select(Mapper.ResultToModel).ToList();
+        }
+
         public async Task<List<ResultModel>> GetAllByTestIdAsync(int testId)
         {
             ExceptionChecker.SQLKeyIdCheck(testId);

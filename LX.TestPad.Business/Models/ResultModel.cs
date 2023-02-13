@@ -1,4 +1,6 @@
-﻿namespace LX.TestPad.Business.Models
+﻿using LX.TestPad.DataAccess.Entities;
+
+namespace LX.TestPad.Business.Models
 {
     public class ResultModel
     {
@@ -9,5 +11,6 @@
         public double Score { get; set; }
         public DateTime StartedAt { get; set; }
         public DateTime FinishedAt { get; set; }
+        public TestModel Test { get; set; }
     }
 }

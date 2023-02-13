@@ -109,8 +109,7 @@ namespace LX.TestPad.Business.Services
             var result = await _resultRepository.GetByIdAsync(resultId);
             var testDuration = (await _testRepository.GetByIdAsync(result.TestId)).TestDuration;
 
-            var test = (finishedAt - result.StartedAt).TotalSeconds;
-            if (test >= testDuration)
+            if ((finishedAt - result.StartedAt).TotalSeconds >= testDuration)
             {
                 finishedAt = result.StartedAt;
                 finishedAt = finishedAt.AddSeconds(testDuration);

@@ -1,6 +1,8 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
+using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace LX.TestPad.Business.Services
 {
@@ -21,6 +23,20 @@ namespace LX.TestPad.Business.Services
             var item = await _resultRepository.GetByIdAsync(id);
 
             return Mapper.ResultToModel(item);
+        }
+
+        public async Task<List<ResultModel>> GetAllAsync()
+        {
+            var items = await _resultRepository.GetAllAsync();
+
+            return items.Select(Mapper.ResultToModel).ToList();
+        }
+
+        public async Task<List<ResultModel>> GetAllIncludeTestAsync()
+        {
+            var items = await _resultRepository.GetAllIncludeTestAsync();
+
+            return items.Select(Mapper.ResultToModel).ToList();
         }
 
         public async Task<List<ResultModel>> GetAllByTestIdAsync(int testId)

@@ -46,6 +46,18 @@ namespace LX.TestPad.Business.Services
             return items.Select(Mapper.TestQuestionToModel)
                         .ToList();
         }
+        public async Task<List<TestQuestionModel>> GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(int testId)
+        {
+            ExceptionChecker.SQLKeyIdCheck(testId);
+
+            var testQuestions = await _testQuestionRepository.GetAllByTestIdIncludeQuestionAndAnswersAsync(testId);
+            foreach(var testQuestion in testQuestions)
+            {
+                Mapper.AnswersToAnswersWithoutIsCorrect(testQuestion.Question.Answers);
+            }
+            return testQuestions.Select(Mapper.TestQuestionToModel)
+                        .ToList();
+        }
 
         private async Task<int> GetNewQuestionSequenceNumberByTestIdAsync(int testId)
         {

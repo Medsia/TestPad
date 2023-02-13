@@ -23,6 +23,8 @@ namespace LX.TestPad.Business.Services
             {
                 Id = entity.Id,
                 Text = entity.Text,
+                Answers = entity.Answers.Select(Mapper.AnswerToModel)
+                        .ToList()
             };
         }
         public static AnswerModel AnswerToModel(Answer entity)
@@ -49,6 +51,7 @@ namespace LX.TestPad.Business.Services
                 UserSurname = userSurname,
                 StartedAt = entity.StartedAt,
                 FinishedAt = entity.FinishedAt,
+                Test = TestToModel(entity.Test),
             };
         }
         public static ResultAnswerModel ResultAnswerToModel(ResultAnswer entity)
@@ -98,12 +101,13 @@ namespace LX.TestPad.Business.Services
             return new Result
             {
                 Id = model.Id,
-                UserName = model.UserName +' '+ model.UserSurname,
+                UserName = model.UserName + ' ' + model.UserSurname,
                 Score = model.Score,
                 IsCalculated = model.IsCalculated,
                 TestId = model.TestId,
                 StartedAt = model.StartedAt,
                 FinishedAt = model.FinishedAt,
+                Test = TestModelToEntity(model.Test),
             };
         }
         public static ResultAnswer ResultAnswerModelToEntity(ResultAnswerModel model)
@@ -127,6 +131,9 @@ namespace LX.TestPad.Business.Services
                 Id = entity.Id,
                 TestId = entity.TestId,
                 QuestionId = entity.QuestionId,
+                Test = TestToModel(entity.Test),
+                Question = QuestionToModel(entity.Question),
+                
             };
         }
         public static QuestionWithAnswersModel MapQuestionWithAnswers(Question questionEntity, List<AnswerModel> answerEntities)
@@ -141,11 +148,19 @@ namespace LX.TestPad.Business.Services
 
         public static QuestionWithAnswersModel QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(QuestionWithAnswersModel questionWithAnswers)
         {
-            foreach(var answer in questionWithAnswers.Answers)
+            foreach (var answer in questionWithAnswers.Answers)
             {
                 answer.IsCorrect = null;
             }
             return questionWithAnswers;
+        }
+        public static List<Answer> AnswersToAnswersWithoutIsCorrect(List<Answer> answers)
+        {
+            foreach (var answer in answers)
+            {
+                answer.IsCorrect = false;
+            }
+            return answers;
         }
     }
 }

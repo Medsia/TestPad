@@ -37,6 +37,23 @@ namespace LX.TestPad.Business.Services
                 QuestionId = entity.QuestionId,
             };
         }
+        public static ResultWithTestModel ResultWithTestToModel(Result entity)
+        {
+            var userName = entity.UserName.Substring(0, entity.UserName.IndexOf(' '));
+            var userSurname = entity.UserName.Substring(entity.UserName.IndexOf(' ') + 1);
+            return new ResultWithTestModel
+            {
+                Id = entity.Id,
+                Score = entity.Score,
+                IsCalculated = entity.IsCalculated,
+                TestId = entity.TestId,
+                UserName = userName,
+                UserSurname = userSurname,
+                StartedAt = entity.StartedAt,
+                FinishedAt = entity.FinishedAt,
+                Test = TestToModel(entity.Test),
+            };
+        }
         public static ResultModel ResultToModel(Result entity)
         {
             var userName = entity.UserName.Substring(0, entity.UserName.IndexOf(' '));
@@ -51,9 +68,9 @@ namespace LX.TestPad.Business.Services
                 UserSurname = userSurname,
                 StartedAt = entity.StartedAt,
                 FinishedAt = entity.FinishedAt,
-                Test = TestToModel(entity.Test),
             };
         }
+
         public static ResultAnswerModel ResultAnswerToModel(ResultAnswer entity)
         {
             return new ResultAnswerModel
@@ -96,7 +113,7 @@ namespace LX.TestPad.Business.Services
                 QuestionId = model.QuestionId,
             };
         }
-        public static Result ResultModelToEntity(ResultModel model)
+        public static Result ResultModelToEntity(ResultWithTestModel model)
         {
             return new Result
             {
@@ -108,6 +125,19 @@ namespace LX.TestPad.Business.Services
                 StartedAt = model.StartedAt,
                 FinishedAt = model.FinishedAt,
                 Test = TestModelToEntity(model.Test),
+            };
+        }
+        public static Result ResultModelToEntity(ResultModel model)
+        {
+            return new Result
+            {
+                Id = model.Id,
+                UserName = model.UserName + ' ' + model.UserSurname,
+                Score = model.Score,
+                IsCalculated = model.IsCalculated,
+                TestId = model.TestId,
+                StartedAt = model.StartedAt,
+                FinishedAt = model.FinishedAt,
             };
         }
         public static ResultAnswer ResultAnswerModelToEntity(ResultAnswerModel model)
@@ -133,7 +163,7 @@ namespace LX.TestPad.Business.Services
                 QuestionId = entity.QuestionId,
                 Test = TestToModel(entity.Test),
                 Question = QuestionToModel(entity.Question),
-                
+
             };
         }
         public static QuestionWithAnswersModel MapQuestionWithAnswers(Question questionEntity, List<AnswerModel> answerEntities)

@@ -15,7 +15,6 @@ namespace LX.TestPad.Business.Services
         private readonly ITestRepository _testRepository;
         private readonly IQuestionRepository _questionRepository;
 
-
         public ResultService(IResultRepository resultRepository, IResultAnswerRepository resultAnswerRepository,
                                 ITestQuestionRepository testQuestionRepository, IAnswerRepository answerRepository,
                                 ITestRepository testRepository, IQuestionRepository questionRepository)
@@ -54,11 +53,11 @@ namespace LX.TestPad.Business.Services
             return items.Select(Mapper.ResultToModel).ToList();
         }
 
-        public async Task<List<ResultModel>> GetAllIncludeTestAsync()
+        public async Task<List<ResultWithTestModel>> GetAllIncludeTestAsync()
         {
             var items = await _resultRepository.GetAllIncludeTestAsync();
 
-            return items.Select(Mapper.ResultToModel).ToList();
+            return items.Select(Mapper.ResultWithTestToModel).ToList();
         }
 
         public async Task<List<ResultModel>> GetAllByTestIdAsync(int testId)

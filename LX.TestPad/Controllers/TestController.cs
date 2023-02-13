@@ -65,7 +65,7 @@ namespace LX.TestPad.Controllers
                 RedirectToAction(nameof(Index));
             }
             var result = await _resultService.GetByIdAsync(resultId);
-            var testQuestions = await _testQuestionService.GetAllByTestIdAsync(result.TestId);
+            var testQuestions = await _testQuestionService.GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(result.TestId);
             int questionNumber = (int)TempData[questionNumberKey];
 
             if (questionNumber >= testQuestions.Count)
@@ -75,14 +75,10 @@ namespace LX.TestPad.Controllers
             }
 
             TempData[questionNumberKey] = questionNumber;
-
-            var question = await _questionService.
-                GetByIdIcludingAnswersWithoutIsCorrectAsync(testQuestions[questionNumber].QuestionId);
-            var test = await _testService.GetByIdAsync(result.TestId);
             
             ViewBag.resultId = result.Id;
-            ViewBag.endedAt = result.StartedAt.AddSeconds(test.TestDuration).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
-            return View(question);
+            ViewBag.endedAt = result.StartedAt.AddSeconds(testQuestions.First().Test.TestDuration).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
+            return View(testQuestions[questionNumber].Question);
         }
 
         [HttpPost]

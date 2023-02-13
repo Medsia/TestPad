@@ -99,6 +99,8 @@ namespace LX.TestPad.Controllers
                 result.FinishedAt = await _resultService.CalculateFinishTime(resultId);
             }
 
+            ViewBag.TestData = await _testService.GetByIdAsync(result.TestId);
+
             return View("Result", result);
         }
     }

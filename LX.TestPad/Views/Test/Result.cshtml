@@ -4,8 +4,8 @@
 @{
     ViewData["Title"] = "Test result";
 
-    var testScore = Math.Round(@Model.Score * 100, 1);
-    var time = @Model.FinishedAt - @Model.StartedAt;
+    var testScore = Math.Round(Model.Score * 100, 1);
+    var time = Model.FinishedAt - Model.StartedAt;
 
     var test = ViewBag.TestData;
 }

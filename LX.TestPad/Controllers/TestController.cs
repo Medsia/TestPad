@@ -46,7 +46,8 @@ namespace LX.TestPad.Controllers
                 TestId = resultModel.TestId,
                 UserName = resultModel.UserName,
                 UserSurname = resultModel.UserSurname,
-                Score = -1,
+                Score = 0,
+                IsCalculated = false,
                 StartedAt = DateTime.Now.ToUniversalTime(),
                 FinishedAt = DateTime.MinValue
             });
@@ -93,11 +94,6 @@ namespace LX.TestPad.Controllers
             ViewBag.IsExpired = isExpired ? 1: 0;
 
             var result = await _resultService.GetByIdAsync(resultId);
-            if (result.Score < 0)
-            {
-                result.Score = await _resultService.CalculateScore(resultId);
-                result.FinishedAt = await _resultService.CalculateFinishTime(resultId);
-            }
 
             ViewBag.TestData = await _testService.GetByIdAsync(result.TestId);
 

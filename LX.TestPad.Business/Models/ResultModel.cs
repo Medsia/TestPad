@@ -7,6 +7,7 @@
         public string UserName { get; set; }
         public string UserSurname { get; set; }
         public double Score { get; set; }
+        public bool IsCalculated { get; set; }
         public DateTime StartedAt { get; set; }
         public DateTime FinishedAt { get; set; }
     }

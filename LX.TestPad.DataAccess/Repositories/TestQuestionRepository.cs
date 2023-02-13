@@ -98,5 +98,12 @@ namespace LX.TestPad.DataAccess.Repositories
         {
             return await dbContext.TestQuestion.SingleOrDefaultAsync(x => x.TestId == testId && x.QuestionId == questionId);
         }
+
+        public async Task<List<TestQuestion>> GetAllByTestIdIncludeQuestionsAsync(int testId)
+        {
+            return await dbContext.TestQuestion.Where(x => x.TestId == testId)
+                                                .Include(t => t.Question)
+                                                .ToListAsync();
+        }
     }
 }

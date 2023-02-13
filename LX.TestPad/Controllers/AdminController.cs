@@ -72,7 +72,7 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> TestQuestions(int testId)
 
         {
-            var testQuestions = await _testQuestionService.GetAllByTestIdIncludedAsync(testId);
+            var testQuestions = await _testQuestionService.GetAllByTestIdIncludeQuestionsWithAnswersAsync(testId);
             ViewBag.TestId = testId;
             return View(testQuestions);
         }

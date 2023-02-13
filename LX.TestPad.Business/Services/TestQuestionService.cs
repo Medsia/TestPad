@@ -49,7 +49,7 @@ namespace LX.TestPad.Business.Services
                         .ToList();
         }
 
-        public async Task<List<TestQuestionModel>> GetAllByTestIdIncludedAsync(int testId)
+        public async Task<List<TestQuestionModel>> GetAllByTestIdIncludeQuestionsWithAnswersAsync(int testId)
         {
             var items = await GetAllByTestIdAsync(testId);
             foreach(var testQuestion in items)

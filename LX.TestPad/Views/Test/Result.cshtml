@@ -4,32 +4,37 @@
 @{
     ViewData["Title"] = "Test result";
 
-    var testScore = @Model.Score;
+    var testScore = Math.Round(@Model.Score * 100, 1);
+
+    var time = @Model.FinishedAt - @Model.StartedAt;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Test Result</h1>
-    <h4 class="display-4">@testScore%</h4>
-</div>
 
-<div class="row">
-    <div class="col-6 my-auto" style="padding-left: 20%">
-        <h1 class="my-3" style="font-size: 22px;">@Model.UserName @Model.UserSurname</h1>
-        <p class="my-3" style="font-size: 18px;">Test started: @Model.StartedAt</p>
-        <p class="my-3" style="font-size: 18px;">Test finished: @Model.FinishedAt</p>
+<div class="border">
+    <div class="text-center border">
+        <h1 class="display-4">Test Result</h1>
     </div>
     
-    <div class="col-6 text-center">
-        <canvas id="pieChart"></canvas>
+    <div class="row" style="margin-top: 5%; margin-bottom: 10%;">
+        <div class="col-6 my-auto" style="padding-left: 20%">
+            <h1 class="my-3" style="font-size: 22px;">@Model.UserName @Model.UserSurname</h1>
+            <p class="my-3" style="font-size: 18px;">Test started: @Model.StartedAt</p>
+            <p class="my-3" style="font-size: 18px;">Test finished: @Model.FinishedAt</p>
+            <p class="my-3" style="font-size: 18px;">Time spent: @time.Hours:@time.Minutes:@time.Seconds</p>
+        </div>
+    
+        <div class="col-6 text-center">
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+    
+    <div class="text-center border">
+        <button class="btn btn-outline-secondary mx-3 my-3" onclick="copyResultLink()">Share result</button>
+        <a class="btn btn-outline-primary mx-3 my-3" href="@Url.Action("Index", "Home")">Restart this test</a>
+        <a class="btn btn-outline-primary mx-3 my-3" href="@Url.Action("Index", "Home")">Back to tests</a>
     </div>
 </div>
 
-
-
-<div class="text-center">
-    <button class="btn btn-outline-secondary mx-3 my-3" onclick="copyResultLink()">Share result</button><br />
-    <a class="btn btn-outline-primary mx-3 my-3" href="@Url.Action("Index", "Home")">Back to tests</a>
-</div>
 
 
 
@@ -44,7 +49,7 @@
         var isTestExpired = @ViewBag.IsExpired;
 
         $(document).ready(function () {
-            var scorePercent = @testScore;
+            var scorePercent = parseFloat('@testScore');
             renderPieChart('pieChart', scorePercent);
 
             if (isTestExpired == 1){
@@ -102,7 +107,6 @@
 
 
 
-        var start_angle = 0;
         var total_value = 100;
 
         function renderPieChart(canvasId, scorePercent){
@@ -123,9 +127,10 @@
             
             var angle = (2 * Math.PI * scorePercent) / total_value;
             drawPieSlice(ctx, centerX, centerY, pieRadius, 0, angle, correctAnswersColor);
-            drawSlicePercentage(chartCanvas, ctx, scorePercent);
-
             drawPieSlice(ctx, centerX, centerY, pieRadius, angle, fillPoint, wrongAnswersColor);
+
+            drawPieSlice(ctx, centerX, centerY, (pieRadius*0.5), 0, fillPoint, 'white');
+            drawSlicePercentage(chartCanvas, ctx, scorePercent);
         }
 
 
@@ -140,17 +145,15 @@
 
 
         function drawSlicePercentage(canvas, ctx, percent){
-			slice_angle = 2 * Math.PI * percent / total_value;
-			var pieRadius = Math.min(canvas.width/2, canvas.height/2);
-			var labelX = canvas.width/2 + (pieRadius / 2) * Math.cos(start_angle + slice_angle/2);
-			var labelY = canvas.height/2 + (pieRadius / 2) * Math.sin(start_angle + slice_angle/2);
-			
-			var labelText = Math.round(100 * percent / total_value);
-			ctx.fillStyle = "white";
-			ctx.font = "bold 20px Arial";
-			ctx.fillText(labelText+"%", labelX, labelY);
+			var labelText = percent+"%";
+            
+            var offset = labelText.length;
+            var labelX = canvas.width/2 - (offset*8);
+			var labelY = canvas.height/2 + 10;
 
-			start_angle += slice_angle;
+			ctx.fillStyle = "black";
+			ctx.font = "bold 30px Arial";
+			ctx.fillText(labelText, labelX, labelY);
         }
 
     </script>

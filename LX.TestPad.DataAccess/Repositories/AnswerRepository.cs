@@ -77,7 +77,7 @@ namespace LX.TestPad.DataAccess.Repositories
 
         public async Task<List<Answer>> GetAllCorrectByQuestionIdAsync(int questionId)
         {
-            return await dbContext.Answers.Where(x => x.QuestionId == questionId && x.IsCorrect == true).ToListAsync();
+            return await dbContext.Answers.Where(x => x.QuestionId == questionId && x.IsCorrect).ToListAsync();
         }
     }
 }

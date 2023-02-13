@@ -1,5 +1,6 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
+using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
 
 namespace LX.TestPad.Business.Services
@@ -74,26 +75,26 @@ namespace LX.TestPad.Business.Services
             await _resultRepository.DeleteManyAsync(ids);
         }
 
-        public async Task<int> CalculateScore(int resultId)
+        public async Task<double> CalculateScore(int resultId)
         {
             ExceptionChecker.SQLKeyIdCheck(resultId);
 
-            int score = 0;
+            double score = 0;
 
             var result = await _resultRepository.GetByIdAsync(resultId);
-            var correctResultAnswersCount = (await _resultAnswerRepository.GetAllCorrectByResultIdAsync(resultId)).Count;
+            var testQuestions = await _testQuestionRepository.GetAllByTestIdAsync(result.TestId);
 
-            var questions = await _testQuestionRepository.GetAllByTestIdAsync(result.TestId);
-
-            int totalCorrectAnswersCount = 0;
-            foreach (var question in questions)
+            foreach (var testQuestion in testQuestions)
             {
-                totalCorrectAnswersCount += (await _answerRepository.GetAllCorrectByQuestionIdAsync(question.Id)).Count;
+                if (await _resultAnswerRepository.IsAnyIncorrectAsync(resultId, testQuestion.Id)) continue;
+
+                int totalCorrectAnswersCount = (await _answerRepository.GetAllCorrectByQuestionIdAsync(testQuestion.QuestionId)).Count;
+                int correctAnswersCount = await _resultAnswerRepository.CountAllCorrectByQuestionIdAsync(resultId, testQuestion.QuestionId);
+                score += (double)correctAnswersCount / totalCorrectAnswersCount;
             }
+            score /= testQuestions.Count;
 
-            score = correctResultAnswersCount * 100 / totalCorrectAnswersCount;
-
-            result.Score = score;
+            result.Score = Math.Round(score, 3);
             await _resultRepository.UpdateAsync(result);
 
             return score;

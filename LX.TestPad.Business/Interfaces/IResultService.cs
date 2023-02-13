@@ -8,7 +8,7 @@ namespace LX.TestPad.Business.Interfaces
         Task<List<ResultModel>> GetAllByTestIdAsync(int testId);
 
 
-        Task<int> CalculateScore(int resultId);
+        Task<double> CalculateScore(int resultId);
         Task<DateTime> CalculateFinishTime(int resultId);
     }
 }

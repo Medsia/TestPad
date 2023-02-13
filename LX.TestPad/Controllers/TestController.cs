@@ -58,6 +58,7 @@ namespace LX.TestPad.Controllers
             return RedirectToAction(nameof(Question), new { resultId = emptyUserResult.Id });
         }
 
+        [Route("[controller]/{resultId:int}")]
         public async Task<IActionResult> Question(int resultId)
         {
             if (!TempData.ContainsKey(questionNumberKey))

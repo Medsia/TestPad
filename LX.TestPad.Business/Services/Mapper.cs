@@ -37,18 +37,15 @@ namespace LX.TestPad.Business.Services
                 QuestionId = entity.QuestionId,
             };
         }
-        public static ResultWithTestModel ResultWithTestToModel(Result entity)
+        public static ResultIncludeTestModel ResultIncludeTestToModel(Result entity)
         {
-            var userName = entity.UserName.Substring(0, entity.UserName.IndexOf(' '));
-            var userSurname = entity.UserName.Substring(entity.UserName.IndexOf(' ') + 1);
-            return new ResultWithTestModel
+            return new ResultIncludeTestModel
             {
                 Id = entity.Id,
                 Score = entity.Score,
                 IsCalculated = entity.IsCalculated,
                 TestId = entity.TestId,
-                UserName = userName,
-                UserSurname = userSurname,
+                UserName = entity.UserName,
                 StartedAt = entity.StartedAt,
                 FinishedAt = entity.FinishedAt,
                 Test = TestToModel(entity.Test),
@@ -113,12 +110,12 @@ namespace LX.TestPad.Business.Services
                 QuestionId = model.QuestionId,
             };
         }
-        public static Result ResultModelToEntity(ResultWithTestModel model)
+        public static Result ResultIncludeTestModelToEntity(ResultIncludeTestModel model)
         {
             return new Result
             {
                 Id = model.Id,
-                UserName = model.UserName + ' ' + model.UserSurname,
+                UserName = model.UserName,
                 Score = model.Score,
                 IsCalculated = model.IsCalculated,
                 TestId = model.TestId,
@@ -163,7 +160,6 @@ namespace LX.TestPad.Business.Services
                 QuestionId = entity.QuestionId,
                 Test = TestToModel(entity.Test),
                 Question = QuestionToModel(entity.Question),
-
             };
         }
         public static QuestionWithAnswersModel MapQuestionWithAnswers(Question questionEntity, List<AnswerModel> answerEntities)

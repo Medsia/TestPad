@@ -53,11 +53,11 @@ namespace LX.TestPad.Business.Services
             return items.Select(Mapper.ResultToModel).ToList();
         }
 
-        public async Task<List<ResultWithTestModel>> GetAllIncludeTestAsync()
+        public async Task<List<ResultIncludeTestModel>> GetAllIncludeTestAsync()
         {
             var items = await _resultRepository.GetAllIncludeTestAsync();
 
-            return items.Select(Mapper.ResultWithTestToModel).ToList();
+            return items.Select(Mapper.ResultIncludeTestToModel).ToList();
         }
 
         public async Task<List<ResultModel>> GetAllByTestIdAsync(int testId)

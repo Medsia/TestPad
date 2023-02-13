@@ -2,7 +2,7 @@
 
 namespace LX.TestPad.Business.Models
 {
-    public class ResultWithTestModel
+    public class ResultIncludeTestModel
     {
         public int Id { get; set; }
         public int TestId { get; set; }

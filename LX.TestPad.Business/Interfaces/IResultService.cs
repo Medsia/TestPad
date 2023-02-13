@@ -8,7 +8,7 @@ namespace LX.TestPad.Business.Interfaces
         Task<List<ResultModel>> GetAllByTestIdAsync(int testId);
         Task<ResultModel> GetByIdAndCalculateAsync(int id);
         Task<List<ResultModel>> GetAllAsync();
-        Task<List<ResultWithTestModel>> GetAllIncludeTestAsync();
+        Task<List<ResultIncludeTestModel>> GetAllIncludeTestAsync();
 
     }
 }

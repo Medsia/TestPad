@@ -35,6 +35,15 @@ namespace LX.TestPad.Business.Services
 
             var item = await _resultRepository.GetByIdAsync(id);
 
+            return Mapper.ResultToModel(item);
+        }
+
+        public async Task<ResultModel> GetByIdAndCalculateAsync(int id)
+        {
+            ExceptionChecker.SQLKeyIdCheck(id);
+
+            var item = await _resultRepository.GetByIdAsync(id);
+
             return await CheckIfCalculated(item);
         }
 

@@ -106,7 +106,7 @@ namespace LX.TestPad.Controllers
             ViewBag.ResultId = resultId;
             ViewBag.IsExpired = isExpired ? 1: 0;
 
-            var result = await _resultService.GetByIdAsync(resultId);
+            var result = await _resultService.GetByIdAndCalculateAsync(resultId);
 
             ViewBag.TestData = await _testService.GetByIdAsync(result.TestId);
 

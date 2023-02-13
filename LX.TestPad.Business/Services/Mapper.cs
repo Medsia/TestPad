@@ -139,11 +139,18 @@ namespace LX.TestPad.Business.Services
 
         public static QuestionWithAnswersModel QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(QuestionWithAnswersModel questionWithAnswers)
         {
-            foreach(var answer in questionWithAnswers.Answers)
+            return new QuestionWithAnswersModel
             {
-                answer.IsCorrect = false;
-            }
-            return questionWithAnswers;
+                Id = questionWithAnswers.Id,
+                Text = questionWithAnswers.Text,
+                Answers = questionWithAnswers.Answers.Select(answer => new AnswerModel
+                {
+                    Id = answer.Id,
+                    QuestionId = answer.QuestionId,
+                    TestId = answer.TestId,
+                    Text = answer.Text,                
+                }).ToList()
+            };
         }
 
         public static int FromMinutesToSeconds(int minutes)

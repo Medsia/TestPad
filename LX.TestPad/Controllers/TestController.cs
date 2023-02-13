@@ -13,6 +13,7 @@ namespace LX.TestPad.Controllers
         private readonly IQuestionService _questionService;
         private readonly IResultAnswerService _resultAnswerService;
 
+        private const string questionNumberKey = "questionNumber";
         public TestController(ITestQuestionService testQuestionService, ITestService testService,
             IResultService resultService, IQuestionService questionService, IResultAnswerService resultAnswerService)
         {
@@ -52,15 +53,20 @@ namespace LX.TestPad.Controllers
                 StartedAt = DateTime.Now.ToUniversalTime(),
                 FinishedAt = DateTime.MinValue
             });
+            TempData[questionNumberKey] = 0;
             return RedirectToAction(nameof(Question), new { resultId = emptyUserResult.Id });
         }
 
         [Route("{resultId}")]
         public async Task<IActionResult> Question(int resultId)
         {
+            if (!TempData.ContainsKey(questionNumberKey))
+            {
+                RedirectToAction(nameof(Index));
+            }
             var result = await _resultService.GetByIdAsync(resultId);
             var testQuestions = await _testQuestionService.GetAllByTestIdAsync(result.TestId);
-            int questionNumber = (int?)TempData["questionNumber"] ?? 0;
+            int questionNumber = (int)TempData[questionNumberKey];
 
             if (questionNumber >= testQuestions.Count)
             {
@@ -68,7 +74,7 @@ namespace LX.TestPad.Controllers
                 return RedirectToAction(nameof(Result));
             }
 
-            TempData["questionNumber"] = questionNumber;
+            TempData[questionNumberKey] = questionNumber;
 
             var question = await _questionService.
                 GetByIdIcludingAnswersWithoutIsCorrectAsync(testQuestions[questionNumber].QuestionId);
@@ -83,8 +89,12 @@ namespace LX.TestPad.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendUserAnswer(UserAnswerModel UserAnswerModel)
         {
-            int questionNumber = (int)TempData["questionNumber"];
-            TempData["questionNumber"] = ++questionNumber;
+            if (!TempData.ContainsKey(questionNumberKey))
+            {
+                RedirectToAction(nameof(Index));
+            }
+            int questionNumber = (int)TempData[questionNumberKey];
+            TempData[questionNumberKey] = ++questionNumber;
 
             await _resultAnswerService.AddUserResultAnswersAsync(UserAnswerModel.ResultId,
                 UserAnswerModel.AnswersIds);

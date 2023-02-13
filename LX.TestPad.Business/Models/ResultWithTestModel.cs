@@ -2,7 +2,7 @@
 
 namespace LX.TestPad.Business.Models
 {
-    public class ResultModel
+    public class ResultIncludeTestModel
     {
         public int Id { get; set; }
         public int TestId { get; set; }
@@ -12,5 +12,6 @@ namespace LX.TestPad.Business.Models
         public bool IsCalculated { get; set; }
         public DateTime StartedAt { get; set; }
         public DateTime FinishedAt { get; set; }
+        public TestModel Test { get; set; }
     }
 }

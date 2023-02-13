@@ -59,7 +59,7 @@ namespace LX.TestPad.Controllers
             return RedirectToAction(nameof(Question), new { resultId = emptyUserResult.Id });
         }
 
-        [Route("{resultId}")]
+        [Route("[controller]/{resultId:int}")]
         public async Task<IActionResult> Question(int resultId)
         {
             if (!TempData.ContainsKey(questionNumberKey))
@@ -77,7 +77,7 @@ namespace LX.TestPad.Controllers
             }
 
             TempData[questionNumberKey] = questionNumber;
-            
+
             ViewBag.resultId = result.Id;
             ViewBag.endedAt = result.StartedAt.AddSeconds(Mapper.FromMinutesToSeconds(testQuestions.First().Test.TestDuration)).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
             return View(testQuestions[questionNumber].Question);
@@ -105,9 +105,9 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> Result(int resultId, bool isExpired)
         {
             ViewBag.ResultId = resultId;
-            ViewBag.IsExpired = isExpired ? 1: 0;
+            ViewBag.IsExpired = isExpired ? 1 : 0;
 
-            var result = await _resultService.GetByIdAndCalculateAsync(resultId);
+            ResultModel result = await _resultService.GetByIdAndCalculateAsync(resultId);
 
             ViewBag.TestData = await _testService.GetByIdAsync(result.TestId);
 

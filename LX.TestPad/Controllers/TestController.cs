@@ -50,6 +50,7 @@ namespace LX.TestPad.Controllers
                 UserName = resultModel.UserName,
                 UserSurname = resultModel.UserSurname,
                 Score = 0,
+                IsCalculated = false,
                 StartedAt = DateTime.Now.ToUniversalTime(),
                 FinishedAt = DateTime.MinValue
             });
@@ -71,7 +72,7 @@ namespace LX.TestPad.Controllers
             if (questionNumber >= testQuestions.Count)
             {
                 TempData.Clear();
-                return RedirectToAction(nameof(Result));
+                return RedirectToAction(nameof(Result), new { resultId = result.Id });
             }
 
             TempData[questionNumberKey] = questionNumber;
@@ -98,10 +99,18 @@ namespace LX.TestPad.Controllers
             return RedirectToAction(nameof(Question), new { resultId = UserAnswerModel.ResultId });
         }
 
-        [Route("Result")]
-        public IActionResult Result()
+
+        [HttpGet]
+        public async Task<IActionResult> Result(int resultId, bool isExpired)
         {
-            return View();
+            ViewBag.ResultId = resultId;
+            ViewBag.IsExpired = isExpired ? 1: 0;
+
+            var result = await _resultService.GetByIdAsync(resultId);
+
+            ViewBag.TestData = await _testService.GetByIdAsync(result.TestId);
+
+            return View("Result", result);
         }
     }
 }

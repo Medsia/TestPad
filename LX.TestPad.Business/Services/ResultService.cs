@@ -9,10 +9,23 @@ namespace LX.TestPad.Business.Services
     public class ResultService : IResultService
     {
         private readonly IResultRepository _resultRepository;
+        private readonly IResultAnswerRepository _resultAnswerRepository;
+        private readonly ITestQuestionRepository _testQuestionRepository;
+        private readonly IAnswerRepository _answerRepository;
+        private readonly ITestRepository _testRepository;
+        private readonly IQuestionRepository _questionRepository;
 
-        public ResultService(IResultRepository resultRepository)
+
+        public ResultService(IResultRepository resultRepository, IResultAnswerRepository resultAnswerRepository,
+                                ITestQuestionRepository testQuestionRepository, IAnswerRepository answerRepository,
+                                ITestRepository testRepository, IQuestionRepository questionRepository)
         {
             _resultRepository = resultRepository;
+            _resultAnswerRepository = resultAnswerRepository;
+            _testQuestionRepository = testQuestionRepository;
+            _answerRepository = answerRepository;
+            _testRepository = testRepository;
+            _questionRepository = questionRepository;
         }
 
 
@@ -22,7 +35,7 @@ namespace LX.TestPad.Business.Services
 
             var item = await _resultRepository.GetByIdAsync(id);
 
-            return Mapper.ResultToModel(item);
+            return await CheckIfCalculated(item);
         }
 
         public async Task<List<ResultModel>> GetAllAsync()
@@ -77,6 +90,64 @@ namespace LX.TestPad.Business.Services
             ExceptionChecker.ListOfSQLKeyIdsCheck(ids);
 
             await _resultRepository.DeleteManyAsync(ids);
+        }
+
+
+        private async Task<bool> IsAnyIncorrectResultAnswerAsync(List<ResultAnswer> resultAnswers, Question question)
+        {
+            throw new NotImplementedException();
+        }
+        private async Task<int> CountAllCorrectResultAnswersByQuestionIdAsync(List<ResultAnswer> resultAnswers, Question question)
+        {
+            throw new NotImplementedException();
+        }
+        private async Task<double> CalculateScore(Result result)
+        {
+            double score = 0;
+
+            var resultAnswers = await _resultAnswerRepository.GetAllByResultIdAsync(result.Id);
+            var answers = await _answerRepository.GetAllAsync();
+            var questions = (await _testQuestionRepository.GetAllByTestIdIncludeQuestionsAsync(result.TestId)).Select(x => x.Question);
+
+            foreach (var question in questions)
+            {
+                if (await _resultAnswerRepository.IsAnyIncorrectAsync(result.Id, question.Id)) continue;
+
+                int totalCorrectAnswersCount = (answers.Where(x => x.QuestionId == question.Id && x.IsCorrect)).Count();
+                int correctAnswersCount = await _resultAnswerRepository.CountAllCorrectByQuestionIdAsync(result.Id, question.Id);
+
+                score += (double)correctAnswersCount / totalCorrectAnswersCount;
+            }
+            score /= questions.Count();
+
+            return Math.Round(score, 3);
+        }
+
+        private async Task<DateTime> CalculateFinishTime(Result result)
+        {
+            var finishedAt = DateTime.Now.ToUniversalTime();
+            var testDuration = (await _testRepository.GetByIdAsync(result.TestId)).TestDuration;
+
+            if ((finishedAt - result.StartedAt).TotalSeconds >= testDuration)
+            {
+                finishedAt = result.StartedAt.AddSeconds(testDuration);
+            }
+
+            return finishedAt;
+        }
+
+        public async Task<ResultModel> CheckIfCalculated(Result result)
+        {
+            if (!result.IsCalculated)
+            {
+                result.Score = await CalculateScore(result);
+                result.FinishedAt = await CalculateFinishTime(result);
+                result.IsCalculated = true;
+
+                await _resultRepository.UpdateAsync(result);
+            }
+
+            return Mapper.ResultToModel(result);
         }
     }
 }

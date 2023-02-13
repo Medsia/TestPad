@@ -1,33 +1,123 @@
-﻿@{
-    var answers = new[]
-    {
-    new {Name="Yes"},
-    new {Name="No"},
-    };
+﻿@using LX.TestPad.Business.Models;
+@model ResultModel
 
-    var questions = new[]
-    {
-    new {Text="What language do people speak in Australia?", Answer = "Yes"},
-    new {Text="What?", Answer = "No"},
-    new {Text="What language do people speak?", Answer = "Yes"},
-    new {Text="What is Australia?", Answer = "No"},
-    new {Text="What people in Australia?", Answer = "Yes"},
-    new {Text="What is australia s form of government?", Answer = "No"},
-    };
+@{
+    ViewData["Title"] = "Test result";
 
+    var testScore = Math.Round(Model.Score * 100, 1);
+    var time = Model.FinishedAt - Model.StartedAt;
 
+    var test = ViewBag.TestData;
 }
-<div class="text-center">
-    <h1 class="display-4">Test Result</h1>
-    <h4 class="display-4">60%</h4>
+
+
+<div class="border">
+    <div class="text-center border">
+        <h1 class="display-4">Test Result</h1>
+    </div>
+    
+    <div class="row" style="margin-top: 5%; margin-bottom: 10%;">
+        <div class="col-6 my-auto" style="padding-left: 10%">
+            @if (test != null)
+            {
+                var testDuration = new DateTime();
+                testDuration = testDuration.AddSeconds(@test.TestDuration);
+
+                <h1 class="my-3" style="font-size: 22px;">Test: @test.Name</h1>
+                <p class="my-3" style="font-size: 18px;">Description: @test.Description</p>
+                    <p class="mt-3 mb-5" style="font-size: 18px;">Duration: @testDuration.ToString("HH:mm:ss")</p>
+            }
+
+            <h1 class="mt-5 mb-3" style="font-size: 22px;">@Model.UserName @Model.UserSurname</h1>
+            <p class="my-3" style="font-size: 18px;">Test started: @Model.StartedAt</p>
+            <p class="my-3" style="font-size: 18px;">Test finished: @Model.FinishedAt</p>
+            <p class="my-3" style="font-size: 18px;">Time spent: @time.ToString(@"hh\:mm\:ss")</p>
+        </div>
+    
+        <div class="col-6 text-center">
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+    
+    <div class="text-center border">
+        <button class="btn btn-outline-secondary mx-3 my-3" onclick="copyResultLink()">Share result</button>
+        @if (test != null)
+        {
+            <a class="btn btn-outline-primary mx-3 my-3" href="@Url.Action("EnterUserName", "Test", new { id = test.Id})">Restart this test</a>
+        }
+        <a class="btn btn-outline-primary mx-3 my-3" href="@Url.Action("Index", "Home")">Back to tests</a>
+    </div>
 </div>
 
-@foreach(var question in questions){
-<div class="border" style="height:auto; ">
-  <label>@question.Text</label>
-  <p>Your answer: @question.Answer</p>
-</div>
+
+
+
+<div id="message" style="display: none;">Time's up</div>
+<div id="notification" style="display: none;">Link to your result was copied to clipboard</div>
+
+
+@section scripts{
+
+    <script src="~/js/CanvasDrawing.js"></script>
+
+    <script type="text/javascript">
+
+        var thisResultId = @ViewBag.ResultId;
+        var isTestExpired = @ViewBag.IsExpired;
+
+        $(document).ready(function () {
+            var scorePercent = parseFloat('@testScore');
+            renderPieChart('pieChart', scorePercent);
+
+            if (isTestExpired == 1){
+                showResultExpired();
+            }
+        })
+
+        var isExpiredMsgShown = false;
+        function showResultExpired(){
+            if(!isExpiredMsgShown){
+                isExpiredMsgShown = true;
+                var popupRemainFor = 2; //seconds
+
+                $("#message").fadeIn("slow");
+
+                var sec = 0;
+                var timer = setInterval(function() { 
+                    if(sec++ >= popupRemainFor){
+                        $("#message").fadeOut("slow");
+                        clearInterval(timer);
+                        isExpiredMsgShown = false;
+                        return;
+                    }
+                }, 1000);
+            }
+        }
+
+        var isCopiedMsgShown = false;
+        function copyResultLink(){
+
+            var resultLink = window.location.origin + window.location.pathname + "?resultId=" + thisResultId;
+            navigator.clipboard.writeText(resultLink);
+
+            if(!isCopiedMsgShown){
+                isCopiedMsgShown = true;
+                var popupRemainFor = 3; //seconds
+
+                $("#notification").fadeIn("slow");
+
+                var sec = 0;
+                var timer = setInterval(function() { 
+                    if(sec++ >= popupRemainFor){
+                        $("#notification").fadeOut("slow");
+                        clearInterval(timer);
+                        isCopiedMsgShown = false;
+                        return;
+                    }
+                }, 1000);
+            }
+        }
+
+    </script>
+
 }
-<p>
-    <a href="@Url.Action("Index", "Home")">Back to tests</a>.
-</p>

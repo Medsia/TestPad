@@ -45,6 +45,7 @@ namespace LX.TestPad.Business.Services
             {
                 Id = entity.Id,
                 Score = entity.Score,
+                IsCalculated = entity.IsCalculated,
                 TestId = entity.TestId,
                 UserName = userName,
                 UserSurname = userSurname,
@@ -102,6 +103,7 @@ namespace LX.TestPad.Business.Services
                 Id = model.Id,
                 UserName = model.UserName + ' ' + model.UserSurname,
                 Score = model.Score,
+                IsCalculated = model.IsCalculated,
                 TestId = model.TestId,
                 StartedAt = model.StartedAt,
                 FinishedAt = model.FinishedAt,

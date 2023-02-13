@@ -90,7 +90,9 @@ namespace LX.TestPad.Business.Services
 
                 int totalCorrectAnswersCount = (await _answerRepository.GetAllCorrectByQuestionIdAsync(testQuestion.QuestionId)).Count;
                 int correctAnswersCount = await _resultAnswerRepository.CountAllCorrectByQuestionIdAsync(resultId, testQuestion.QuestionId);
-                score += (double)correctAnswersCount / totalCorrectAnswersCount;
+
+                var questionScore = (double)correctAnswersCount / totalCorrectAnswersCount;
+                if (questionScore <= 1) score += questionScore;
             }
             score /= testQuestions.Count;
 

@@ -98,7 +98,7 @@
         var isCopiedMsgShown = false;
         function copyResultLink(){
 
-            var resultLink = window.location.origin + "/Result?resultId=" + thisResultId;
+            var resultLink = window.location.origin + window.location.pathname + "?resultId=" + thisResultId;
             navigator.clipboard.writeText(resultLink);
 
             if(!isCopiedMsgShown){

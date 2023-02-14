@@ -46,21 +46,6 @@ namespace LX.TestPad.Business.Services
                        .ToList();
         }
 
-        public async Task<QuestionWithAnswersModel> GetByIdIcludingAnswersAsync(int id)
-        {
-            ExceptionChecker.SQLKeyIdCheck(id);
-
-            var question = await _questionRepository.GetByIdAsync(id);
-            var answers = await GetAllAnswersByQuestionIdAsync(question.Id);
-
-            return Mapper.MapQuestionWithAnswers(question, answers);
-        }
-        public async Task<QuestionWithAnswersModel> GetByIdIcludingAnswersWithoutIsCorrectAsync(int id)
-        {
-            var questionWithAnswers = await GetByIdIcludingAnswersAsync(id);
-            return Mapper.QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(questionWithAnswers);
-        }
-
         public async Task<QuestionModel> CreateAsync(QuestionModel questionModel)
         {
             var item = Mapper.QuestionModelToEntity(questionModel);

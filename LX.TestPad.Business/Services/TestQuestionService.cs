@@ -55,23 +55,21 @@ namespace LX.TestPad.Business.Services
             var testQuestions = await _testQuestionRepository.GetAllByTestIdIncludeQuestionAndAnswersAsync(testId);
             foreach(var testQuestion in testQuestions)
             {
-                Mapper.AnswersToAnswersWithoutIsCorrect(testQuestion.Question.Answers);
+                testQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(testQuestion.Question);
             }
-            return testQuestions.Select(Mapper.TestQuestionToModel)
+
+            return testQuestions.Select(Mapper.TestQuestionWithAnswersAndTestToModel)
                         .ToList();
         }
 
         public async Task<List<TestQuestionModel>> GetAllByTestIdIncludeQuestionsWithAnswersAsync(int testId)
         {
-            var testQuestionModels = await GetAllByTestIdAsync(testId);
-            foreach(var testQuestion in testQuestionModels)
-            {
-                var question = await _questionRepository.GetByIdAsync(testQuestion.QuestionId);
-                var answers = await _answerRepository.GetAllByQuestionIdAsync(testQuestion.QuestionId);
-                var answerModels = answers.Select(Mapper.AnswerToModel).ToList();
-                testQuestion.QuestionWithAnswersModel = Mapper.MapQuestionWithAnswers(question, answerModels);
-            }
-            return testQuestionModels;
+            ExceptionChecker.SQLKeyIdCheck(testId);
+
+            var testQuestions = await _testQuestionRepository.GetAllByTestIdIncludeQuestionAndAnswersAsync(testId);
+
+            return testQuestions.Select(Mapper.TestQuestionWithAnswersAndTestToModel)
+                        .ToList();
         }
 
         private async Task<int> GetNewQuestionSequenceNumberByTestIdAsync(int testId)

@@ -5,9 +5,6 @@
         public int Id { get; set; }
         public int TestId { get; set; }
         public int QuestionId { get; set; }
-
-        public TestModel TestModel { get; set; }
-        public QuestionWithAnswersModel QuestionWithAnswersModel {get; set; }
         public TestModel Test { get; set; }
         public QuestionModel Question { get; set; }
     }

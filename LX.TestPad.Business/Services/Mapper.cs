@@ -23,10 +23,19 @@ namespace LX.TestPad.Business.Services
             {
                 Id = entity.Id,
                 Text = entity.Text,
+            };
+        }
+        public static QuestionModel QuestionWithAnswersToModel(Question entity)
+        {
+            return new QuestionModel
+            {
+                Id = entity.Id,
+                Text = entity.Text,
                 Answers = entity.Answers.Select(Mapper.AnswerToModel)
                         .ToList()
             };
         }
+
         public static AnswerModel AnswerToModel(Answer entity)
         {
             return new AnswerModel
@@ -158,32 +167,30 @@ namespace LX.TestPad.Business.Services
                 Id = entity.Id,
                 TestId = entity.TestId,
                 QuestionId = entity.QuestionId,
+            };
+        }
+        public static TestQuestionModel TestQuestionWithAnswersAndTestToModel(TestQuestion entity)
+        {
+            return new TestQuestionModel
+            {
+                Id = entity.Id,
+                TestId = entity.TestId,
+                QuestionId = entity.QuestionId,
                 Test = TestToModel(entity.Test),
-                Question = QuestionToModel(entity.Question),
+                Question = QuestionWithAnswersToModel(entity.Question),
             };
         }
-        public static QuestionWithAnswersModel MapQuestionWithAnswers(Question questionEntity, List<AnswerModel> answerEntities)
+        public static Question QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(Question question)
         {
-            return new QuestionWithAnswersModel
+            return new Question
             {
-                Id = questionEntity.Id,
-                Text = questionEntity.Text,
-                Answers = answerEntities,
-            };
-        }
-
-        public static QuestionWithAnswersModel QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(QuestionWithAnswersModel questionWithAnswers)
-        {
-            return new QuestionWithAnswersModel
-            {
-                Id = questionWithAnswers.Id,
-                Text = questionWithAnswers.Text,
-                Answers = questionWithAnswers.Answers.Select(answer => new AnswerModel
+                Id = question.Id,
+                Text = question.Text,
+                Answers = question.Answers.Select(answer => new Answer
                 {
                     Id = answer.Id,
                     QuestionId = answer.QuestionId,
-                    TestId = answer.TestId,
-                    Text = answer.Text,                
+                    Text = answer.Text,
                 }).ToList()
             };
         }
@@ -198,14 +205,6 @@ namespace LX.TestPad.Business.Services
         {
             const int secondsInOneMinute = 60;
             return seconds / secondsInOneMinute;
-        }
-        public static List<Answer> AnswersToAnswersWithoutIsCorrect(List<Answer> answers)
-        {
-            foreach (var answer in answers)
-            {
-                answer.IsCorrect = false;
-            }
-            return answers;
         }
     }
 }

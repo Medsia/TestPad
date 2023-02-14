@@ -26,8 +26,8 @@
                     <form asp-action="UpdateQuestion" asp-route-id="@testQuestion.QuestionId"
                     asp-route-TestId="@testQuestion.TestId" method="post">
                     <div class="question-header">
-                        <p id="Question-text-@questionId">@testQuestion.QuestionWithAnswersModel.Text</p>
-                        <input type="text" name="Text" asp-for="@testQuestion.QuestionWithAnswersModel.Text" id="Question-@questionId" style="display:none"/>                       
+                        <p id="Question-text-@questionId">@testQuestion.Question.Text</p>
+                        <input type="text" name="Text" asp-for="@testQuestion.Question.Text" id="Question-@questionId" style="display:none"/>                       
                         <div>
                             <input type="submit" value="Save" id="saveButton-@questionId" style="display:none"/>
                             <input type="button" value="Edit" id="editButton-@questionId" onclick="toggleEditing(@questionId)" />
@@ -37,7 +37,7 @@
                 </td>
                 <td>
                     <ul>
-                        @foreach (var answer in testQuestion.QuestionWithAnswersModel.Answers)
+                        @foreach (var answer in testQuestion.Question.Answers)
                         {
                             <li class="answer-row">
                                 <span class="answer-icon @(answer.IsCorrect ? "correct" : "")">

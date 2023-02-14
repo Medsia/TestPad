@@ -41,6 +41,7 @@
     <div>
         <input type="submit" value="Save" id="saveButton" style="display:none" />
         <input type="button" value="Edit" id="editButton" onclick="toggleEditing()" />
+        <input type="button" value="Cancel" id="cancelButton" onclick="cancelEditing()" style="display:none" />
     </div>
 </form>
 <a asp-action="TestQuestions" asp-route-testId="@Model.Id" class="btn btn-outline-info">Edit Questions</a>
@@ -59,9 +60,10 @@
     function toggleEditing() {
         var inputElements = ["Name", "Description", "TestDuration"];
         var saveButton = "saveButton";
+        var cancelButton = "cancelButton";
 
         if (document.getElementById("Name").style.display === "none") {
-            applyInlineStyleFor(inputElements.concat(saveButton));
+            applyInlineStyleFor(inputElements.concat(saveButton, cancelButton));
             document.getElementById("editButton").style.display = "none";
         } else {
             for (var i = 0; i < inputElements.length; i++) {
@@ -69,7 +71,28 @@
                 element.style.display = "none";
             }
             document.getElementById("saveButton").style.display = "none";
+            document.getElementById("cancelButton").style.display = "none";
             document.getElementById("editButton").style.display = "inline";
+
+            var textElements = ["Name-text", "Description-text", "TestDuration-text"];
+            applyInlineStyleFor(textElements);
         }
+    }
+
+    function cancelEditing() {
+        var inputElements = ["Name", "Description", "TestDuration"];
+        var saveButton = "saveButton";
+        var cancelButton = "cancelButton";
+
+        for (var i = 0; i < inputElements.length; i++) {
+            var element = document.getElementById(inputElements[i]);
+            element.style.display = "none";
+        }
+        document.getElementById("saveButton").style.display = "none";
+        document.getElementById("editButton").style.display = "inline";
+        document.getElementById("cancelButton").style.display = "none";
+
+        var textElements = ["Name-text", "Description-text", "TestDuration-text"];
+        applyInlineStyleFor(textElements);
     }
 </script>

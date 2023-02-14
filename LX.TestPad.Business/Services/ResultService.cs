@@ -3,6 +3,7 @@ using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace LX.TestPad.Business.Services
 {
@@ -79,13 +80,27 @@ namespace LX.TestPad.Business.Services
         }
 
 
-        private async Task<bool> IsAnyIncorrectResultAnswerAsync(List<ResultAnswer> resultAnswers, Question question)
+        private bool IsAnyIncorrectResultAnswerAsync(List<ResultAnswer> resultAnswers, Question question)
         {
-            throw new NotImplementedException();
+            foreach (var resultAnswer in resultAnswers)
+            {
+                if (question.Text == resultAnswer.QuestionText && !resultAnswer.IsCorrect)
+                    return true;
+            }
+
+            return false;
         }
-        private async Task<int> CountAllCorrectResultAnswersByQuestionIdAsync(List<ResultAnswer> resultAnswers, Question question)
+        private int CountAllCorrectResultAnswersByQuestionIdAsync(List<ResultAnswer> resultAnswers, Question question)
         {
-            throw new NotImplementedException();
+            int count = 0;
+            if (question == null) return count;
+
+            foreach (var resultAnswer in resultAnswers)
+            {
+                if (resultAnswer.QuestionText == question.Text && resultAnswer.IsCorrect) count++;
+            }
+
+            return count;
         }
         private async Task<double> CalculateScore(Result result)
         {
@@ -97,10 +112,10 @@ namespace LX.TestPad.Business.Services
 
             foreach (var question in questions)
             {
-                if (await _resultAnswerRepository.IsAnyIncorrectAsync(result.Id, question.Id)) continue;
+                if (IsAnyIncorrectResultAnswerAsync(resultAnswers, question)) continue;
 
                 int totalCorrectAnswersCount = (answers.Where(x => x.QuestionId == question.Id && x.IsCorrect)).Count();
-                int correctAnswersCount = await _resultAnswerRepository.CountAllCorrectByQuestionIdAsync(result.Id, question.Id);
+                int correctAnswersCount = CountAllCorrectResultAnswersByQuestionIdAsync(resultAnswers, question);
 
                 score += (double)correctAnswersCount / totalCorrectAnswersCount;
             }

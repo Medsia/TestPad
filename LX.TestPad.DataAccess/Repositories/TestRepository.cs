@@ -7,7 +7,7 @@ namespace LX.TestPad.DataAccess.Repositories
     public class TestRepository : ITestRepository
     {
         private readonly DataContext dbContext;
-        
+
         public TestRepository(DataContext dbContext)
         {
             this.dbContext = dbContext;
@@ -44,7 +44,10 @@ namespace LX.TestPad.DataAccess.Repositories
         {
             return await dbContext.Tests.ToListAsync();
         }
-
+        public async Task<List<Test>> GetAllPublishedAsync()
+        {
+            return await dbContext.Tests.Where(x => x.IsPublished).ToListAsync();
+        }
         public async Task<Test> GetByIdAsync(int id)
         {
             return await dbContext.Tests.FirstOrDefaultAsync(x => x.Id == id);

@@ -28,7 +28,7 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> Index()
         {
             var tests = await _testService.GetAllAsync();
-            
+
             return View(tests);
         }
         public IActionResult ExistingQuestions(int testId)
@@ -70,7 +70,16 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> UpdateTest(TestModel test)
         {
             await _testService.UpdateAsync(test);
-            return RedirectToAction(nameof(TestDetails), new { id = @test.Id }); ;
+            return RedirectToAction(nameof(TestDetails), new { id = test.Id }); ;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeIsPublishedTest(TestModel test)
+        {
+            test.IsPublished = !test.IsPublished;
+            await _testService.UpdateAsync(test);
+            return RedirectToAction(nameof(TestDetails), new { id = test.Id });
         }
 
         public async Task<IActionResult> TestQuestions(int testId)
@@ -91,7 +100,7 @@ namespace LX.TestPad.Controllers
 
         public IActionResult CreateQuestion(int testId)
         {
-            return View(new QuestionModel {TestId = testId});
+            return View(new QuestionModel { TestId = testId });
         }
 
         [HttpPost]
@@ -106,7 +115,7 @@ namespace LX.TestPad.Controllers
 
         public IActionResult CreateAnswer(int questionId, int testId)
         {
-            return View(new AnswerModel { QuestionId = questionId, TestId = testId});
+            return View(new AnswerModel { QuestionId = questionId, TestId = testId });
         }
 
         [HttpPost]
@@ -133,7 +142,7 @@ namespace LX.TestPad.Controllers
 
             return RedirectToAction(nameof(TestQuestions), new { testId = testId });
         }
-        
+
         public async Task<IActionResult> DeleteTest(int? id)
         {
             if (id == null) return NotFound();

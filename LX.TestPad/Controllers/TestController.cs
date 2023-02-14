@@ -37,8 +37,11 @@ namespace LX.TestPad.Controllers
         {
             TempData.Clear();
             var test = await _testService.GetByIdAsync(id);
-
-            return View(test);
+            if (test.IsPublished)
+            {
+                return View(test);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]

@@ -19,8 +19,7 @@ namespace LX.TestPad.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var tests = await _testService.GetAllAsync();
-
+            var tests = await _testService.GetAllPublishedAsync();
             return View(tests);
         }
 

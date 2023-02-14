@@ -75,38 +75,5 @@ namespace LX.TestPad.DataAccess.Repositories
 
             await dbContext.SaveChangesAsync();
         }
-
-        public async Task<int> CountAllCorrectAsync(int resultId)
-        {
-            return (await dbContext.ResultAnswers.Where(x => x.ResultId == resultId && x.IsCorrect).ToListAsync()).Count;
-        }
-
-        public async Task<int> CountAllCorrectByQuestionIdAsync(int resultId, int questionId)
-        {
-            int count = 0;
-            var resultAnswers = await dbContext.ResultAnswers.Where(x => x.ResultId == resultId).ToListAsync();
-            var question = await dbContext.Questions.SingleOrDefaultAsync(x => x.Id == questionId);
-            if (question == null) return count;
-
-            foreach (var resultAnswer in resultAnswers)
-            {
-                if (resultAnswer.QuestionText == question.Text && resultAnswer.IsCorrect) count++;
-            }
-
-            return count;
-        }
-
-        public async Task<bool> IsAnyIncorrectAsync(int resultId, int questionId)
-        {
-            var resultAnswers = await dbContext.ResultAnswers.Where(x => x.ResultId == resultId).ToListAsync();
-            foreach (var resultAnswer in resultAnswers)
-            {
-                if (await dbContext.Questions.AnyAsync(x => x.Id == questionId && x.Text == resultAnswer.QuestionText)
-                    && !resultAnswer.IsCorrect) 
-                        return true;
-            }
-
-            return false;
-        }
     }
 }

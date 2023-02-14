@@ -52,6 +52,7 @@ namespace LX.TestPad.Business.Services
             var item = new ResultAnswer
             {
                 ResultId = resultId,
+                QuestionId = question.Id,
                 QuestionText = question.Text,
                 AnswerText = answer.Text,
                 IsCorrect = answer.IsCorrect,
@@ -80,6 +81,7 @@ namespace LX.TestPad.Business.Services
                 items[i] = (new ResultAnswer
                 {
                     ResultId = resultId,
+                    QuestionId = question.Id,
                     QuestionText = question.Text,
                     AnswerText = answers[i].Text,
                     IsCorrect = answers[i].IsCorrect,

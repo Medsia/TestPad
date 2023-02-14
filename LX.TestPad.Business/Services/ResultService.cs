@@ -3,6 +3,7 @@ using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace LX.TestPad.Business.Services
 {
@@ -101,28 +102,19 @@ namespace LX.TestPad.Business.Services
         }
 
 
-        private async Task<bool> IsAnyIncorrectResultAnswerAsync(List<ResultAnswer> resultAnswers, Question question)
-        {
-            throw new NotImplementedException();
-        }
-        private async Task<int> CountAllCorrectResultAnswersByQuestionIdAsync(List<ResultAnswer> resultAnswers, Question question)
-        {
-            throw new NotImplementedException();
-        }
         private async Task<double> CalculateScore(Result result)
         {
             double score = 0;
 
-            var resultAnswers = await _resultAnswerRepository.GetAllByResultIdAsync(result.Id);
-            var answers = await _answerRepository.GetAllAsync();
-            var questions = (await _testQuestionRepository.GetAllByTestIdIncludeQuestionsAsync(result.TestId)).Select(x => x.Question);
+            var resultAnswers = (await _resultAnswerRepository.GetAllByResultIdAsync(result.Id));
+            var questions = (await _testQuestionRepository.GetAllByTestIdIncludeQuestionAndAnswersAsync(result.TestId)).Select(x => x.Question);
 
             foreach (var question in questions)
             {
-                if (await _resultAnswerRepository.IsAnyIncorrectAsync(result.Id, question.Id)) continue;
+                if (resultAnswers.Any(x => x.QuestionId == question.Id && !x.IsCorrect)) continue;
 
-                int totalCorrectAnswersCount = (answers.Where(x => x.QuestionId == question.Id && x.IsCorrect)).Count();
-                int correctAnswersCount = await _resultAnswerRepository.CountAllCorrectByQuestionIdAsync(result.Id, question.Id);
+                int totalCorrectAnswersCount = question.Answers.Count(x => x.IsCorrect);
+                int correctAnswersCount = resultAnswers.Count(x => x.QuestionId == question.Id && x.IsCorrect);
 
                 score += (double)correctAnswersCount / totalCorrectAnswersCount;
             }

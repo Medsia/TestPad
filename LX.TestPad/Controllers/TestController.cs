@@ -1,5 +1,6 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
+using LX.TestPad.Business.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 
@@ -24,9 +25,9 @@ namespace LX.TestPad.Controllers
             _resultAnswerService = resultAnswerService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var tests = _testService.GetAllAsync();
+            var tests = await _testService.GetAllAsync();
 
             return View(tests);
         }
@@ -78,7 +79,7 @@ namespace LX.TestPad.Controllers
             TempData[questionNumberKey] = questionNumber;
 
             ViewBag.resultId = result.Id;
-            ViewBag.endedAt = result.StartedAt.AddSeconds(testQuestions.First().Test.TestDuration).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
+            ViewBag.endedAt = result.StartedAt.AddSeconds(Mapper.FromMinutesToSeconds(testQuestions.First().Test.TestDuration)).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
             return View(testQuestions[questionNumber].Question);
         }
 

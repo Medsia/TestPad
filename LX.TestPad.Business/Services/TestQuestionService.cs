@@ -11,13 +11,15 @@ namespace LX.TestPad.Business.Services
         private readonly ITestQuestionRepository _testQuestionRepository;
         private readonly IQuestionRepository _questionRepository;
         private readonly ITestRepository _testRepository;
+        private readonly IAnswerRepository _answerRepository;
 
         public TestQuestionService(ITestQuestionRepository testQuestionRepository, IQuestionRepository questionRepository, 
-                                        ITestRepository testRepository)
+                                        ITestRepository testRepository, IAnswerRepository answerRepository)
         {
             _testQuestionRepository = testQuestionRepository;
             _questionRepository = questionRepository;
             _testRepository = testRepository;
+            _answerRepository = answerRepository;
         }
 
 
@@ -53,9 +55,20 @@ namespace LX.TestPad.Business.Services
             var testQuestions = await _testQuestionRepository.GetAllByTestIdIncludeQuestionAndAnswersAsync(testId);
             foreach(var testQuestion in testQuestions)
             {
-                Mapper.AnswersToAnswersWithoutIsCorrect(testQuestion.Question.Answers);
+                testQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(testQuestion.Question);
             }
-            return testQuestions.Select(Mapper.TestQuestionToModel)
+
+            return testQuestions.Select(Mapper.TestQuestionWithAnswersAndTestToModel)
+                        .ToList();
+        }
+
+        public async Task<List<TestQuestionModel>> GetAllByTestIdIncludeQuestionsWithAnswersAsync(int testId)
+        {
+            ExceptionChecker.SQLKeyIdCheck(testId);
+
+            var testQuestions = await _testQuestionRepository.GetAllByTestIdIncludeQuestionAndAnswersAsync(testId);
+
+            return testQuestions.Select(Mapper.TestQuestionWithAnswersAndTestToModel)
                         .ToList();
         }
 

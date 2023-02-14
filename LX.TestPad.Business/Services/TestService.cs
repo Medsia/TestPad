@@ -2,16 +2,19 @@
 using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
+using LX.TestPad.DataAccess.Repositories;
 
 namespace LX.TestPad.Business.Services
 {
     public class TestService : ITestService
     {
         private readonly ITestRepository _testRepository;
+        private readonly ITestQuestionRepository _testQuestionRepository;
 
-        public TestService(ITestRepository testRepository)
+        public TestService(ITestRepository testRepository, ITestQuestionRepository testQuestionRepository)
         {
             _testRepository = testRepository;
+            _testQuestionRepository = testQuestionRepository;
         }
 
 
@@ -54,18 +57,39 @@ namespace LX.TestPad.Business.Services
         }
 
 
-        public async Task<TestModel> CopyByIdAsync(int id)
+        private async Task CopyAllTestQuestionsToNewTestAsync(int oldTestId, int newTestId)
         {
-            var selectedTest = await _testRepository.GetByIdAsync(id);
+            ExceptionChecker.SQLKeyIdCheck(oldTestId);
+            ExceptionChecker.SQLKeyIdCheck(newTestId);
+
+            var oldTestQuestionIds = (await _testQuestionRepository.GetAllByTestIdAsync(oldTestId)).Select(x => x.QuestionId);
+            var newTestQuestions = new List<TestQuestion>();
+            foreach (var oldTestQuestionId in oldTestQuestionIds)
+            {
+                newTestQuestions.Add(new TestQuestion
+                {
+                    TestId = newTestId,
+                    QuestionId = oldTestQuestionId,
+                });
+            }
+
+            await _testQuestionRepository.CreateFromListAsync(newTestQuestions);
+        }
+        public async Task<TestModel> CopyByIdAsync(int oldTestId)
+        {
+            ExceptionChecker.SQLKeyIdCheck(oldTestId);
+
+            var selectedTest = await _testRepository.GetByIdAsync(oldTestId);
             var newTest = new Test()
             {
-                Name = $"{selectedTest.Name} (Copy_of_{selectedTest.Name})",
+                Name = selectedTest.Name + $" (Copy)",
                 Description = selectedTest.Description,
                 TestDuration = selectedTest.TestDuration,
                 IsPublished = false,
             };
 
             var item = await _testRepository.CreateAsync(newTest);
+            await CopyAllTestQuestionsToNewTestAsync(oldTestId, newTest.Id);
 
             return Mapper.TestToModel(item);
         }

@@ -96,7 +96,6 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> CopyTest(int selectedTestId)
         {
             var newTest = await _testService.CopyByIdAsync(selectedTestId);
-            await _testQuestionService.CopyAllToNewTestAsync(selectedTestId, newTest.Id);
 
             return RedirectToAction(nameof(TestDetails), new { id = newTest.Id });
         }

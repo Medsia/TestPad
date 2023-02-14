@@ -48,16 +48,6 @@ namespace LX.TestPad.Business.Services
             return items.Select(Mapper.TestQuestionToModel)
                         .ToList();
         }
-        public async Task CopyAllToNewTestAsync(int oldTestId, int newTestId)
-        {
-            ExceptionChecker.SQLKeyIdCheck(oldTestId);
-            ExceptionChecker.SQLKeyIdCheck(newTestId);
-
-            var oldTestQuestionIds = (await _testQuestionRepository.GetAllByTestIdAsync(oldTestId)).Select(x => x.QuestionId);
-            var newTestQuestions = oldTestQuestionIds.Select(x => new TestQuestion { TestId = newTestId, QuestionId = x }).ToList();
-
-            await _testQuestionRepository.CreateFromListAsync(newTestQuestions);
-        }
         public async Task<List<TestQuestionModel>> GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(int testId)
         {
             ExceptionChecker.SQLKeyIdCheck(testId);

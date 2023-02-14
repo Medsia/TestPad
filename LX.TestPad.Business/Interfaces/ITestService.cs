@@ -8,6 +8,6 @@ namespace LX.TestPad.Business.Interfaces
         Task<List<TestModel>> GetAllAsync();
         Task<List<TestModel>> GetAllByPageNumberAsync(int pageNumber, int count);
         Task<List<TestModel>> GetAllPublishedAsync();
-        Task<TestModel> CopyByIdAsync(int id);
+        Task<TestModel> CopyByIdAsync(int oldTestId);
     }
 }

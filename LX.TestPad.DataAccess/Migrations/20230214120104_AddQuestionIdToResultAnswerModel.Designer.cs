@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LX.TestPad.DataAccess.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230214095925_AddQuestionIdToResultAnswerModel")]
+    [Migration("20230214120104_AddQuestionIdToResultAnswerModel")]
     partial class AddQuestionIdToResultAnswerModel
     {
         /// <inheritdoc />
@@ -116,7 +116,7 @@ namespace LX.TestPad.DataAccess.Migrations
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("bit");
 
-                    b.Property<int>("QuestionId")
+                    b.Property<int?>("QuestionId")
                         .HasColumnType("int");
 
                     b.Property<string>("QuestionText")

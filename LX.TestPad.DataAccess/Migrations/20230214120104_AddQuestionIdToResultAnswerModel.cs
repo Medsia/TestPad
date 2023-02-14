@@ -14,8 +14,7 @@ namespace LX.TestPad.DataAccess.Migrations
                 name: "QuestionId",
                 table: "ResultAnswers",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
         }
 
         /// <inheritdoc />

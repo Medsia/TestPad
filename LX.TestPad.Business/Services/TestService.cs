@@ -54,6 +54,23 @@ namespace LX.TestPad.Business.Services
         }
 
 
+        public async Task<TestModel> CopyByIdAsync(int id)
+        {
+            var selectedTest = await _testRepository.GetByIdAsync(id);
+            var newTest = new Test()
+            {
+                Name = selectedTest.Name + $" (Copy_of_{selectedTest.Name})",
+                Description = selectedTest.Description,
+                TestDuration = selectedTest.TestDuration,
+                IsPublished = false,
+            };
+
+            var item = await _testRepository.CreateAsync(newTest);
+
+            return Mapper.TestToModel(item);
+        }
+
+
         public async Task<TestModel> CreateAsync(TestModel testModel)
         {
             var item = Mapper.TestModelToEntity(testModel);

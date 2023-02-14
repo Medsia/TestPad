@@ -4,6 +4,7 @@ using LX.TestPad.Authorization;
 using LX.TestPad.Business.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using LX.TestPad.DataAccess.Entities;
 
 namespace LX.TestPad.Controllers
 {
@@ -88,6 +89,16 @@ namespace LX.TestPad.Controllers
             var testQuestions = await _testQuestionService.GetAllByTestIdIncludeQuestionsWithAnswersAsync(testId);
             ViewBag.TestId = testId;
             return View(testQuestions);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CopyTest(int selectedTestId)
+        {
+            var newTest = await _testService.CopyByIdAsync(selectedTestId);
+            await _testQuestionService.CopyAllToNewTestAsync(selectedTestId, newTest.Id);
+
+            return RedirectToAction(nameof(TestDetails), new { id = newTest.Id });
         }
 
         [HttpPost]

@@ -54,7 +54,7 @@ namespace LX.TestPad.Controllers
 
         public IActionResult CreateTest()
         {
-            return View(new TestModel());
+            return View();
         }
 
         [HttpPost]

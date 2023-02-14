@@ -61,8 +61,8 @@ namespace LX.TestPad.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateTest(TestModel testModel)
         {
-            var @test = await _testService.CreateAsync(testModel);
-            return RedirectToAction(nameof(TestDetails), new { id = @test.Id });
+            var test = await _testService.CreateAsync(testModel);
+            return RedirectToAction(nameof(TestDetails), new { id = test.Id });
         }
 
         [HttpPost]
@@ -138,10 +138,10 @@ namespace LX.TestPad.Controllers
         {
             if (id == null) return NotFound();
 
-            var @test = await _testService.GetByIdAsync((int)id);
-            if (@test == null) return NotFound();
+            var test = await _testService.GetByIdAsync((int)id);
+            if (test == null) return NotFound();
 
-            return View(@test);
+            return View(test);
         }
 
         [HttpPost, ActionName("DeleteTest")]
@@ -154,8 +154,8 @@ namespace LX.TestPad.Controllers
 
         public async Task<IActionResult> TestDetails(int id)
         {
-            var @test = await _testService.GetByIdAsync(id);
-            return View(@test);
+            var test = await _testService.GetByIdAsync(id);
+            return View(test);
         }
     }
 }

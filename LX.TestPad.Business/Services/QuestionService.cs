@@ -8,11 +8,13 @@ namespace LX.TestPad.Business.Services
     {
         private readonly IQuestionRepository _questionRepository;
         private readonly IAnswerRepository _answerRepository;
-        
-        public QuestionService(IQuestionRepository questionRepository, IAnswerRepository answerRepository)
+        private readonly ITestQuestionRepository _testQuestionRepository;
+        public QuestionService(IQuestionRepository questionRepository, IAnswerRepository answerRepository, 
+            ITestQuestionRepository testQuestionRepository)
         {
             _questionRepository = questionRepository;
             _answerRepository = answerRepository;
+            _testQuestionRepository = testQuestionRepository;
         }
 
 
@@ -42,21 +44,6 @@ namespace LX.TestPad.Business.Services
 
             return item.Select(Mapper.QuestionToModel)
                        .ToList();
-        }
-
-        public async Task<QuestionWithAnswersModel> GetByIdIcludingAnswersAsync(int id)
-        {
-            ExceptionChecker.SQLKeyIdCheck(id);
-
-            var question = await _questionRepository.GetByIdAsync(id);
-            var answers = await GetAllAnswersByQuestionIdAsync(question.Id);
-
-            return Mapper.MapQuestionWithAnswers(question, answers);
-        }
-        public async Task<QuestionWithAnswersModel> GetByIdIcludingAnswersWithoutIsCorrectAsync(int id)
-        {
-            var questionWithAnswers = await GetByIdIcludingAnswersAsync(id);
-            return Mapper.QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(questionWithAnswers);
         }
 
         public async Task<QuestionModel> CreateAsync(QuestionModel questionModel)

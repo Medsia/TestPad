@@ -14,10 +14,18 @@ namespace LX.TestPad.Business.Services
                 Id = entity.Id,
                 Name = entity.Name,
                 Description = entity.Description,
-                TestDuration = entity.TestDuration,
+                TestDuration = FromSecondsToMinutes(entity.TestDuration),
             };
         }
         public static QuestionModel QuestionToModel(Question entity)
+        {
+            return new QuestionModel
+            {
+                Id = entity.Id,
+                Text = entity.Text,
+            };
+        }
+        public static QuestionModel QuestionWithAnswersToModel(Question entity)
         {
             return new QuestionModel
             {
@@ -27,6 +35,7 @@ namespace LX.TestPad.Business.Services
                         .ToList()
             };
         }
+
         public static AnswerModel AnswerToModel(Answer entity)
         {
             return new AnswerModel
@@ -89,7 +98,7 @@ namespace LX.TestPad.Business.Services
                 Id = model.Id,
                 Name = model.Name,
                 Description = model.Description,
-                TestDuration = model.TestDuration
+                TestDuration = FromMinutesToSeconds(model.TestDuration),
             };
         }
         public static Question QuestionModelToEntity(QuestionModel model)
@@ -106,7 +115,7 @@ namespace LX.TestPad.Business.Services
             {
                 Id = model.Id,
                 Text = model.Text,
-                IsCorrect = model.IsCorrect ?? false,
+                IsCorrect = model.IsCorrect,
                 QuestionId = model.QuestionId,
             };
         }
@@ -158,35 +167,44 @@ namespace LX.TestPad.Business.Services
                 Id = entity.Id,
                 TestId = entity.TestId,
                 QuestionId = entity.QuestionId,
-                Test = TestToModel(entity.Test),
-                Question = QuestionToModel(entity.Question),
             };
         }
-        public static QuestionWithAnswersModel MapQuestionWithAnswers(Question questionEntity, List<AnswerModel> answerEntities)
+        public static TestQuestionModel TestQuestionWithAnswersAndTestToModel(TestQuestion entity)
         {
-            return new QuestionWithAnswersModel
+            return new TestQuestionModel
             {
-                Id = questionEntity.Id,
-                Text = questionEntity.Text,
-                Answers = answerEntities,
+                Id = entity.Id,
+                TestId = entity.TestId,
+                QuestionId = entity.QuestionId,
+                Test = TestToModel(entity.Test),
+                Question = QuestionWithAnswersToModel(entity.Question),
+            };
+        }
+        public static Question QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(Question question)
+        {
+            return new Question
+            {
+                Id = question.Id,
+                Text = question.Text,
+                Answers = question.Answers.Select(answer => new Answer
+                {
+                    Id = answer.Id,
+                    QuestionId = answer.QuestionId,
+                    Text = answer.Text,
+                }).ToList()
             };
         }
 
-        public static QuestionWithAnswersModel QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(QuestionWithAnswersModel questionWithAnswers)
+        public static int FromMinutesToSeconds(int minutes)
         {
-            foreach (var answer in questionWithAnswers.Answers)
-            {
-                answer.IsCorrect = null;
-            }
-            return questionWithAnswers;
+            const int secondsInOneMinute = 60;
+            return minutes * secondsInOneMinute;
         }
-        public static List<Answer> AnswersToAnswersWithoutIsCorrect(List<Answer> answers)
+
+        public static int FromSecondsToMinutes(int seconds)
         {
-            foreach (var answer in answers)
-            {
-                answer.IsCorrect = false;
-            }
-            return answers;
+            const int secondsInOneMinute = 60;
+            return seconds / secondsInOneMinute;
         }
     }
 }

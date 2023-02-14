@@ -146,7 +146,7 @@ namespace LX.TestPad.Controllers
 
         [HttpPost, ActionName("DeleteTest")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteTestByIdConfirmed(int id)
         {
             await _testService.DeleteAsync(id);
             return RedirectToAction(nameof(Index));

@@ -1,5 +1,7 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
+using LX.TestPad.Controllers;
+using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
 
 namespace LX.TestPad.Business.Services
@@ -9,7 +11,7 @@ namespace LX.TestPad.Business.Services
         private readonly IQuestionRepository _questionRepository;
         private readonly IAnswerRepository _answerRepository;
         private readonly ITestQuestionRepository _testQuestionRepository;
-        public QuestionService(IQuestionRepository questionRepository, IAnswerRepository answerRepository, 
+        public QuestionService(IQuestionRepository questionRepository, IAnswerRepository answerRepository,
             ITestQuestionRepository testQuestionRepository)
         {
             _questionRepository = questionRepository;

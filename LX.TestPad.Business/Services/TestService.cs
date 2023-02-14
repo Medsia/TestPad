@@ -1,5 +1,6 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
+using LX.TestPad.Controllers;
 using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
 
@@ -8,11 +9,18 @@ namespace LX.TestPad.Business.Services
     public class TestService : ITestService
     {
         private readonly ITestRepository _testRepository;
-
-        public TestService(ITestRepository testRepository)
+        private readonly IQuestionRepository _questionRepository;
+        private readonly IAnswerRepository _answerRepository;
+        private readonly ITestQuestionRepository _testQuestionRepository;
+        public TestService(ITestQuestionRepository testQuestionRepository, IQuestionRepository questionRepository,
+                                        ITestRepository testRepository, IAnswerRepository answerRepository)
         {
+            _testQuestionRepository = testQuestionRepository;
+            _questionRepository = questionRepository;
             _testRepository = testRepository;
+            _answerRepository = answerRepository;
         }
+
 
 
         public async Task<TestModel> GetByIdAsync(int testId)
@@ -59,7 +67,12 @@ namespace LX.TestPad.Business.Services
             var item = Mapper.TestModelToEntity(testModel);
 
             item = await _testRepository.CreateAsync(item);
-
+            var question = new Question { Text = BasicDataToGenerate.QuestionText };
+            question = await _questionRepository.CreateAsync(question);
+            var testQuestion = new TestQuestion { QuestionId = question.Id, TestId = item.Id };
+            await _testQuestionRepository.CreateAsync(testQuestion);
+            var answer = new Answer { QuestionId = question.Id, Text = BasicDataToGenerate.QuestionText, IsCorrect = BasicDataToGenerate.Answer.IsCorrect };
+            await _answerRepository.CreateAsync(answer);
             return Mapper.TestToModel(item);
         }
 

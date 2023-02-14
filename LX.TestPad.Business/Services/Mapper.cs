@@ -37,6 +37,20 @@ namespace LX.TestPad.Business.Services
                 QuestionId = entity.QuestionId,
             };
         }
+        public static ResultIncludeTestModel ResultIncludeTestToModel(Result entity)
+        {
+            return new ResultIncludeTestModel
+            {
+                Id = entity.Id,
+                Score = entity.Score,
+                IsCalculated = entity.IsCalculated,
+                TestId = entity.TestId,
+                UserName = entity.UserName,
+                StartedAt = entity.StartedAt,
+                FinishedAt = entity.FinishedAt,
+                Test = TestToModel(entity.Test),
+            };
+        }
         public static ResultModel ResultToModel(Result entity)
         {
             var userName = entity.UserName.Substring(0, entity.UserName.IndexOf(' '));
@@ -51,9 +65,9 @@ namespace LX.TestPad.Business.Services
                 UserSurname = userSurname,
                 StartedAt = entity.StartedAt,
                 FinishedAt = entity.FinishedAt,
-                Test = TestToModel(entity.Test),
             };
         }
+
         public static ResultAnswerModel ResultAnswerToModel(ResultAnswer entity)
         {
             return new ResultAnswerModel
@@ -96,6 +110,20 @@ namespace LX.TestPad.Business.Services
                 QuestionId = model.QuestionId,
             };
         }
+        public static Result ResultIncludeTestModelToEntity(ResultIncludeTestModel model)
+        {
+            return new Result
+            {
+                Id = model.Id,
+                UserName = model.UserName,
+                Score = model.Score,
+                IsCalculated = model.IsCalculated,
+                TestId = model.TestId,
+                StartedAt = model.StartedAt,
+                FinishedAt = model.FinishedAt,
+                Test = TestModelToEntity(model.Test),
+            };
+        }
         public static Result ResultModelToEntity(ResultModel model)
         {
             return new Result
@@ -107,7 +135,6 @@ namespace LX.TestPad.Business.Services
                 TestId = model.TestId,
                 StartedAt = model.StartedAt,
                 FinishedAt = model.FinishedAt,
-                Test = TestModelToEntity(model.Test),
             };
         }
         public static ResultAnswer ResultAnswerModelToEntity(ResultAnswerModel model)
@@ -133,7 +160,6 @@ namespace LX.TestPad.Business.Services
                 QuestionId = entity.QuestionId,
                 Test = TestToModel(entity.Test),
                 Question = QuestionToModel(entity.Question),
-                
             };
         }
         public static QuestionWithAnswersModel MapQuestionWithAnswers(Question questionEntity, List<AnswerModel> answerEntities)

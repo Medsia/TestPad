@@ -15,17 +15,16 @@
     <div class="text-center border">
         <h1 class="display-4">Test Result</h1>
     </div>
-    
+
     <div class="row" style="margin-top: 5%; margin-bottom: 10%;">
         <div class="col-6 my-auto" style="padding-left: 10%">
             @if (test != null)
             {
                 var testDuration = new DateTime();
-                testDuration = testDuration.AddSeconds(@test.TestDuration);
-
+                testDuration = testDuration.AddMinutes(@test.TestDuration);
                 <h1 class="my-3" style="font-size: 22px;">Test: @test.Name</h1>
                 <p class="my-3" style="font-size: 18px;">Description: @test.Description</p>
-                    <p class="mt-3 mb-5" style="font-size: 18px;">Duration: @testDuration.ToString("HH:mm:ss")</p>
+                <p class="mt-3 mb-5" style="font-size: 18px;">Duration: @testDuration.ToString("HH:mm:ss")</p>
             }
 
             <h1 class="mt-5 mb-3" style="font-size: 22px;">@Model.UserName @Model.UserSurname</h1>
@@ -33,12 +32,12 @@
             <p class="my-3" style="font-size: 18px;">Test finished: @Model.FinishedAt</p>
             <p class="my-3" style="font-size: 18px;">Time spent: @time.ToString(@"hh\:mm\:ss")</p>
         </div>
-    
+
         <div class="col-6 text-center">
             <canvas id="pieChart"></canvas>
         </div>
     </div>
-    
+
     <div class="text-center border">
         <button class="btn btn-outline-secondary mx-3 my-3" onclick="copyResultLink()">Share result</button>
         @if (test != null)
@@ -69,22 +68,22 @@
             var scorePercent = parseFloat('@testScore');
             renderPieChart('pieChart', scorePercent);
 
-            if (isTestExpired == 1){
+            if (isTestExpired == 1) {
                 showResultExpired();
             }
         })
 
         var isExpiredMsgShown = false;
-        function showResultExpired(){
-            if(!isExpiredMsgShown){
+        function showResultExpired() {
+            if (!isExpiredMsgShown) {
                 isExpiredMsgShown = true;
                 var popupRemainFor = 2; //seconds
 
                 $("#message").fadeIn("slow");
 
                 var sec = 0;
-                var timer = setInterval(function() { 
-                    if(sec++ >= popupRemainFor){
+                var timer = setInterval(function () {
+                    if (sec++ >= popupRemainFor) {
                         $("#message").fadeOut("slow");
                         clearInterval(timer);
                         isExpiredMsgShown = false;
@@ -95,20 +94,20 @@
         }
 
         var isCopiedMsgShown = false;
-        function copyResultLink(){
+        function copyResultLink() {
 
             var resultLink = window.location.origin + window.location.pathname + "?resultId=" + thisResultId;
             navigator.clipboard.writeText(resultLink);
 
-            if(!isCopiedMsgShown){
+            if (!isCopiedMsgShown) {
                 isCopiedMsgShown = true;
                 var popupRemainFor = 3; //seconds
 
                 $("#notification").fadeIn("slow");
 
                 var sec = 0;
-                var timer = setInterval(function() { 
-                    if(sec++ >= popupRemainFor){
+                var timer = setInterval(function () {
+                    if (sec++ >= popupRemainFor) {
                         $("#notification").fadeOut("slow");
                         clearInterval(timer);
                         isCopiedMsgShown = false;

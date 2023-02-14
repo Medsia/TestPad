@@ -9,5 +9,6 @@ namespace LX.TestPad.DataAccess.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public int TestDuration { get; set; }
+        public bool IsPublished { get; set; }
     }
 }

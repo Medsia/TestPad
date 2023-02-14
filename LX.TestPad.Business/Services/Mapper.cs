@@ -15,6 +15,7 @@ namespace LX.TestPad.Business.Services
                 Name = entity.Name,
                 Description = entity.Description,
                 TestDuration = FromSecondsToMinutes(entity.TestDuration),
+                IsPublished = entity.IsPublished,
             };
         }
         public static QuestionModel QuestionToModel(Question entity)
@@ -99,6 +100,7 @@ namespace LX.TestPad.Business.Services
                 Name = model.Name,
                 Description = model.Description,
                 TestDuration = FromMinutesToSeconds(model.TestDuration),
+                IsPublished = model.IsPublished,
             };
         }
         public static Question QuestionModelToEntity(QuestionModel model)

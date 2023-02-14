@@ -59,7 +59,7 @@ namespace LX.TestPad.Business.Services
             var selectedTest = await _testRepository.GetByIdAsync(id);
             var newTest = new Test()
             {
-                Name = selectedTest.Name + $" (Copy_of_{selectedTest.Name})",
+                Name = $"{selectedTest.Name} (Copy_of_{selectedTest.Name})",
                 Description = selectedTest.Description,
                 TestDuration = selectedTest.TestDuration,
                 IsPublished = false,

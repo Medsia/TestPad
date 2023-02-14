@@ -10,16 +10,21 @@
                 <input class="m-lg-0" type="search" style="width: 200px" maxlength="50" name="query" placeholder="Search test"/>
                 <button class="btn btn-primary" type="submit">Search</button>
 </form>
-@foreach(var test in Model){
-
-<div class="test">
-    <img class="test-img" src="" height="250" width="250"/>
-    <p class="test-title">@test.Name</p>
-    <p class="product-desc" style="word-wrap: break-word; width: 250px">@test.Description</p>
-    <form asp-action="TestDetails" asp-route-id="@test.Id">
-        <button type="submit" class="btn btn-success">Show</button>
-    </form>
-
-</div>
-
+@foreach (var test in Model)
+{
+    <div class="test" style="border: 0">
+        <ul class="list-group" style="height: 235px;  max-width: 250px; ">
+            <li class="list-group-item" style="height: 40px">
+                <p class="test-title">@test.Name</p>
+            </li>
+            <li class="list-group-item" style="text-overflow: ellipsis; max-width: 250px; height: 135px">
+                <p class="product-desc" style="word-wrap: break-word; width: 200px; max-height: 100%; text-overflow: ellipsis; overflow: hidden;">@test.Description</p>
+            </li>
+            <li class="list-group-item">
+                <form>
+                    <button asp-controller="Test" asp-action="EnterUserName" asp-route-id="@test.Id" type="submit" class="btn btn-success">Start</button>
+                </form>
+            </li>
+        </ul>
+    </div>
 }

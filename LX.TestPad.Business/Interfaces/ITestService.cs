@@ -2,10 +2,11 @@
 
 namespace LX.TestPad.Business.Interfaces
 {
-    public interface ITestService: IService<TestModel>
+    public interface ITestService : IService<TestModel>
     {
         Task<TestModel> GetByIdAsync(int testId);
         Task<List<TestModel>> GetAllAsync();
         Task<List<TestModel>> GetAllByPageNumberAsync(int pageNumber, int count);
+        Task<List<TestModel>> GetAllPublishedAsync();
     }
 }

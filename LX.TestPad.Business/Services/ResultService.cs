@@ -106,7 +106,7 @@ namespace LX.TestPad.Business.Services
         {
             foreach (var resultAnswer in resultAnswers)
             {
-                if (question.Text == resultAnswer.QuestionText && !resultAnswer.IsCorrect)
+                if (resultAnswer.QuestionId == question.Id && !resultAnswer.IsCorrect)
                     return true;
             }
 
@@ -119,7 +119,7 @@ namespace LX.TestPad.Business.Services
 
             foreach (var resultAnswer in resultAnswers)
             {
-                if (resultAnswer.QuestionText == question.Text && resultAnswer.IsCorrect) count++;
+                if (resultAnswer.QuestionId == question.Id && resultAnswer.IsCorrect) count++;
             }
 
             return count;

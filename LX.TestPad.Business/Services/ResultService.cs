@@ -16,7 +16,6 @@ namespace LX.TestPad.Business.Services
         private readonly ITestRepository _testRepository;
         private readonly IQuestionRepository _questionRepository;
 
-
         public ResultService(IResultRepository resultRepository, IResultAnswerRepository resultAnswerRepository,
                                 ITestQuestionRepository testQuestionRepository, IAnswerRepository answerRepository,
                                 ITestRepository testRepository, IQuestionRepository questionRepository)
@@ -36,7 +35,30 @@ namespace LX.TestPad.Business.Services
 
             var item = await _resultRepository.GetByIdAsync(id);
 
+            return Mapper.ResultToModel(item);
+        }
+
+        public async Task<ResultModel> GetByIdAndCalculateAsync(int id)
+        {
+            ExceptionChecker.SQLKeyIdCheck(id);
+
+            var item = await _resultRepository.GetByIdAsync(id);
+
             return await CheckIfCalculated(item);
+        }
+
+        public async Task<List<ResultModel>> GetAllAsync()
+        {
+            var items = await _resultRepository.GetAllAsync();
+
+            return items.Select(Mapper.ResultToModel).ToList();
+        }
+
+        public async Task<List<ResultIncludeTestModel>> GetAllIncludeTestAsync()
+        {
+            var items = await _resultRepository.GetAllIncludeTestAsync();
+
+            return items.Select(Mapper.ResultIncludeTestToModel).ToList();
         }
 
         public async Task<List<ResultModel>> GetAllByTestIdAsync(int testId)

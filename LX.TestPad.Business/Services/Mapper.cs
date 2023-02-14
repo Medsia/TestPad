@@ -14,7 +14,7 @@ namespace LX.TestPad.Business.Services
                 Id = entity.Id,
                 Name = entity.Name,
                 Description = entity.Description,
-                TestDuration = entity.TestDuration,
+                TestDuration = FromSecondsToMinutes(entity.TestDuration),
             };
         }
         public static QuestionModel QuestionToModel(Question entity)
@@ -25,6 +25,17 @@ namespace LX.TestPad.Business.Services
                 Text = entity.Text,
             };
         }
+        public static QuestionModel QuestionWithAnswersToModel(Question entity)
+        {
+            return new QuestionModel
+            {
+                Id = entity.Id,
+                Text = entity.Text,
+                Answers = entity.Answers.Select(Mapper.AnswerToModel)
+                        .ToList()
+            };
+        }
+
         public static AnswerModel AnswerToModel(Answer entity)
         {
             return new AnswerModel
@@ -33,6 +44,20 @@ namespace LX.TestPad.Business.Services
                 Text = entity.Text,
                 IsCorrect = entity.IsCorrect,
                 QuestionId = entity.QuestionId,
+            };
+        }
+        public static ResultIncludeTestModel ResultIncludeTestToModel(Result entity)
+        {
+            return new ResultIncludeTestModel
+            {
+                Id = entity.Id,
+                Score = entity.Score,
+                IsCalculated = entity.IsCalculated,
+                TestId = entity.TestId,
+                UserName = entity.UserName,
+                StartedAt = entity.StartedAt,
+                FinishedAt = entity.FinishedAt,
+                Test = TestToModel(entity.Test),
             };
         }
         public static ResultModel ResultToModel(Result entity)
@@ -51,6 +76,7 @@ namespace LX.TestPad.Business.Services
                 FinishedAt = entity.FinishedAt,
             };
         }
+
         public static ResultAnswerModel ResultAnswerToModel(ResultAnswer entity)
         {
             return new ResultAnswerModel
@@ -72,7 +98,7 @@ namespace LX.TestPad.Business.Services
                 Id = model.Id,
                 Name = model.Name,
                 Description = model.Description,
-                TestDuration = model.TestDuration
+                TestDuration = FromMinutesToSeconds(model.TestDuration),
             };
         }
         public static Question QuestionModelToEntity(QuestionModel model)
@@ -89,8 +115,22 @@ namespace LX.TestPad.Business.Services
             {
                 Id = model.Id,
                 Text = model.Text,
-                IsCorrect = model.IsCorrect ?? false,
+                IsCorrect = model.IsCorrect,
                 QuestionId = model.QuestionId,
+            };
+        }
+        public static Result ResultIncludeTestModelToEntity(ResultIncludeTestModel model)
+        {
+            return new Result
+            {
+                Id = model.Id,
+                UserName = model.UserName,
+                Score = model.Score,
+                IsCalculated = model.IsCalculated,
+                TestId = model.TestId,
+                StartedAt = model.StartedAt,
+                FinishedAt = model.FinishedAt,
+                Test = TestModelToEntity(model.Test),
             };
         }
         public static Result ResultModelToEntity(ResultModel model)
@@ -98,7 +138,7 @@ namespace LX.TestPad.Business.Services
             return new Result
             {
                 Id = model.Id,
-                UserName = model.UserName +' '+ model.UserSurname,
+                UserName = model.UserName + ' ' + model.UserSurname,
                 Score = model.Score,
                 IsCalculated = model.IsCalculated,
                 TestId = model.TestId,
@@ -129,23 +169,42 @@ namespace LX.TestPad.Business.Services
                 QuestionId = entity.QuestionId,
             };
         }
-        public static QuestionWithAnswersModel MapQuestionWithAnswers(Question questionEntity, List<AnswerModel> answerEntities)
+        public static TestQuestionModel TestQuestionWithAnswersAndTestToModel(TestQuestion entity)
         {
-            return new QuestionWithAnswersModel
+            return new TestQuestionModel
             {
-                Id = questionEntity.Id,
-                Text = questionEntity.Text,
-                Answers = answerEntities,
+                Id = entity.Id,
+                TestId = entity.TestId,
+                QuestionId = entity.QuestionId,
+                Test = TestToModel(entity.Test),
+                Question = QuestionWithAnswersToModel(entity.Question),
+            };
+        }
+        public static Question QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(Question question)
+        {
+            return new Question
+            {
+                Id = question.Id,
+                Text = question.Text,
+                Answers = question.Answers.Select(answer => new Answer
+                {
+                    Id = answer.Id,
+                    QuestionId = answer.QuestionId,
+                    Text = answer.Text,
+                }).ToList()
             };
         }
 
-        public static QuestionWithAnswersModel QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(QuestionWithAnswersModel questionWithAnswers)
+        public static int FromMinutesToSeconds(int minutes)
         {
-            foreach(var answer in questionWithAnswers.Answers)
-            {
-                answer.IsCorrect = null;
-            }
-            return questionWithAnswers;
+            const int secondsInOneMinute = 60;
+            return minutes * secondsInOneMinute;
+        }
+
+        public static int FromSecondsToMinutes(int seconds)
+        {
+            const int secondsInOneMinute = 60;
+            return seconds / secondsInOneMinute;
         }
     }
 }

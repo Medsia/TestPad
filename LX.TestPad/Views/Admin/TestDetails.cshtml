@@ -1,80 +1,57 @@
-﻿@{
+﻿@model LX.TestPad.Business.Models.TestModel
+
+@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-@{
-        var answers = new[]
-    {
-    new {Text="Yes"},
-    new {Text="No"},
-    };
+<h1>Test Information</h1>
 
-    var questions = new[]
-    {
-    new {Text="What language do people speak in Australia?", Answers = answers},
-    new {Text="What?", Answers = answers},
-    new {Text="What language do people speak?", Answers = answers},
-    new {Text="What is Australia?", Answers = answers},
-    new {Text="What people in Australia?", Answers = answers},
-    new {Text="What is australia s form of government?", Answers = answers},
-    };
-    var test = new { Name = "C#",
-    Desc = " good well cool great best good well cool great best good well cool great best description",
-    };
+<form asp-action="UpdateTest" asp-route-id="@Model.Id" method="post">
+    <div>
+        <label asp-for="Name" style="font-weight:bold">Test Name:</label>
+        <p id="Name-text">@Model.Name</p>
+        <input type="text" asp-for="Name" id="Name" style="display:none"/>
+    </div>
+    <div>
+        <label asp-for="Description" style="font-weight:bold">Description:</label>
+        <p id="Description-text">@Model.Description</p>
+        <input type="text" asp-for="Description" id="Description" style="display:none"/>
+    </div>
+    <div>
+        <label asp-for="TestDuration" style="font-weight:bold">Test Duration:</label>
+        <p id="TestDuration-text">@Model.TestDuration</p>
+        <input asp-for="TestDuration" id="TestDuration" style="display:none"/>
+    </div>
+    <div>
+        <input type="submit" value="Save" id="saveButton" style="display:none"/>
+        <input type="button" value="Edit" id="editButton" onclick="toggleEditing()" />
+    </div>
+</form>
+<a asp-action="TestQuestions" asp-route-testId="@Model.Id" class="btn btn-outline-info">Edit Questions</a>
 
+<a asp-action="DeleteTest" asp-route-id="@Model.Id" class="text-danger">Delete Test</a><br>
+
+<script>
+function applyInlineStyleFor(identifiers) {
+    for (var i = 0; i < identifiers.length; i++) {
+        var element = document.getElementById(identifiers[i]);
+        element.style.display = "inline";
+    }
 }
 
-<div class="row box-shadow mb-3">   
-    <dl class="row col-sm-6 ">
-        <dt class="col-sm-4">
-            Test Name
-        </dt>
-        <dd class="col-sm-8">
-            @test.Name
-        </dd>
-        <dt class="col-sm-4">
-            Description
-        </dt>
-        <dd class="col-sm-8">
-            @test.Desc
-        </dd>
-    </dl>   
-    <br>
-</div>
-<table class="table" style="width:auto">
-    <thead>
-        <tr>
-            <th>
-                <div class="">Question</div>
-            </th>
-            <th>
-                <div class="" >Answers</div>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var question in questions)
-        {
+function toggleEditing() {
+    var inputElements = ["Name", "Description", "TestDuration"];
+    var saveButton = "saveButton";
 
-        <tr class="box-shadow">
-            <td>
-                <div class="" style="word-wrap: break-word; width: 250px">@question.Text</div>
-            </td>
-            <td>
-                @foreach(var answer in question.Answers)
-        {
-            if(answer.Text == "Yes")
-            {
-                    <label style="word-wrap: break-word; width: 250px">@answer.Text;✅</label><br>
-                
-            }
-            else
-            {
-                <label>@answer.Text;</label><br>
-            }
+    if (document.getElementById("Name").style.display === "none") {
+        applyInlineStyleFor(inputElements.concat(saveButton));
+        document.getElementById("editButton").style.display = "none";
+    } else {
+        for (var i = 0; i < inputElements.length; i++) {
+            var element = document.getElementById(inputElements[i]);
+            element.style.display = "none";
         }
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
-<a asp-action="DeleteTest" class="text-danger">Delete Test</a><br>
+        document.getElementById("saveButton").style.display = "none";
+        document.getElementById("editButton").style.display = "inline";
+    }
+}
+</script>

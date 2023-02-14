@@ -1,6 +1,6 @@
-﻿@model LX.TestPad.Business.Models.AnswerModel
+﻿@model LX.TestPad.Business.Models.QuestionModel
 @{
-    ViewData["Title"] = "New Answer";
+    ViewData["Title"] = "New Question";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -9,7 +9,7 @@
 <hr />
 
 
-<form asp-action="CreateAnswer" asp-route-QuestionId="@Model.QuestionId" asp-route-TestId="@Model.TestId" method="post">
+<form asp-action="CreateQuestion" asp-route-TestId="@Model.TestId" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row mb-3">
         <div class="col-md-5 col-md-auto mx-auto">
@@ -17,8 +17,6 @@
                 <label class="control-label">Text</label>
                 <textarea asp-for="Text" style="min-height: 40px; max-height: 200px;" rows="3" class="form-control" required></textarea>
                 <span asp-validation-for="Text" class="text-danger"></span><br>               
-                <input asp-for="IsCorrect">
-                <a>Correct</a>
             </div>
 
             <div class="form-group mt-5">

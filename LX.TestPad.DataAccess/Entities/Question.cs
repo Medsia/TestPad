@@ -8,5 +8,7 @@ namespace LX.TestPad.DataAccess.Entities
         [Key]
         public int Id { get; set; }
         public string Text { get; set; }
+
+        public virtual List<Answer> Answers { get; set; }
     }
 }

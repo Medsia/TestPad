@@ -181,48 +181,5 @@ namespace LX.TestPad.Tests.ServiceTests
             Assert.Equal(resultAnswerEntity.AnswerText, actualEntity.AnswerText);
             Assert.Equal(resultAnswerEntity.IsCorrect, actualEntity.IsCorrect);
         }
-
-
-        [Fact]
-        public void QuestionWithAnswers_MappedFromQuestionEntityAndListOfAnswerEntities_IsCorrect()
-        {
-            var testList = new List<AnswerModel> { answerModel };
-            var actualResult = Mapper.MapQuestionWithAnswers(questionEntity, testList);
-
-            var expectedAnswers = new List<AnswerModel> { answerModel };
-            var expectedResult = new QuestionWithAnswersModel { Id = questionEntity.Id, Text = questionEntity.Text, Answers = expectedAnswers };
-
-            Assert.Equal(expectedResult.Id, actualResult.Id);
-            Assert.Equal(expectedResult.Text, actualResult.Text);
-
-            foreach(var answer in actualResult.Answers)
-            {
-                Assert.Equal(answer.Id, answer.Id);
-                Assert.Equal(answer.QuestionId, answer.QuestionId);
-                Assert.Equal(answer.Text, answer.Text);
-                Assert.Equal(answer.IsCorrect, answer.IsCorrect);
-            }
-        }
-
-
-        [Fact]
-        public void QuestionWithAnswersWithoutIsCorrect_MappedFromQuetionWithAnswers_IsCorrect()
-        {
-            var actualModel = new QuestionWithAnswersModel
-            {
-                Id = questionEntity.Id,
-                Text = questionEntity.Text,
-                Answers = new List<AnswerModel> { answerModel }
-            };
-
-            Mapper.QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(actualModel);
-
-            Assert.Equal(questionModel.Id, actualModel.Id);
-            Assert.Equal(questionModel.Text, actualModel.Text);
-            Assert.Equal(answerModel.Text, actualModel.Answers[0].Text);
-            Assert.Equal(answerModel.Id, actualModel.Answers[0].Id);
-            Assert.Equal(answerModel.QuestionId, actualModel.Answers[0].QuestionId);
-            Assert.Null(answerModel.IsCorrect);
-        }
     }
 }

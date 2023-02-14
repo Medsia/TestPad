@@ -21,8 +21,8 @@
                 <p class="product-desc" style="word-wrap: break-word; width: 200px; max-height: 100%; text-overflow: ellipsis; overflow: hidden;">@test.Description</p>
             </li>
             <li class="list-group-item">
-                <form>
-                    <button asp-controller="Test" asp-action="EnterUserName" asp-route-id="@test.Id" type="submit" class="btn btn-success">Start</button>
+                <form asp-action="TestDetails" asp-route-id="@test.Id">
+                    <button type="submit" class="btn btn-success">Show</button>
                 </form>
             </li>
         </ul>

@@ -63,15 +63,7 @@ namespace LX.TestPad.Business.Services
             ExceptionChecker.SQLKeyIdCheck(newTestId);
 
             var oldTestQuestionIds = (await _testQuestionRepository.GetAllByTestIdAsync(oldTestId)).Select(x => x.QuestionId);
-            var newTestQuestions = new List<TestQuestion>();
-            foreach (var oldTestQuestionId in oldTestQuestionIds)
-            {
-                newTestQuestions.Add(new TestQuestion
-                {
-                    TestId = newTestId,
-                    QuestionId = oldTestQuestionId,
-                });
-            }
+            var newTestQuestions = oldTestQuestionIds.Select(x => new TestQuestion{ TestId = newTestId, QuestionId = x }).ToList();
 
             await _testQuestionRepository.CreateFromListAsync(newTestQuestions);
         }

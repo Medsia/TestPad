@@ -70,7 +70,7 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> UpdateTest(TestModel test)
         {
             await _testService.UpdateAsync(test);
-            return RedirectToAction(nameof(TestDetails), new { id = @test.Id }); ;
+            return RedirectToAction(nameof(TestDetails), new { id = test.Id }); ;
         }
 
         [HttpPost]
@@ -79,7 +79,7 @@ namespace LX.TestPad.Controllers
         {
             test.IsPublished = !test.IsPublished;
             await _testService.UpdateAsync(test);
-            return RedirectToAction(nameof(TestDetails), new { id = @test.Id });
+            return RedirectToAction(nameof(TestDetails), new { id = test.Id });
         }
 
         public async Task<IActionResult> TestQuestions(int testId)

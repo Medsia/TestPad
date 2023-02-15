@@ -5,6 +5,8 @@ using LX.TestPad.Business.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using LX.TestPad.DataAccess.Entities;
+using LX.TestPad.Models;
+using System.Diagnostics;
 
 namespace LX.TestPad.Controllers
 {
@@ -24,6 +26,12 @@ namespace LX.TestPad.Controllers
             _questionService = questionService;
             _answerService = answerService;
             _resultService = resultService;
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         public async Task<IActionResult> Index()
@@ -97,7 +105,11 @@ namespace LX.TestPad.Controllers
         {
             var newTest = await _testService.CopyByIdAsync(selectedTestId);
 
+            int minIdValue = 0;
+            if (newTest.Id <= minIdValue) return RedirectToAction(nameof(Error));
+
             return RedirectToAction(nameof(TestDetails), new { id = newTest.Id });
+
         }
 
         [HttpPost]

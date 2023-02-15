@@ -72,6 +72,8 @@ namespace LX.TestPad.Business.Services
             ExceptionChecker.SQLKeyIdCheck(oldTestId);
 
             var selectedTest = await _testRepository.GetByIdAsync(oldTestId);
+            if (selectedTest == null) return new TestModel();
+
             var newTest = new Test()
             {
                 Name = selectedTest.Name + $" (Copy)",

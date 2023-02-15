@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.Models;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
 
 namespace LX.TestPad.Controllers
 {
@@ -18,14 +19,17 @@ namespace LX.TestPad.Controllers
         private readonly IQuestionService _questionService;
         private readonly IAnswerService _answerService;
         private readonly IResultService _resultService;
+        private readonly IResultAnswerService _resultAnswerService;
         public AdminController(ITestQuestionService testQuestionService, ITestService testService,
-            IQuestionService questionService, IAnswerService answerService, IResultService resultService)
+            IQuestionService questionService, IAnswerService answerService, IResultService resultService,
+            IResultAnswerService resultAnswerService)
         {
             _testQuestionService = testQuestionService;
             _testService = testService;
             _questionService = questionService;
             _answerService = answerService;
             _resultService = resultService;
+            _resultAnswerService = resultAnswerService;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -56,9 +60,12 @@ namespace LX.TestPad.Controllers
             return View();
         }
 
-        public IActionResult ResultDetails()
+        public async Task<IActionResult> ResultDetails(int resultId)
         {
-            return View();
+            var resultModel = await _resultService.GetByIdIncludeTestAsync(resultId);
+            var resultAnswerModels = (await _resultAnswerService.GetAllByResultIdAsync(resultId)).GroupBy(x => x.QuestionText).ToList();
+
+            return View( new ResultWithResultAnswersViewModel { resultModel=resultModel, resultAnswerModels=resultAnswerModels } );
         }
 
         public IActionResult CreateTest()

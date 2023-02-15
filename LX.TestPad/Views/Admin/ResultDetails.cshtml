@@ -20,14 +20,19 @@
 
 
 }
+
+<div class="my-3">
+    <a class="btn btn-outline-danger mx-1" style="width: 130px;" href="@Url.Action("TestResults", "Admin")">Back to results</a>
+</div>
+
 <div class="text-center">
     <h1 class="display-4">Test Result</h1>
     <h4 class="display-4">60%</h4>
 </div>
 
 @foreach(var question in questions){
-<div style="height:auto">
-  <label>@question.Text</label>
+    <div style="height:auto">
+        <label>@question.Text</label>
         
         @if (question.Answer == "Yes")
         {
@@ -40,4 +45,4 @@
 
     </div>
 }
-<a class="btn btn-outline-danger ml-4 mr-auto" href="javascript:history.back()">Back</a>
+

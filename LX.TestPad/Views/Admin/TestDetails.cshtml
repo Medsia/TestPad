@@ -3,6 +3,7 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
 <h1>Test Information</h1>
 
 <form asp-action="UpdateTest" asp-route-id="@Model.Id" method="post">
@@ -47,6 +48,10 @@
 
 <a asp-action="DeleteTest" asp-route-id="@Model.Id" class="text-danger">Delete Test</a>
 <br>
+
+<div class="my-3">
+    <a class="btn btn-outline-danger" style="width: 130px;" href="@Url.Action("Index", "Admin")">Back to tests</a>
+</div>
 
 <script>
     function applyInlineStyleFor(identifiers) {

@@ -1,6 +1,9 @@
 ﻿@model ErrorViewModel
 @{
     ViewData["Title"] = "Error";
+
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+    if (controllerName == "Admin") Layout = $"~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h1 class="text-danger">Error.</h1>

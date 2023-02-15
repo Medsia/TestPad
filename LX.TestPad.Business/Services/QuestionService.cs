@@ -1,5 +1,6 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
+using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
 
 namespace LX.TestPad.Business.Services
@@ -9,7 +10,7 @@ namespace LX.TestPad.Business.Services
         private readonly IQuestionRepository _questionRepository;
         private readonly IAnswerRepository _answerRepository;
         private readonly ITestQuestionRepository _testQuestionRepository;
-        public QuestionService(IQuestionRepository questionRepository, IAnswerRepository answerRepository, 
+        public QuestionService(IQuestionRepository questionRepository, IAnswerRepository answerRepository,
             ITestQuestionRepository testQuestionRepository)
         {
             _questionRepository = questionRepository;
@@ -49,8 +50,8 @@ namespace LX.TestPad.Business.Services
         public async Task<QuestionModel> CreateAsync(QuestionModel questionModel)
         {
             var item = Mapper.QuestionModelToEntity(questionModel);
-
             item = await _questionRepository.CreateAsync(item);
+            await _answerRepository.CreateBasicAnswerAsync(item.Id);
 
             return Mapper.QuestionToModel(item);
         }

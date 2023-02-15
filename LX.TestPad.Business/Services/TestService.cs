@@ -2,17 +2,25 @@
 using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
+using LX.TestPad.DataAccess.Repositories;
 
 namespace LX.TestPad.Business.Services
 {
     public class TestService : ITestService
     {
         private readonly ITestRepository _testRepository;
-
-        public TestService(ITestRepository testRepository)
+        private readonly IQuestionRepository _questionRepository;
+        private readonly IAnswerRepository _answerRepository;
+        private readonly ITestQuestionRepository _testQuestionRepository;
+        public TestService(ITestQuestionRepository testQuestionRepository, IQuestionRepository questionRepository,
+                                        ITestRepository testRepository, IAnswerRepository answerRepository)
         {
+            _testQuestionRepository = testQuestionRepository;
+            _questionRepository = questionRepository;
             _testRepository = testRepository;
+            _answerRepository = answerRepository;
         }
+
 
 
         public async Task<TestModel> GetByIdAsync(int testId)
@@ -54,12 +62,43 @@ namespace LX.TestPad.Business.Services
         }
 
 
+        private async Task CopyAllTestQuestionsToNewTestAsync(int oldTestId, int newTestId)
+        {
+            ExceptionChecker.SQLKeyIdCheck(oldTestId);
+            ExceptionChecker.SQLKeyIdCheck(newTestId);
+
+            var oldTestQuestionIds = (await _testQuestionRepository.GetAllByTestIdAsync(oldTestId)).Select(x => x.QuestionId);
+            var newTestQuestions = oldTestQuestionIds.Select(x => new TestQuestion { TestId = newTestId, QuestionId = x }).ToList();
+
+            await _testQuestionRepository.CreateFromListAsync(newTestQuestions);
+        }
+        public async Task<TestModel> CopyByIdAsync(int oldTestId)
+        {
+            ExceptionChecker.SQLKeyIdCheck(oldTestId);
+
+            var selectedTest = await _testRepository.GetByIdAsync(oldTestId);
+            if (selectedTest == null) return new TestModel();
+
+            var newTest = new Test()
+            {
+                Name = selectedTest.Name + $" (Copy)",
+                Description = selectedTest.Description,
+                TestDuration = selectedTest.TestDuration,
+                IsPublished = false,
+            };
+
+            var item = await _testRepository.CreateAsync(newTest);
+            await CopyAllTestQuestionsToNewTestAsync(oldTestId, newTest.Id);
+
+            return Mapper.TestToModel(item);
+        }
+
+
         public async Task<TestModel> CreateAsync(TestModel testModel)
         {
             var item = Mapper.TestModelToEntity(testModel);
 
             item = await _testRepository.CreateAsync(item);
-
             return Mapper.TestToModel(item);
         }
 

@@ -1,6 +1,5 @@
 ﻿using LX.TestPad.Business.Interfaces;
 using LX.TestPad.Business.Models;
-using LX.TestPad.Controllers;
 using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
 
@@ -67,12 +66,9 @@ namespace LX.TestPad.Business.Services
             var item = Mapper.TestModelToEntity(testModel);
 
             item = await _testRepository.CreateAsync(item);
-            var question = new Question { Text = BasicDataToGenerate.QuestionText };
-            question = await _questionRepository.CreateAsync(question);
-            var testQuestion = new TestQuestion { QuestionId = question.Id, TestId = item.Id };
-            await _testQuestionRepository.CreateAsync(testQuestion);
-            var answer = new Answer { QuestionId = question.Id, Text = BasicDataToGenerate.QuestionText, IsCorrect = BasicDataToGenerate.Answer.IsCorrect };
-            await _answerRepository.CreateAsync(answer);
+            var question = await _questionRepository.CreateBasicQuestionAsync();
+            await _answerRepository.CreateBasicAnswerAsync(question.Id);
+            await _testQuestionRepository.CreateAsync(new TestQuestion { QuestionId = question.Id, TestId = item.Id });
             return Mapper.TestToModel(item);
         }
 

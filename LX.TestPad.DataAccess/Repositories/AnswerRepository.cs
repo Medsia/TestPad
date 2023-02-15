@@ -7,7 +7,7 @@ namespace LX.TestPad.DataAccess.Repositories
     public class AnswerRepository : IAnswerRepository
     {
         private readonly DataContext dbContext;
-        
+
         public AnswerRepository(DataContext dbContext)
         {
             this.dbContext = dbContext;
@@ -19,7 +19,14 @@ namespace LX.TestPad.DataAccess.Repositories
 
             return answer;
         }
+        public async Task<Answer> CreateBasicAnswerAsync(int questionId)
+        {
+            var answer = new Answer { QuestionId = questionId, Text = BasicDataToGenerate.AnswerText, IsCorrect = BasicDataToGenerate.AnswerIsCorrect };
+            await dbContext.Answers.AddAsync(answer);
+            await dbContext.SaveChangesAsync();
 
+            return answer;
+        }
         public async Task DeleteAsync(int id)
         {
             var item = await dbContext.Answers.FirstOrDefaultAsync(x => x.Id == id);
@@ -36,7 +43,7 @@ namespace LX.TestPad.DataAccess.Repositories
                 var item = await dbContext.Answers.FirstOrDefaultAsync(x => x.Id == id);
                 if (item != null) dbContext.Answers.Remove(item);
             }
-            
+
             await dbContext.SaveChangesAsync();
         }
         public async Task DeleteAllByQuestionIdAsync(int questionId)

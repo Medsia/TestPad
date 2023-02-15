@@ -4,10 +4,6 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="my-3">
-    <a class="btn btn-outline-danger mx-1" style="width: 130px;" href="@Url.Action("Index", "Admin")">Back to tests</a>
-</div>
-
 <h4 class="text-center">@ViewData["Title"]</h4>
 <hr />
 
@@ -31,6 +27,7 @@
                 <span asp-validation-for="TestDuration" class="text-danger"></span>
             </div>
             <div class="my-3 text-center">
+                <a class="btn btn-outline-danger mx-1" style="width: 130px;" href="@Url.Action("Index", "Admin")">Back to tests</a>
                 <input type="submit" value="Create" class="btn btn-primary mx-1" style="width: 80px;"/>
             </div>       
         </div>

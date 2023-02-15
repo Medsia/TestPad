@@ -27,11 +27,11 @@
                       asp-route-TestId="@testQuestion.TestId" method="post">
                         <div class="question-header">
                             <p id="Question-text-@questionId">@testQuestion.Question.Text</p>
-                            <input type="text" name="Text" asp-for="@testQuestion.Question.Text" id="Question-@questionId" style="display:none" />
+                            <input type="text" name="Text" asp-for="@testQuestion.Question.Text" id="Question-@questionId" style="display:none" required />
                             <div>
                                 <input type="submit" value="Save" id="saveButton-@questionId" style="display:none" />
-                                <input type="button" value="Edit" id="editButton-@questionId" onclick="toggleEditing(@questionId)" />
-                                <input type="button" value="Cancel" id="cancelButton-@questionId" onclick="cancelEditing(@questionId)" style="display:none" />
+                                <input type="button" value="Edit" id="editButton-@questionId" onclick="toggleEditingById(@questionId)" />
+                                <input type="button" value="Cancel" id="cancelButton-@questionId" onclick="cancelEditingById(@questionId)" style="display:none" />
                             </div>
                         </div>
                     </form>
@@ -73,7 +73,7 @@
 <a href="@Url.Action("Index", "Admin")">Return to Tests</a>
 
 <script>
-    function applyInlineStyleFor(elements, styleName, value) {
+    function applyStyleFor(elements, styleName, value) {
         for (var i = 0; i < elements.length; i++) {
             var element = document.getElementById(elements[i]);
             if (element) {
@@ -82,30 +82,14 @@
         }
     }
 
-    function toggleEditing(id) {
-        var Questiontext = document.getElementById("Question-text-" + id);
-        var Question = document.getElementById("Question-" + id);
-        var saveButton = document.getElementById("saveButton-" + id);
-        var editButton = document.getElementById("editButton-" + id);
-        var cancelButton = document.getElementById("cancelButton-" + id);
-
-        applyInlineStyleFor(["Question-" + id], "display", "inline");
-        applyInlineStyleFor(["Question-text-" + id], "display", "none");
-        applyInlineStyleFor(["saveButton-" + id, "cancelButton-" + id], "display", "inline");
-        applyInlineStyleFor(["editButton-" + id], "display", "none");
+    function toggleEditingById(id) {
+        applyStyleFor(["Question-" + id, "saveButton-" + id, "cancelButton-" + id], "display", "inline");
+        applyStyleFor(["Question-text-" + id, "editButton-" + id], "display", "none");
     }
 
-    function cancelEditing(id) {
-        var Questiontext = document.getElementById("Question-text-" + id);
-        var Question = document.getElementById("Question-" + id);
-        var saveButton = document.getElementById("saveButton-" + id);
-        var editButton = document.getElementById("editButton-" + id);
-        var cancelButton = document.getElementById("cancelButton-" + id);
-
-        applyInlineStyleFor(["Question-text-" + id], "display", "inline");
-        applyInlineStyleFor(["Question-" + id], "display", "none");
-        applyInlineStyleFor(["saveButton-" + id], "display", "none");
-        applyInlineStyleFor(["editButton-" + id, "cancelButton-" + id], "display", "inline");
+    function cancelEditingById(id) {
+        applyStyleFor(["Question-text-" + id, "editButton-" + id], "display", "inline");
+        applyStyleFor(["saveButton-" + id, "cancelButton-" + id, "Question-" + id], "display", "none");
     }
 </script>
 

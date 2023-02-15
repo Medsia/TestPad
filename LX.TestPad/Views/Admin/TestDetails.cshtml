@@ -10,17 +10,22 @@
     <div>
         <label asp-for="Name" style="font-weight:bold">Test Name:</label>
         <p id="Name-text">@Model.Name</p>
-        <input type="text" asp-for="Name" id="Name" style="display:none" />
+        <input type="text" asp-for="Name" id="Name" style="display:none" required />
     </div>
     <div>
         <label asp-for="Description" style="font-weight:bold">Description:</label>
         <p id="Description-text">@Model.Description</p>
-        <input type="text" asp-for="Description" id="Description" style="display:none" />
+        <input type="text" asp-for="Description" id="Description" style="display:none" required />
     </div>
     <div>
         <label asp-for="TestDuration" style="font-weight:bold">Test Duration:</label>
         <p id="TestDuration-text">@Model.TestDuration</p>
-        <input asp-for="TestDuration" id="TestDuration" style="display:none" />
+        <input asp-for="TestDuration" id="TestDuration" style="display:none" required />
+    </div>
+    <div>
+        <input type="submit" value="Save" id="saveButton" style="display:none" />
+        <input type="button" value="Edit" id="editButton" onclick="toggleEditing()" />
+        <input type="button" value="Cancel" id="cancelButton" onclick="cancelEditing()" style="display:none" />
     </div>
     <div>
         <p id="IsPublished-text">
@@ -39,42 +44,42 @@
         </p>
         <input asp-for="IsPublished" id="IsPublished" style="display:none" />
     </div>
-    <div>
-        <input type="submit" value="Save" id="saveButton" style="display:none" />
-        <input type="button" value="Edit" id="editButton" onclick="toggleEditing()" />
-    </div>
 </form>
 <a asp-action="TestQuestions" asp-route-testId="@Model.Id" class="btn btn-outline-info">Edit Questions</a>
+<br />
 
 <a asp-action="DeleteTest" asp-route-id="@Model.Id" class="text-danger">Delete Test</a>
 <br>
+@section scripts{
+    <script>
+        const inputName = "Name";
+        const inputDescription = "Description";
+        const inputTestDuration = "TestDuration";
+        const textName = "Name-text";
+        const textDescription = "Description-text";
+        const textTestDuration = "TestDuration-text";
+        const saveButton = "saveButton";
+        const cancelButton = "cancelButton";
+        const editButton = "editButton";
 
-<div class="my-3">
-    <a class="btn btn-outline-danger" style="width: 130px;" href="@Url.Action("Index", "Admin")">Back to tests</a>
-</div>
-
-<script>
-    function applyInlineStyleFor(identifiers) {
-        for (var i = 0; i < identifiers.length; i++) {
-            var element = document.getElementById(identifiers[i]);
-            element.style.display = "inline";
-        }
-    }
-
-    function toggleEditing() {
-        var inputElements = ["Name", "Description", "TestDuration"];
-        var saveButton = "saveButton";
-
-        if (document.getElementById("Name").style.display === "none") {
-            applyInlineStyleFor(inputElements.concat(saveButton));
-            document.getElementById("editButton").style.display = "none";
-        } else {
-            for (var i = 0; i < inputElements.length; i++) {
-                var element = document.getElementById(inputElements[i]);
-                element.style.display = "none";
+        function applyStyleFor(elements, styleName, value) {
+            for (var i = 0; i < elements.length; i++) {
+                var element = document.getElementById(elements[i]);
+                if (element) {
+                    element.style[styleName] = value;
+                }
             }
-            document.getElementById("saveButton").style.display = "none";
-            document.getElementById("editButton").style.display = "inline";
         }
-    }
-</script>
+
+        function toggleEditing() {
+            applyStyleFor([inputName, inputDescription, inputTestDuration, saveButton, cancelButton], "display", "inline");
+            applyStyleFor([editButton, textName, textDescription, textTestDuration], "display", "none");
+
+        }
+
+        function cancelEditing() {
+            applyStyleFor([inputName, inputDescription, inputTestDuration, saveButton, cancelButton], "display", "none");
+            applyStyleFor([editButton, textName, textDescription, textTestDuration], "display", "inline");
+        }
+    </script>
+}

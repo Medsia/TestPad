@@ -25,15 +25,16 @@
             <tr>
                 <td>
                     <form asp-action="UpdateQuestion" asp-route-id="@testQuestion.QuestionId"
-                    asp-route-TestId="@testQuestion.TestId" method="post">
-                    <div class="question-header">
-                        <p id="Question-text-@questionId">@testQuestion.Question.Text</p>
-                        <input type="text" name="Text" asp-for="@testQuestion.Question.Text" id="Question-@questionId" style="display:none"/>                       
-                        <div>
-                            <input type="submit" value="Save" id="saveButton-@questionId" style="display:none"/>
-                            <input type="button" value="Edit" id="editButton-@questionId" onclick="toggleEditing(@questionId)" />
+                      asp-route-TestId="@testQuestion.TestId" method="post">
+                        <div class="question-header">
+                            <p id="Question-text-@questionId">@testQuestion.Question.Text</p>
+                            <input type="text" name="Text" asp-for="@testQuestion.Question.Text" id="Question-@questionId" style="display:none" required />
+                            <div>
+                                <input type="submit" value="Save" id="saveButton-@questionId" style="display:none" />
+                                <input type="button" value="Edit" id="editButton-@questionId" onclick="toggleEditingById(@questionId)" />
+                                <input type="button" value="Cancel" id="cancelButton-@questionId" onclick="cancelEditingById(@questionId)" style="display:none" />
+                            </div>
                         </div>
-                    </div>
                     </form>
                 </td>
                 <td>
@@ -49,21 +50,21 @@
                                 </span>
                                 @answer.Text;
                                 <form asp-action="DeleteAnswer" asp-route-id="@answer.Id"
-                                asp-route-testId="@testQuestion.TestId" method="post">
-                                <button class="delete-answer-button" type="submit">X</button>
+                              asp-route-testId="@testQuestion.TestId" method="post">
+                                    <button class="delete-answer-button" type="submit">X</button>
                                 </form>
                             </li>
                         }
                     </ul>
                     <a class="add-answer-button" asp-action="CreateAnswer" asp-route-questionId="@testQuestion.QuestionId"
-                    asp-route-testId="@testQuestion.TestId" class="text-info">Add Answer</a>
+                   asp-route-testId="@testQuestion.TestId" class="text-info">Add Answer</a>
                 </td>
                 <td class="delete-question-cell">
                     <form asp-action="DeleteTestQuestion" asp-route-id="@testQuestion.QuestionId"
-                    asp-route-testId="@testQuestion.TestId" style="display: inline" method="post">
-                    <button type="submit" class="delete-question-button">
-                        <span class="delete-question-cross">&times;</span>
-                    </button>
+                      asp-route-testId="@testQuestion.TestId" style="display: inline" method="post">
+                        <button type="submit" class="delete-question-button">
+                            <span class="delete-question-cross">&times;</span>
+                        </button>
                     </form>
                 </td>
             </tr>
@@ -72,68 +73,78 @@
 </table>
 
 <script>
-function toggleEditing(id) {
-    var Questiontext = document.getElementById("Question-text-" + id);
-    var Question = document.getElementById("Question-" + id);
-    var saveButton = document.getElementById("saveButton-" + id);
-    var editButton = document.getElementById("editButton-" + id);
-
-    if (Question.style.display === "none") {
-        Questiontext.style.display = "none";
-        Question.style.display = "inline";
-        saveButton.style.display = "inline";
-        editButton.style.display = "none";
-    } else {
-        Questiontext.style.display = "inline";
-        Question.style.display = "none";
-        saveButton.style.display = "none";
-        editButton.style.display = "inline";
+    function applyStyleFor(elements, styleName, value) {
+        for (var i = 0; i < elements.length; i++) {
+            var element = document.getElementById(elements[i]);
+            if (element) {
+                element.style[styleName] = value;
+            }
+        }
     }
-}
+
+    function toggleEditingById(id) {
+        applyStyleFor(["Question-" + id, "saveButton-" + id, "cancelButton-" + id], "display", "inline");
+        applyStyleFor(["Question-text-" + id, "editButton-" + id], "display", "none");
+    }
+
+    function cancelEditingById(id) {
+        applyStyleFor(["Question-text-" + id, "editButton-" + id], "display", "inline");
+        applyStyleFor(["saveButton-" + id, "cancelButton-" + id, "Question-" + id], "display", "none");
+    }
 </script>
 
 <style>
     .header-buttons {
         float: left;
     }
+
     table {
         width: 100%;
         border-collapse: collapse;
     }
+
     th, td {
         border: 1px solid gray;
         padding: 8px;
     }
+
     .correct {
         color: green;
         font-weight: bold;
     }
+
     .answer-row {
         display: flex;
         align-items: center;
     }
+
     .answer-icon {
         width: 20px;
         margin-right: 8px;
     }
+
     .delete-answer-button {
         margin-left: auto;
     }
+
     .add-answer-button {
         display: block;
         margin-top: 8px;
     }
+
     .delete-question-cell {
         text-align: center;
     }
+
     .delete-question-button {
         background-color: Transparent;
-        background-repeat:no-repeat;
+        background-repeat: no-repeat;
         border: none;
-        cursor:pointer;
+        cursor: pointer;
         overflow: hidden;
-        outline:none;
+        outline: none;
     }
+
     .delete-question-cross {
         color: red;
         font-size: 18px;

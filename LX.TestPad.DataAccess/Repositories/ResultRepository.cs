@@ -67,5 +67,10 @@ namespace LX.TestPad.DataAccess.Repositories
         {
             return await dbContext.Results.Include(x => x.Test).ToListAsync();
         }
+
+        public async Task<Result> GetByIdIncludeTestAsync(int id)
+        {
+            return await dbContext.Results.Include(x => x.Test).FirstOrDefaultAsync(y => y.Id == id);
+        }
     }
 }

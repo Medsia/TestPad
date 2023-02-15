@@ -31,9 +31,12 @@
     <br>
 </div>
 
-    <form asp-action="DeleteTest">
+    <form asp-action="DeleteTest" class="mx-1">
         <input type="hidden" asp-for="Id"/>
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a class="btn btn-outline-danger ml-4 mr-auto" href="javascript:history.back()">Back</a>
+        <input type="submit" value="Delete" class="btn btn-danger" style="width: 80px;"/>
     </form>
+
+    <div class="my-3">
+        <a class="btn btn-outline-danger mx-1" style="width: 80px;" href="@Url.Action("TestDetails", "Admin" , new { id=Model.Id })">Back</a>
+    </div>
 </div>

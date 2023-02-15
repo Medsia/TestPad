@@ -19,14 +19,6 @@ namespace LX.TestPad.DataAccess.Repositories
 
             return question;
         }
-        public async Task<Question> CreateBasicQuestionAsync()
-        {
-            var question = new Question { Text = BasicDataToGenerate.QuestionText };
-            await dbContext.Questions.AddAsync(question);
-            await dbContext.SaveChangesAsync();
-
-            return question;
-        }
         private async Task DeleteTestQuestionsByQuestionIdAsync(int questionId)
         {
             var items = await dbContext.TestQuestion.Where(x => x.QuestionId == questionId).ToListAsync();

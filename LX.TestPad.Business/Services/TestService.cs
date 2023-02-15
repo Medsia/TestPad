@@ -9,13 +9,18 @@ namespace LX.TestPad.Business.Services
     public class TestService : ITestService
     {
         private readonly ITestRepository _testRepository;
+        private readonly IQuestionRepository _questionRepository;
+        private readonly IAnswerRepository _answerRepository;
         private readonly ITestQuestionRepository _testQuestionRepository;
-
-        public TestService(ITestRepository testRepository, ITestQuestionRepository testQuestionRepository)
+        public TestService(ITestQuestionRepository testQuestionRepository, IQuestionRepository questionRepository,
+                                        ITestRepository testRepository, IAnswerRepository answerRepository)
         {
-            _testRepository = testRepository;
             _testQuestionRepository = testQuestionRepository;
+            _questionRepository = questionRepository;
+            _testRepository = testRepository;
+            _answerRepository = answerRepository;
         }
+
 
 
         public async Task<TestModel> GetByIdAsync(int testId)
@@ -63,7 +68,7 @@ namespace LX.TestPad.Business.Services
             ExceptionChecker.SQLKeyIdCheck(newTestId);
 
             var oldTestQuestionIds = (await _testQuestionRepository.GetAllByTestIdAsync(oldTestId)).Select(x => x.QuestionId);
-            var newTestQuestions = oldTestQuestionIds.Select(x => new TestQuestion{ TestId = newTestId, QuestionId = x }).ToList();
+            var newTestQuestions = oldTestQuestionIds.Select(x => new TestQuestion { TestId = newTestId, QuestionId = x }).ToList();
 
             await _testQuestionRepository.CreateFromListAsync(newTestQuestions);
         }
@@ -94,7 +99,6 @@ namespace LX.TestPad.Business.Services
             var item = Mapper.TestModelToEntity(testModel);
 
             item = await _testRepository.CreateAsync(item);
-
             return Mapper.TestToModel(item);
         }
 

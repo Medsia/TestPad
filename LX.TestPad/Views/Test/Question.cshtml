@@ -41,12 +41,17 @@
         }, 1000);
     </script>
     <script>
-        $('input[type="checkbox"]').change(function() {
+        $(document).on('change', 'input[type="checkbox"]', function() {
             if ($('input[type="checkbox"]:checked').length > 0) {
                 $('#Nextbtn').prop('disabled', false);
             } else {
                 $('#Nextbtn').prop('disabled', true);
             }
         });
+    </script>
+    <script>
+        function disableButton() {
+            $('#Nextbtn').prop('disabled', true);
+        }
     </script>
     }

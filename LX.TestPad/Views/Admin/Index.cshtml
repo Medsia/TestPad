@@ -17,12 +17,17 @@
             <li class="list-group-item" style="height: 40px">
                 <p class="test-title">@test.Name</p>
             </li>
-            <li class="list-group-item" style="text-overflow: ellipsis; max-width: 250px; height: 135px">
+            <li class="list-group-item" style="text-overflow: ellipsis; max-width: 250px; min-height: 135px">
                 <p class="product-desc" style="word-wrap: break-word; width: 200px; max-height: 100%; text-overflow: ellipsis; overflow: hidden;">@test.Description</p>
             </li>
             <li class="list-group-item">
                 <form asp-action="TestDetails" asp-route-id="@test.Id">
                     <button type="submit" class="btn btn-success">Show</button>
+                </form>
+            </li>
+            <li class="list-group-item">
+                <form asp-action="CopyTest" asp-route-selectedTestId="@test.Id">
+                    <button type="submit" class="btn btn-success">Copy and Edit as new</button>
                 </form>
             </li>
         </ul>

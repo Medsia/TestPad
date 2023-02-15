@@ -20,6 +20,11 @@ namespace LX.TestPad.DataAccess.Repositories
 
             return testQuestion;
         }
+        public async Task CreateFromListAsync(List<TestQuestion> testQuestions)
+        {
+            await dbContext.TestQuestion.AddRangeAsync(testQuestions);
+            await dbContext.SaveChangesAsync();
+        }
 
         public async Task DeleteAsync(int id)
         {

@@ -51,6 +51,16 @@
 <br>
 @section scripts{
     <script>
+        const inputName = "Name";
+        const inputDescription = "Description";
+        const inputTestDuration = "TestDuration";
+        const textName = "Name-text";
+        const textDescription = "Description-text";
+        const textTestDuration = "TestDuration-text";
+        const saveButton = "saveButton";
+        const cancelButton = "cancelButton";
+        const editButton = "editButton";
+
         function applyStyleFor(elements, styleName, value) {
             for (var i = 0; i < elements.length; i++) {
                 var element = document.getElementById(elements[i]);
@@ -61,32 +71,12 @@
         }
 
         function toggleEditing() {
-            var inputName = "Name";
-            var inputDescription = "Description";
-            var inputTestDuration = "TestDuration";
-            var textName = "Name-text";
-            var textDescription = "Description-text";
-            var textTestDuration = "TestDuration-text";
-            var saveButton = "saveButton";
-            var cancelButton = "cancelButton";
-            var editButton = "editButton";
-
             applyStyleFor([inputName, inputDescription, inputTestDuration, saveButton, cancelButton], "display", "inline");
             applyStyleFor([editButton, textName, textDescription, textTestDuration], "display", "none");
 
         }
 
         function cancelEditing() {
-            var inputName = "Name";
-            var inputDescription = "Description";
-            var inputTestDuration = "TestDuration";
-            var textName = "Name-text";
-            var textDescription = "Description-text";
-            var textTestDuration = "TestDuration-text";
-            var saveButton = "saveButton";
-            var cancelButton = "cancelButton";
-            var editButton = "editButton";
-
             applyStyleFor([inputName, inputDescription, inputTestDuration, saveButton, cancelButton], "display", "none");
             applyStyleFor([editButton, textName, textDescription, textTestDuration], "display", "inline");
         }

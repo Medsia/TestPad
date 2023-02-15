@@ -3,6 +3,11 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
+<div class="my-3">
+    <a class="btn btn-outline-danger mx-1" style="width: 130px;" href="@Url.Action("Index", "Admin")">Back to tests</a>
+</div>
+
 <h1>Test Information</h1>
 
 <form asp-action="UpdateTest" asp-route-id="@Model.Id" method="post">

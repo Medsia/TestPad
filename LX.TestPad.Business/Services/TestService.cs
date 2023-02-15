@@ -2,6 +2,7 @@
 using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
+using LX.TestPad.DataAccess.Repositories;
 
 namespace LX.TestPad.Business.Services
 {
@@ -58,6 +59,38 @@ namespace LX.TestPad.Business.Services
             return items.Skip(prevPages).Take(count)
                         .Select(Mapper.TestToModel)
                         .ToList();
+        }
+
+
+        private async Task CopyAllTestQuestionsToNewTestAsync(int oldTestId, int newTestId)
+        {
+            ExceptionChecker.SQLKeyIdCheck(oldTestId);
+            ExceptionChecker.SQLKeyIdCheck(newTestId);
+
+            var oldTestQuestionIds = (await _testQuestionRepository.GetAllByTestIdAsync(oldTestId)).Select(x => x.QuestionId);
+            var newTestQuestions = oldTestQuestionIds.Select(x => new TestQuestion{ TestId = newTestId, QuestionId = x }).ToList();
+
+            await _testQuestionRepository.CreateFromListAsync(newTestQuestions);
+        }
+        public async Task<TestModel> CopyByIdAsync(int oldTestId)
+        {
+            ExceptionChecker.SQLKeyIdCheck(oldTestId);
+
+            var selectedTest = await _testRepository.GetByIdAsync(oldTestId);
+            if (selectedTest == null) return new TestModel();
+
+            var newTest = new Test()
+            {
+                Name = selectedTest.Name + $" (Copy)",
+                Description = selectedTest.Description,
+                TestDuration = selectedTest.TestDuration,
+                IsPublished = false,
+            };
+
+            var item = await _testRepository.CreateAsync(newTest);
+            await CopyAllTestQuestionsToNewTestAsync(oldTestId, newTest.Id);
+
+            return Mapper.TestToModel(item);
         }
 
 

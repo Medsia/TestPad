@@ -2,7 +2,6 @@
 using LX.TestPad.Business.Models;
 using LX.TestPad.Business.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 
 namespace LX.TestPad.Controllers
 {
@@ -15,6 +14,7 @@ namespace LX.TestPad.Controllers
         private readonly IResultAnswerService _resultAnswerService;
 
         private const string questionNumberKey = "questionNumber";
+        private const int firstQuestionNumber = 0;
         public TestController(ITestQuestionService testQuestionService, ITestService testService,
             IResultService resultService, IQuestionService questionService, IResultAnswerService resultAnswerService)
         {
@@ -58,32 +58,20 @@ namespace LX.TestPad.Controllers
                 StartedAt = DateTime.Now.ToUniversalTime(),
                 FinishedAt = DateTime.MinValue
             });
-            TempData[questionNumberKey] = 0;
             return RedirectToAction(nameof(Question), new { resultId = emptyUserResult.Id });
         }
 
         [Route("[controller]/{resultId:int}")]
         public async Task<IActionResult> Question(int resultId)
         {
-            if (!TempData.ContainsKey(questionNumberKey))
-            {
-                RedirectToAction(nameof(Index));
-            }
             var result = await _resultService.GetByIdAsync(resultId);
             var testQuestions = await _testQuestionService.GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(result.TestId);
-            int questionNumber = (int)TempData[questionNumberKey];
 
-            if (questionNumber >= testQuestions.Count)
-            {
-                TempData.Clear();
-                return RedirectToAction(nameof(Result), new { resultId = result.Id });
-            }
-
-            TempData[questionNumberKey] = questionNumber;
-
+            TempData[questionNumberKey] = firstQuestionNumber;
+            ViewBag.testId = result.TestId;
             ViewBag.resultId = result.Id;
             ViewBag.endedAt = result.StartedAt.AddSeconds(Mapper.FromMinutesToSeconds(testQuestions.First().Test.TestDuration)).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
-            return View(testQuestions[questionNumber].Question);
+            return View(testQuestions[firstQuestionNumber].Question);
         }
 
         [HttpPost]
@@ -94,13 +82,20 @@ namespace LX.TestPad.Controllers
             {
                 RedirectToAction(nameof(Index));
             }
+
             int questionNumber = (int)TempData[questionNumberKey];
             TempData[questionNumberKey] = ++questionNumber;
 
             await _resultAnswerService.AddUserResultAnswersAsync(UserAnswerModel.ResultId,
                 UserAnswerModel.AnswersIds);
 
-            return RedirectToAction(nameof(Question), new { resultId = UserAnswerModel.ResultId });
+            var testQuestions = await _testQuestionService.GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(UserAnswerModel.TestId);
+            if (questionNumber >= testQuestions.Count)
+            {
+                return RedirectToAction(nameof(Result), new { resultId = UserAnswerModel.ResultId });
+            }
+
+            return PartialView("QuestionPartial", testQuestions[questionNumber].Question);
         }
 
 

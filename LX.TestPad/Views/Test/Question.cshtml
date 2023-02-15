@@ -8,31 +8,22 @@
     </li>
 </ul>
 <div>
-    <ul class="list-group">
-        <li class="list-group-item">
-            <h1 class="display-4" style=" text-align: left;">@Model.Text</h1>
+    <form id="userAnswer" asp-route-resultId="@ViewBag.resultId" asp-route-testId="@Model.TestId">
+        <div id="question-container">
+            @await Html.PartialAsync("QuestionPartial", Model)
+        </div>
+        <input asp-for="TestId" value="@ViewBag.testId" id="TestId" hidden />
+        <input value="@ViewBag.resultId" name="resultId" id="resultId" hidden />
+        <li class="list-group-item" style=" text-align: right;">
+            <button type="submit" form="userAnswer" hx-post="/test/SendUserAnswer" hx-target="#question-container" class="btn btn-success btn-lg" id="Nextbtn" onclick="disableButton()" disabled>Next</button>
         </li>
-
-        <form id="question" asp-action="SendUserAnswer" asp-route-resultId="@ViewBag.resultId" method="post">
-            @foreach (var answer in Model.Answers)
-            {
-            <li class="list-group-item" for="@answer.Id">
-                <input type="checkbox" id="@answer.Id" value="@answer.Id" name="answersIds">  <b style=" text-align: left; font-size: 16px; margin-left: 15px;"> @answer.Text </b>
-            </li>
-            }
-        </form>
-    </ul>
+    </form>
 </div>
-<ul>
-    <li class="list-group-item" style=" text-align: right;">
-        <button type="submit" class="btn btn-success btn-lg" form="question" id="Nextbtn" disabled>Next</button>
-    </li>
-</ul>
 
 @section scripts {
     <script>
         var countDownDate = new Date("@ViewBag.endedAt").getTime();
-        var x = setInterval(function () {
+        var x = setInterval(function() {
             var now = new Date(new Date().toISOString()).getTime();
             var distance = countDownDate - now;
             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -50,7 +41,7 @@
         }, 1000);
     </script>
     <script>
-        $('input[type="checkbox"]').change(function () {
+        $('input[type="checkbox"]').change(function() {
             if ($('input[type="checkbox"]:checked').length > 0) {
                 $('#Nextbtn').prop('disabled', false);
             } else {
@@ -58,4 +49,4 @@
             }
         });
     </script>
-}
+    }

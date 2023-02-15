@@ -7,14 +7,19 @@
 <div class="text-center">
     <h1 class="display-4">Please enter your Name</h1>
 </div>
+
 <form asp-action="CreatePreliminaryUserResultForTest" asp-route-TestId="@Model.Id" method="post">
-<div class="input-group-text flex-column">
+    <div class="input-group-text flex-column" style="padding: 20px 20%;">
         <label>Name</label>
-        <input type="text" class="form-control" style="text-align:center; width: 200px" name="UserName" maxlength="50" required/>
+        <input type="text" class="form-control" style="text-align:center; width: 50%" name="UserName" maxlength="50" required/>
         <span class="text-danger"></span>
         <label>Surname</label>
-        <input type="text" class="form-control" style="text-align:center; width: 200px" name="UserSurname" maxlength="50" required/>
+        <input type="text" class="form-control" style="text-align:center; width: 50%" name="UserSurname" maxlength="50" required/>
         <span class="text-danger"></span>
-</div>
-    <button type="submit" class="btn btn-dark">Start Test</button>
+    </div>
+
+    <div class="text-center my-3">
+        <button type="submit" class="btn btn-dark mx-3 col-3">Start Test</button>
+        <a class="btn btn-outline-primary mx-3 col-3" href="@Url.Action("Index", "Home")">Back to tests</a>
+    </div>
 </form>

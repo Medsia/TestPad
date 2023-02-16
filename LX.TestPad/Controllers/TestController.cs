@@ -105,6 +105,8 @@ namespace LX.TestPad.Controllers
             }
 
             ViewBag.resultId = result.Id;
+            ViewBag.questionCount = testQuestions.Count;
+            ViewBag.questionNumber = questionNumber + 1;
             TempData[questionNumberKey] = questionNumber;
             ViewBag.endedAt = result.StartedAt.AddSeconds(Mapper.FromMinutesToSeconds(testQuestions.First().Test.TestDuration)).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
 

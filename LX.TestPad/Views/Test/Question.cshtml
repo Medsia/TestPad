@@ -14,7 +14,7 @@
     </li>
     <li class="list-group-item col-12 col-md-auto mb-2 justify-content-left mb-md-0">
         <div id="myProgressBackGround" style="background-color: #ddd">
-            <div id="progressBar" style="background-color: #00FF00 ; height: 10px; text-align: center; line-height: 30px;">
+            <div id="progressBar" style="width: 0% ; height: 10px; text-align: center; line-height: 30px;">
             </div>
         </div>
     </li>
@@ -49,21 +49,25 @@
         var questionCount = @ViewBag.questionCount;
         var countDownDate = new Date("@ViewBag.endedAt").getTime();
         var elem = document.getElementById("progressBar");
-        var progress = Math.round(currentQuestion * 100 / questionCount);
-        var lastProgress = progress;
-        progress = Math.round(currentQuestion * 100 / questionCount);
+        var progress = calculateProgress(-1);
+        const colorModFromYellowToLightGreen = 5.1;
+        const colorModFromLightGreenToGreen = -1.36;
         setInterval(moveProgressBar, 15);
         function moveProgressBar() {
-            progress = lastProgress;
-            maxprogress = Math.round(currentQuestion * 100 / questionCount);
+            maxprogress = calculateProgress(0);
             if (progress <= maxprogress && progress < 100) {
                 progress++;
-                lastProgress = progress;
             }
-            if (progress < 50) progressColor = "#" + Math.round((50 - progress) * 5, 1).toString(16) + "FF" + "00";
-            if (progress >= 50) progressColor = "#" + "00" + Math.round(255 - (progress - 50) * 1, 36).toString(16) + "00";
+            if (progress < 50) progressColor = "#" + calculateColor(50, colorModFromYellowToLightGreen).toString(16) + "FF00";
+            if (progress >= 50) progressColor = "#" + "00" + (255 - calculateColor(50, colorModFromLightGreenToGreen)).toString(16) + "00";
             elem.style.width = progress + "%";
             elem.style.backgroundColor = progressColor;
+        }
+        function calculateProgress(currentQuestionMod) {
+            return Math.round((currentQuestion + currentQuestionMod) * 100 / questionCount);
+        }
+        function calculateColor(progressMod, colorCoefficient) {
+            return Math.round((progressMod - progress) * colorCoefficient);
         }
 
         function updateTestTimerText() {

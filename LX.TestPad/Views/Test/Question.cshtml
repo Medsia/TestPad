@@ -59,7 +59,7 @@
                 progress++;
             }
             if (progress < 50) progressColor = "#" + calculateColor(50, colorModFromYellowToLightGreen).toString(16) + "FF00";
-            if (progress >= 50) progressColor = "#" + "00" + (255 - calculateColor(50, colorModFromLightGreenToGreen)).toString(16) + "00";
+            if (progress >= 50) progressColor = "#00" + (255 - calculateColor(50, colorModFromLightGreenToGreen)).toString(16) + "00";
             elem.style.width = progress + "%";
             elem.style.backgroundColor = progressColor;
         }

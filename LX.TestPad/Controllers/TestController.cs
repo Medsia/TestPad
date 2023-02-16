@@ -97,6 +97,7 @@ namespace LX.TestPad.Controllers
             var testQuestions = await _testQuestionService.GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(result.TestId);
 
             TempData[questionNumberKey] = firstQuestionNumber;
+            ViewBag.resultIdEncoded = resultId;
             ViewBag.resultId = result.Id;
             ViewBag.testId = result.TestId;
             ViewBag.questionNumber = firstQuestionNumber;
@@ -124,13 +125,13 @@ namespace LX.TestPad.Controllers
             var testQuestions = await _testQuestionService.GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(UserAnswerModel.TestId);
             if (questionNumber >= testQuestions.Count)
             {
-                return RedirectToAction(nameof(Result), new { resultId = _encoder.Encode(UserAnswerModel.ResultId.ToString()) });
+                return PartialView("PreResultPartial", _encoder.Encode(UserAnswerModel.ResultId.ToString()));
             }
 
             return PartialView("QuestionPartial", testQuestions[questionNumber].Question);
         }
 
-        [Route("Result/{resultId}")]
+        [Route("Result/{resultId}&{isExpired}")]
         [HttpGet]
         public async Task<IActionResult> Result(string resultId, bool isExpired)
         {

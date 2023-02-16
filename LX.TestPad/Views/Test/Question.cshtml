@@ -28,7 +28,7 @@
         <input asp-for="TestId" value="@ViewBag.testId" id="TestId" hidden />
         <input value="@ViewBag.resultId" name="resultId" id="resultId" hidden />
         <li class="list-group-item" style=" text-align: right;">
-            <button type="submit" form="userAnswer" hx-post="/test/SendUserAnswer" hx-target="#question-container" class="btn btn-success btn-lg" id="Nextbtn" onclick="disableButton()" disabled>Next</button>
+            <button type="submit" form="userAnswer" hx-post="/test/SendUserAnswer" hx-target="#question-container" class="btn btn-success btn-lg" id="Nextbtn" onclick="disableButton(), currentQuestionUp()" disabled>Next</button>
         </li>
     </form>
 </div>
@@ -59,7 +59,9 @@
         function calculateColor(progressMod, colorCoefficient) {
             return Math.round((progressMod - progress) * colorCoefficient);
         }
-
+        function currentQuestionUp() {
+            currentQuestion++;
+        }
         function updateTestTimerText() {
             var now = new Date(new Date().toISOString()).getTime();
             var distance = countDownDate - now;
@@ -71,7 +73,7 @@
             document.getElementById("progressShow").innerHTML = currentQuestion + "/" + questionCount;
             if (distance < 0) {
                 document.getElementById("timer").innerHTML = "EXPIRED";
-                var ResultUrl = window.location.origin + "/Test/Result?resultId=@ViewBag.resultId&isExpired=true";
+                var ResultUrl = window.location.origin + "/Test/Result/@ViewBag.resultIdEncoded&true";
                 window.location.replace(ResultUrl);
             }
         }
@@ -90,6 +92,11 @@
     <script>
         function disableButton() {
             $('#Nextbtn').prop('disabled', true);
+        }
+    </script>
+    <script>
+        function hideButtonProgressBarTimer() {
+            eval(document.getElementById("hideButtonProgressBarTimer").innerHTML);
         }
     </script>
     }

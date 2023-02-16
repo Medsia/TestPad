@@ -64,7 +64,7 @@
         var thisResultId = @ViewBag.ResultId;
         var isTestExpired = @ViewBag.IsExpired;
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             var scorePercent = parseFloat('@testScore');
             renderPieChart('pieChart', scorePercent);
 
@@ -82,7 +82,7 @@
                 $("#message").fadeIn("slow");
 
                 var sec = 0;
-                var timer = setInterval(function () {
+                var timer = setInterval(function() {
                     if (sec++ >= popupRemainFor) {
                         $("#message").fadeOut("slow");
                         clearInterval(timer);
@@ -96,7 +96,7 @@
         var isCopiedMsgShown = false;
         function copyResultLink() {
 
-            var resultLink = window.location.origin + window.location.pathname + "?resultId=" + thisResultId;
+            var resultLink = window.location.origin + window.location.pathname;
             navigator.clipboard.writeText(resultLink);
 
             if (!isCopiedMsgShown) {
@@ -106,7 +106,7 @@
                 $("#notification").fadeIn("slow");
 
                 var sec = 0;
-                var timer = setInterval(function () {
+                var timer = setInterval(function() {
                     if (sec++ >= popupRemainFor) {
                         $("#notification").fadeOut("slow");
                         clearInterval(timer);

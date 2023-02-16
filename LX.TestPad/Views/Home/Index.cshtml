@@ -6,25 +6,148 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
 </div>
-<form class="m-lg-5 text-lg-center" action="@Url.Action("Index", "SearchTest")" method="get">
-    <input class="m-lg-0" type="search" style="width: 200px" maxlength="50" name="query" placeholder="Search test" />
-    <button class="btn btn-primary" type="submit">Search</button>
-</form>
-@foreach (var test in Model)
-{
-    <div class="test" style="border: 0">
-        <ul class="list-group" style="height: 235px;  max-width: 250px; ">
-            <li class="list-group-item" style="height: 40px">
-                <p class="test-title">@test.Name</p>
-            </li>
-            <li class="list-group-item" style="text-overflow: ellipsis; max-width: 250px; height: 135px">
-                <p class="product-desc" style="word-wrap: break-word; width: 200px; max-height: 100%; text-overflow: ellipsis; overflow: hidden;">@test.Description</p>
-            </li>
-            <li class="list-group-item">
-                <form>
-                    <button asp-controller="Test" asp-action="EnterUserName" asp-route-id="@test.Id" type="submit" class="btn btn-success">Start</button>
-                </form>
-            </li>
-        </ul>
+
+<div class="m-lg-5 text-lg-center">
+    <input id="SearchTextBar" class="m-lg-0" type="search" style="width: 200px" maxlength="50" name="query" placeholder="Search test" />
+    <button class="btn btn-primary" onclick="loadAllTestsByRequest()">Search</button>
+</div>
+
+<div>
+    <div id="loadingTests" class="mb-3"><img class="mx-auto mt-3" width="30" height="30" src='@Url.Content("~/Content/loading_spinner.gif")'></div>
+
+    <div id="TestsList">
+        
     </div>
+</div>
+
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        var api = '../../api/';
+        var _inCallback = false;
+
+        $(document).ready(function () {
+            $("div#loadingTests").hide();
+
+            _inCallback = false;
+
+            loadAllTests();
+        })
+
+
+        function loadAllTests(){
+            if (!_inCallback) {
+                _inCallback = true;
+
+                document.getElementById('TestsList').innerHTML = "";
+
+                $('div#loadingTests').show();
+
+                $.ajax({
+                    type: 'GET',
+                    url: api+'tests',
+                    success: function (data, textstatus) {
+                        if (data.length > 0) {
+                            var htmlLine = "";
+
+                            $.each(data, function (index, item) {
+                                    htmlLine = '<div class="test" style="border: 0">' + 
+                                                    '<ul class="list-group" style="height: 235px;  max-width: 250px; ">' + 
+                                                        '<li class="list-group-item" style="height: 40px">' + 
+                                                            '<p class="test-title">'+item.name+'</p>' + 
+                                                        '</li>' + 
+                                                        '<li class="list-group-item" style="text-overflow: ellipsis; max-width: 250px; height: 135px">' + 
+                                                            '<p class="product-desc" style="word-wrap: break-word; width: 200px; max-height: 100%; text-overflow: ellipsis; overflow: hidden;">'+item.description+'</p>' + 
+                                                        '</li>' + 
+                                                        '<li class="list-group-item">' + 
+                                                            '<form>' + 
+                                                                '<button asp-controller="Test" asp-action="EnterUserName" asp-route-id="'+item.id+'" type="submit" class="btn btn-success">Start</button>' + 
+                                                            '</form>' + 
+                                                        '</li>' + 
+                                                    '</ul>' + 
+                                                '</div>'
+
+
+                                $("#TestsList").append(htmlLine);
+                            })
+                        }
+
+                        _inCallback = false;
+                        $("div#loadingTests").hide();
+                    }
+                });
+            }
+        }
+
+        $(window).keypress(function(event) {
+            if (event.keyCode === 13) {
+                loadAllTestsByRequest();
+            }
+        });
+
+        function hasWhiteSpace(str){
+            var reWhiteSpace = new RegExp("/^\s+$/");
+            if (reWhiteSpace.test(str)) {
+                return false;
+            }
+            return true;
+        }
+
+        function loadAllTestsByRequest(){
+            if (!_inCallback) {
+
+                var searchRequest = document.getElementById("SearchTextBar").value.replace(/\s+/," ");
+                if (!hasWhiteSpace(searchRequest)) { return; }
+
+                document.getElementById('TestsList').innerHTML = "";
+                $('div#loadingTests').show();
+                _inCallback = true;
+
+                $.ajax({
+                    type: 'GET',
+                    url: api+'tests/'+searchRequest,
+                    success: function (data, textstatus) {
+                        if (data.length > 0) {
+                            var htmlLine = "";
+
+                            $.each(data, function (index, item) {
+                                    htmlLine = '<div class="test" style="border: 0">' + 
+                                                    '<ul class="list-group" style="height: 235px;  max-width: 250px; ">' + 
+                                                        '<li class="list-group-item" style="height: 40px">' + 
+                                                            '<p class="test-title">'+item.name+'</p>' + 
+                                                        '</li>' + 
+                                                        '<li class="list-group-item" style="text-overflow: ellipsis; max-width: 250px; height: 135px">' + 
+                                                            '<p class="product-desc" style="word-wrap: break-word; width: 200px; max-height: 100%; text-overflow: ellipsis; overflow: hidden;">'+item.description+'</p>' + 
+                                                        '</li>' + 
+                                                        '<li class="list-group-item">' + 
+                                                            '<form>' + 
+                                                                '<button asp-controller="Test" asp-action="EnterUserName" asp-route-id="'+item.id+'" type="submit" class="btn btn-success">Start</button>' + 
+                                                            '</form>' + 
+                                                        '</li>' + 
+                                                    '</ul>' + 
+                                                '</div>'
+
+
+                                $("#TestsList").append(htmlLine);
+                            })
+                        }
+                        else{
+                            _inCallback = false;
+                            loadAllTests();
+                        }
+
+                        _inCallback = false;
+                        $("div#loadingTests").hide();
+                    },
+                    error: function(e) {
+                        loadAllTests();
+                    },
+                });
+            }
+        }
+
+    </script>
+
 }

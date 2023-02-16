@@ -6,6 +6,7 @@ using System.Text;
 
 namespace LX.TestPad.Controllers
 {
+    [Route("[controller]")]
     public class TestController : Controller
     {
         private readonly ITestQuestionService _testQuestionService;
@@ -35,6 +36,7 @@ namespace LX.TestPad.Controllers
             return View(tests);
         }
 
+        [Route("{id}")]
         public async Task<IActionResult> StartTest(int id)
         {
             TempData.Clear();
@@ -48,7 +50,7 @@ namespace LX.TestPad.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Route("Test/Start/{testId}")]
+        [Route("Start/{testId}")]
         public async Task<IActionResult> EnterUserName(string testId)
         {
             var decodedTestId = _encoder.Decode(testId);
@@ -65,6 +67,7 @@ namespace LX.TestPad.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Route("CreateResult")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePreliminaryUserResultForTest(ResultModel resultModel)
@@ -83,7 +86,7 @@ namespace LX.TestPad.Controllers
             return RedirectToAction(nameof(Question), new { resultId = _encoder.Encode(emptyUserResult.Id.ToString()) });
         }
 
-        [Route("[controller]/Questions/{resultId}")]
+        [Route("Questions/{resultId}")]
         public async Task<IActionResult> Question(string resultId)
         {
             if (!TempData.ContainsKey(questionNumberKey))
@@ -125,7 +128,7 @@ namespace LX.TestPad.Controllers
             return RedirectToAction(nameof(Question), new { resultId = _encoder.Encode(UserAnswerModel.ResultId.ToString()) });
         }
 
-        [Route("[controller]/Result/{resultId}")]
+        [Route("Result/{resultId}")]
         [HttpGet]
         public async Task<IActionResult> Result(string resultId, bool isExpired)
         {

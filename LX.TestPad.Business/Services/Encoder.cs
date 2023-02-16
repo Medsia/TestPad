@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LX.TestPad.Business.Services
 {
-    public class EncoderBase64 : IEncoder
+    public class Encoder : IEncoder
     {
         public string Decode(string input)
         {

@@ -101,7 +101,7 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> ChangeIsPublishedTest(TestModel test)
         {
             test.IsPublished = !test.IsPublished;
-            await _testService.UpdateAsync(test);
+            await _testService.UpdatePublishAsync(test);
             return RedirectToAction(nameof(TestDetails), new { id = test.Id });
         }
 

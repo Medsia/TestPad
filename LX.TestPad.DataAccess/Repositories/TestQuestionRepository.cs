@@ -7,7 +7,6 @@ namespace LX.TestPad.DataAccess.Repositories
     public class TestQuestionRepository : ITestQuestionRepository
     {
         private readonly DataContext dbContext;
-        
         public TestQuestionRepository(DataContext dbContext)
         {
             this.dbContext = dbContext;
@@ -20,6 +19,7 @@ namespace LX.TestPad.DataAccess.Repositories
 
             return testQuestion;
         }
+
         public async Task CreateFromListAsync(List<TestQuestion> testQuestions)
         {
             await dbContext.TestQuestion.AddRangeAsync(testQuestions);

@@ -7,7 +7,7 @@ namespace LX.TestPad.DataAccess.Repositories
     public class QuestionRepository : IQuestionRepository
     {
         private readonly DataContext dbContext;
-        
+
         public QuestionRepository(DataContext dbContext)
         {
             this.dbContext = dbContext;
@@ -19,7 +19,6 @@ namespace LX.TestPad.DataAccess.Repositories
 
             return question;
         }
-
         private async Task DeleteTestQuestionsByQuestionIdAsync(int questionId)
         {
             var items = await dbContext.TestQuestion.Where(x => x.QuestionId == questionId).ToListAsync();

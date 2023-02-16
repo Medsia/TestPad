@@ -3,6 +3,10 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<div class="my-3">
+    <a class="btn btn-outline-danger mx-1" style="width: 130px;" href="@Url.Action("Index", "Admin")">Back to tests</a>
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -47,7 +51,7 @@
                     <div class="text-center">@result.FinishedAt</div>
                 </td>
                 <td class="text-center">
-                    <a asp-action="ResultDetails" class="text-info">Details</a><br>
+                    <a asp-action="ResultDetails" asp-route-resultId="@result.Id" class="text-info">Details</a><br>
                 </td>
             </tr>
         }

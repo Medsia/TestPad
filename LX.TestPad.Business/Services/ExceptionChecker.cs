@@ -38,5 +38,10 @@ namespace LX.TestPad.Business.Services
                     throw new ArgumentException("Answer cannot be matched with question.", "answers[i].QuestionId");
             }
         }
+        public static void IsItemNullCheck<T>(T entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException("entity", "Entity, received from repository, is null.");
+        }
     }
 }

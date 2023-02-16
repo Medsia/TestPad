@@ -9,5 +9,6 @@ namespace LX.TestPad.DataAccess.Interfaces
 
         Task<List<Answer>> GetAllByIdsAsync(params int[] answersIds);
         Task DeleteAllByQuestionIdAsync(int questionId);
+        Task<Answer> CreateBasicAnswerAsync(int questionId);
     }
 }

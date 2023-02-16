@@ -5,7 +5,7 @@
 
     var testScore = Math.Round(Model.ResultModel.Score * 100, 1) + "%";
 
-    var testDuaration = new DateTime().AddMinutes(Model.ResultModel.Test.TestDuration).ToString("HH:mm:ss");
+    var testDuaration = TimeSpan.FromMinutes(Model.ResultModel.Test.TestDuration).ToString(@"hh\:mm");
     var resultFinishTime = (Model.ResultModel.FinishedAt - Model.ResultModel.StartedAt).ToString(@"hh\:mm\:ss");
 }
 

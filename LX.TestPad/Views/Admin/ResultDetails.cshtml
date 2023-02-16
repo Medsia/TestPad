@@ -1,48 +1,56 @@
-﻿@{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-}
+﻿@model ResultWithResultAnswersViewModel
+
 @{
-    var answers = new[]
-    {
-    new {Name="Yes"},
-    new {Name="No"},
-    };
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
-    var questions = new[]
-    {
-    new {Text="What language do people speak in Australia?", Answer = "Yes"},
-    new {Text="What?", Answer = "No"},
-    new {Text="What language do people speak?", Answer = "Yes"},
-    new {Text="What is Australia?", Answer = "No"},
-    new {Text="What people in Australia?", Answer = "Yes"},
-    new {Text="What is australia s form of government?", Answer = "No"},
-    };
+    var testScore = Math.Round(Model.ResultModel.Score * 100, 1) + "%";
 
-
+    var testDuaration = TimeSpan.FromMinutes(Model.ResultModel.Test.TestDuration).ToString(@"hh\:mm");
+    var resultFinishTime = (Model.ResultModel.FinishedAt - Model.ResultModel.StartedAt).ToString(@"hh\:mm\:ss");
 }
 
 <div class="my-3">
     <a class="btn btn-outline-danger mx-1" style="width: 130px;" href="@Url.Action("TestResults", "Admin")">Back to results</a>
 </div>
 
-<div class="text-center">
-    <h1 class="display-4">Test Result</h1>
-    <h4 class="display-4">60%</h4>
+<div class="text-center my-3">
+    <h4>Test: @Model.ResultModel.Test.Name</h4>
+    <h4>Test description: @Model.ResultModel.Test.Description</h4>
+    <h4>Test duration: @testDuaration</h4>
+    <br />
+    <h4>User: @Model.ResultModel.UserName</h4>
+    <h4>User's score: @testScore</h4>
+    <h4>Time spent: @resultFinishTime</h4>
 </div>
 
-@foreach(var question in questions){
-    <div style="height:auto">
-        <label>@question.Text</label>
-        
-        @if (question.Answer == "Yes")
-        {
-            <p>Answer: @question.Answer ✅</p>
-        }
-        else
-        {
-           <p>Answer: @question.Answer</p>
-        }
+<div class="my-5">
+    <div style="font-weight: bold; font-size: 22px;">Questions:</div>
 
-    </div>
-}
+    @foreach (var resultAnswer in Model.ResultAnswerModels)
+    {
+        <div class="my-3 border"  style="padding: 0 20px; padding-top: 10px;">
+            <div style="font-weight: bold; font-size: 20px;">@resultAnswer.Key</div>
+            <div style="font-size: 20px; margin-left: 20px;">Answers:</div>
 
+            <div class="mt-1" style="margin-left: 50px; font-size: 18px;">
+                <table>
+                    @foreach (var answer in resultAnswer)
+                    {
+                        <tr>
+                            @if (answer.IsCorrect)
+                            {
+                                <td width="20"><div style="color: green;">✓</div></td>
+                                <td><div class="border-bottom" style="color: green;">@answer.AnswerText</div></td>
+                            }
+                            else
+                            {
+                                <td width="20"><div style="color: red;">✕</div></td>
+                                <td><div class="border-bottom" style="color: red;">@answer.AnswerText</div></td>
+                            }
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    }
+</div>

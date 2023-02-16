@@ -11,12 +11,11 @@
             
         </div>
     </div>
-
-    <div>
-        <a asp-action="TestQuestions" asp-route-testId="@Model" class="btn btn-outline-danger my-auto">Back</a>
-    </div>
 </div>
 
+<div class="my-3">
+    <a class="btn btn-outline-danger mx-1" style="width: 80px;" href="@Url.Action("TestQuestions", "Admin", new { testId=Model })">Back</a>
+</div>
 
 <div class="mb-5 row">
     <div class="col-4 border">

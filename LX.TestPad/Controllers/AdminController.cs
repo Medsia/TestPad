@@ -114,7 +114,6 @@ namespace LX.TestPad.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CopyTest(int selectedTestId)
         {
             var newTest = await _testService.CopyByIdAsync(selectedTestId);

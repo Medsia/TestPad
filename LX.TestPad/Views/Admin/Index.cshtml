@@ -109,9 +109,11 @@
                     $('div#loadingTests').show();
                     _inCallback = true;
 
+                    var encodedURL = encodeURIComponent(searchRequest);
+
                     $.ajax({
                         type: 'GET',
-                        url: api+'tests/'+searchRequest,
+                        url: api+'tests/'+encodedURL,
                         success: function (data, textstatus) {
                             if (data.length > 0) {
                                 var htmlLine = "";

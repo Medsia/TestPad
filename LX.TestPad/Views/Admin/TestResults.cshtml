@@ -51,7 +51,7 @@
                     <div class="text-center">@result.FinishedAt</div>
                 </td>
                 <td class="text-center">
-                    <a asp-action="ResultDetails" class="text-info">Details</a><br>
+                    <a asp-action="ResultDetails" asp-route-resultId="@result.Id" class="text-info">Details</a><br>
                 </td>
             </tr>
         }

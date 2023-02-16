@@ -6,5 +6,6 @@ namespace LX.TestPad.DataAccess.Interfaces
     {
         Task<List<Result>> GetAllByTestIdAsync(int testId);
         Task<List<Result>> GetAllIncludeTestAsync();
+        Task<Result> GetByIdIncludeTestAsync(int id);
     }
 }

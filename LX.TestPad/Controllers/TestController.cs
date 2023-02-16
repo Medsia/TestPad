@@ -83,7 +83,6 @@ namespace LX.TestPad.Controllers
                 StartedAt = DateTime.Now.ToUniversalTime(),
                 FinishedAt = DateTime.MinValue
             });
-            TempData[questionNumberKey] = 0;
             return RedirectToAction(nameof(Question), new { resultId = _encoder.Encode(emptyUserResult.Id.ToString()) });
         }
 
@@ -94,19 +93,19 @@ namespace LX.TestPad.Controllers
             {
                 RedirectToAction(nameof(Index));
             }
-            var result = await _resultService.GetByIdAsync(resultId);
+            var result = await _resultService.GetByIdAsync(int.Parse(_encoder.Decode(resultId)));
             var testQuestions = await _testQuestionService.GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(result.TestId);
 
             TempData[questionNumberKey] = firstQuestionNumber;
-            ViewBag.testId = result.TestId;
             ViewBag.resultId = result.Id;
+            ViewBag.testId = result.TestId;
+            ViewBag.questionNumber = firstQuestionNumber;
             ViewBag.questionCount = testQuestions.Count;
-            ViewBag.questionNumber = questionNumber + 1;
-            TempData[questionNumberKey] = questionNumber;
             ViewBag.endedAt = result.StartedAt.AddSeconds(Mapper.FromMinutesToSeconds(testQuestions.First().Test.TestDuration)).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
             return View(testQuestions[firstQuestionNumber].Question);
         }
 
+        [Route("SendUserAnswer")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendUserAnswer(UserAnswerModel UserAnswerModel)
@@ -125,7 +124,7 @@ namespace LX.TestPad.Controllers
             var testQuestions = await _testQuestionService.GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(UserAnswerModel.TestId);
             if (questionNumber >= testQuestions.Count)
             {
-                return RedirectToAction(nameof(Result), new { resultId = UserAnswerModel.ResultId });
+                return RedirectToAction(nameof(Result), new { resultId = _encoder.Encode(UserAnswerModel.ResultId.ToString()) });
             }
 
             return PartialView("QuestionPartial", testQuestions[questionNumber].Question);

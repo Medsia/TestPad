@@ -12,6 +12,7 @@ namespace LX.TestPad.DataAccess.Repositories
         {
             this.dbContext = dbContext;
         }
+
         public async Task<Test> CreateAsync(Test test)
         {
             await dbContext.Tests.AddAsync(test);
@@ -29,6 +30,7 @@ namespace LX.TestPad.DataAccess.Repositories
                 await dbContext.SaveChangesAsync();
             }
         }
+
         public async Task DeleteManyAsync(List<int> ids)
         {
             foreach (var id in ids)
@@ -44,13 +46,25 @@ namespace LX.TestPad.DataAccess.Repositories
         {
             return await dbContext.Tests.ToListAsync();
         }
+
         public async Task<List<Test>> GetAllPublishedAsync()
         {
             return await dbContext.Tests.Where(x => x.IsPublished).ToListAsync();
         }
+
         public async Task<Test> GetByIdAsync(int id)
         {
             return await dbContext.Tests.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<List<Test>> GetByRequestAsync(string request)
+        {
+            var items = await dbContext.Tests.Where(x => x.Name.ToLower().Contains(request)).ToListAsync();
+            if (items.Count == 0)
+            {
+                items = await dbContext.Tests.Where(x => x.Description.ToLower().Contains(request)).ToListAsync();
+            }
+            return items;
         }
 
         public async Task UpdateAsync(Test test)

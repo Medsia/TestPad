@@ -65,7 +65,7 @@ namespace LX.TestPad.Controllers
             var resultModel = await _resultService.GetByIdIncludeTestAsync(resultId);
             var resultAnswerModels = (await _resultAnswerService.GetAllByResultIdAsync(resultId)).GroupBy(x => x.QuestionText).ToList();
 
-            return View( new ResultWithResultAnswersViewModel { resultModel=resultModel, resultAnswerModels=resultAnswerModels } );
+            return View( new ResultWithResultAnswersViewModel { ResultModel=resultModel, ResultAnswerModels=resultAnswerModels } );
         }
 
         public IActionResult CreateTest()

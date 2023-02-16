@@ -3,10 +3,10 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
-    var testScore = Math.Round(Model.resultModel.Score * 100, 1) + "%";
+    var testScore = Math.Round(Model.ResultModel.Score * 100, 1) + "%";
 
-    var testDuaration = new DateTime().AddMinutes(Model.resultModel.Test.TestDuration).ToString("HH:mm:ss");
-    var resultFinishTime = (Model.resultModel.FinishedAt - Model.resultModel.StartedAt).ToString(@"hh\:mm\:ss");
+    var testDuaration = new DateTime().AddMinutes(Model.ResultModel.Test.TestDuration).ToString("HH:mm:ss");
+    var resultFinishTime = (Model.ResultModel.FinishedAt - Model.ResultModel.StartedAt).ToString(@"hh\:mm\:ss");
 }
 
 <div class="my-3">
@@ -14,11 +14,11 @@
 </div>
 
 <div class="text-center my-3">
-    <h4>Test: @Model.resultModel.Test.Name</h4>
-    <h4>Test description: @Model.resultModel.Test.Description</h4>
+    <h4>Test: @Model.ResultModel.Test.Name</h4>
+    <h4>Test description: @Model.ResultModel.Test.Description</h4>
     <h4>Test duration: @testDuaration</h4>
     <br />
-    <h4>User: @Model.resultModel.UserName</h4>
+    <h4>User: @Model.ResultModel.UserName</h4>
     <h4>User's score: @testScore</h4>
     <h4>Time spent: @resultFinishTime</h4>
 </div>
@@ -26,7 +26,7 @@
 <div class="my-5">
     <div style="font-weight: bold; font-size: 22px;">Questions:</div>
 
-    @foreach (var resultAnswer in Model.resultAnswerModels)
+    @foreach (var resultAnswer in Model.ResultAnswerModels)
     {
         <div class="my-3 border"  style="padding: 0 20px; padding-top: 10px;">
             <div style="font-weight: bold; font-size: 20px;">@resultAnswer.Key</div>
@@ -44,7 +44,7 @@
                             }
                             else
                             {
-                                <td width="20"></td>
+                                <td width="20"><div style="color: red;">✕</div></td>
                                 <td><div class="border-bottom" style="color: red;">@answer.AnswerText</div></td>
                             }
                         </tr>

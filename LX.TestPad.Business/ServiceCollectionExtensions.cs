@@ -17,6 +17,7 @@ namespace LX.TestPad.DataAccess
             services.AddScoped<IResultService, ResultService>();
             services.AddScoped<ITestService, TestService>();
             services.AddScoped<ITestQuestionService, TestQuestionService>();
+            services.AddSingleton<IEncoder, EncoderBase64>();
 
             return services;
         }

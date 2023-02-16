@@ -43,5 +43,10 @@ namespace LX.TestPad.Business.Services
             if (entity == null)
                 throw new ArgumentNullException("entity", "Entity, received from repository, is null.");
         }
+        public static void IsRequestAValidString(string request)
+        {
+            if (string.IsNullOrWhiteSpace(request))
+                throw new ArgumentException("Received string in null, empty or contains only whitespace characters", "request");
+        }
     }
 }

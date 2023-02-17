@@ -102,7 +102,15 @@ namespace LX.TestPad.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangeIsPublishedTest(TestModel test)
         {
-            test.IsPublished = !test.IsPublished;
+            var isValid = await _testService.CheckPublishAsync(test);
+            if (isValid)
+            {
+                test.IsPublished = !test.IsPublished;
+            }
+            else
+            {
+                test.IsPublished = false;
+            }
             await _testService.UpdateAsync(test);
             return RedirectToAction(nameof(TestDetails), new { id = test.Id });
         }

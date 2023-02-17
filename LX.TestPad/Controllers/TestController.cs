@@ -130,9 +130,9 @@ namespace LX.TestPad.Controllers
             return PartialView("QuestionPartial", testQuestions[questionNumber].Question);
         }
 
-        [Route("Result/{resultId}&{isExpired}")]
+        [Route("Result/{resultId}")]
         [HttpGet]
-        public async Task<IActionResult> Result(string resultId, bool isExpired)
+        public async Task<IActionResult> Result(string resultId, [FromQuery] bool isExpired)
         {
             var resultIdDecoded = int.Parse(_encoder.Decode(resultId));
             ViewBag.ResultId = resultIdDecoded;

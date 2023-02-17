@@ -72,13 +72,14 @@
             document.getElementById("timer").innerHTML = hours + ":" + minutes + ":" + seconds;
             document.getElementById("progressShow").innerHTML = currentQuestion + "/" + questionCount;
             if (distance < 0) {
+                clearInterval(startTimer);
                 document.getElementById("timer").innerHTML = "EXPIRED";
-                var ResultUrl = window.location.origin + "/Test/Result/@ViewBag.resultIdEncoded&true";
+                var ResultUrl = window.location.origin + "/Test/Result/@ViewBag.resultIdEncoded?IsExpired=True";
                 window.location.replace(ResultUrl);
             }
         }
         updateTestTimerText();
-        setInterval(updateTestTimerText, 1000);
+        var startTimer = setInterval(updateTestTimerText, 1000);
     </script>
     <script>
         $(document).on('change', 'input[type="checkbox"]', function() {

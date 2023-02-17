@@ -8,6 +8,8 @@ using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.Models;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using static System.Net.Mime.MediaTypeNames;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LX.TestPad.Controllers
 {
@@ -100,9 +102,24 @@ namespace LX.TestPad.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangeIsPublishedTest(TestModel test)
         {
-            test.IsPublished = !test.IsPublished;
+            var isValid = await _testService.CheckPublishAsync(test);
+            if (isValid)
+            {
+                test.IsPublished = !test.IsPublished;
+            }
+            else
+            {
+                test.IsPublished = false;
+            }
             await _testService.UpdateAsync(test);
             return RedirectToAction(nameof(TestDetails), new { id = test.Id });
+        }
+
+        public async Task<IActionResult> MakeTestPrivate(TestModel test)
+        {
+            test.IsPublished = false;
+            await _testService.UpdateAsync(test);
+            return RedirectToAction(nameof(TestQuestions), new { testId = test.Id });
         }
 
         public async Task<IActionResult> TestQuestions(int testId)
@@ -167,7 +184,7 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> DeleteAnswer(int id, int testId)
         {
             await _answerService.DeleteAsync(id);
-            return RedirectToAction(nameof(TestQuestions), new { testId = testId });
+            return RedirectToAction(nameof(TestQuestions), new { testId });
         }
 
         [HttpPost]
@@ -175,8 +192,7 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> DeleteTestQuestion(int id, int testId)
         {
             await _testQuestionService.DeleteAsync(testId, id);
-
-            return RedirectToAction(nameof(TestQuestions), new { testId = testId });
+            return RedirectToAction(nameof(TestQuestions), new { testId });
         }
 
         public async Task<IActionResult> DeleteTest(int? id)
@@ -200,6 +216,8 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> TestDetails(int id)
         {
             var test = await _testService.GetByIdAsync(id);
+            var isValid = await _testService.CheckPublishAsync(test);
+            ViewBag.isValid = isValid;
             return View(test);
         }
     }

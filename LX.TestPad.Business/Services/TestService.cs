@@ -2,7 +2,6 @@
 using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
-using LX.TestPad.DataAccess.Repositories;
 
 namespace LX.TestPad.Business.Services
 {
@@ -92,7 +91,20 @@ namespace LX.TestPad.Business.Services
 
             return Mapper.TestToModel(item);
         }
-
+        public async Task<bool> IsValidToPublish(int testId)
+        {
+            var questionsCount = (await _testQuestionRepository.GetAllByTestIdExceptTestIncludeQuestionAndAnswersAsync(testId)).Count;
+            if (questionsCount == 0)
+            {
+                return false;
+            }
+            var questions = (await _testQuestionRepository.GetAllByTestIdExceptTestIncludeQuestionAndAnswersAsync(testId)).Select(x => x.Question);
+            foreach (var question in questions)
+            {
+                if (question.Answers.Count == 0) return false;
+            }
+            return true;
+        }
 
         public async Task<TestModel> CreateAsync(TestModel testModel)
         {
@@ -105,8 +117,13 @@ namespace LX.TestPad.Business.Services
         public async Task UpdateAsync(TestModel testModel)
         {
             var item = Mapper.TestModelToEntity(testModel);
-
             await _testRepository.UpdateAsync(item);
+        }
+        public async Task<bool> CheckPublishAsync(TestModel testModel)
+        {
+            var item = Mapper.TestModelToEntity(testModel);
+            var isValid = await IsValidToPublish(item.Id);
+            return isValid;
         }
 
         public async Task DeleteAsync(int id)

@@ -5,7 +5,7 @@
 
     var testScore = Math.Round(Model.ResultModel.Score * 100, 1) + "%";
 
-    var testDuaration = TimeSpan.FromMinutes(Model.ResultModel.Test.TestDuration).ToString(@"hh\:mm");
+    var testDuaration = TimeSpan.FromMinutes(Model.ResultModel.Test.TestDuration).ToString(@"hh\:mm\:ss");
     var resultFinishTime = (Model.ResultModel.FinishedAt - Model.ResultModel.StartedAt).ToString(@"hh\:mm\:ss");
 }
 
@@ -28,7 +28,7 @@
 
     @foreach (var resultAnswer in Model.ResultAnswerModels)
     {
-        <div class="my-3 border"  style="padding: 0 20px; padding-top: 10px;">
+        <div class="my-3 border" style="padding: 0 20px; padding-top: 10px;">
             <div style="font-weight: bold; font-size: 20px;">@resultAnswer.Key</div>
             <div style="font-size: 20px; margin-left: 20px;">Answers:</div>
 

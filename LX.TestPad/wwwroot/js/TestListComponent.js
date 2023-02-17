@@ -29,14 +29,25 @@ function loadAllTests() {
 
         $('div#' + loadingImgId).show();
 
+        let totalUrl = api;
+        if (isAdmin) {
+            totalUrl += "tests"
+        }
+        else {
+            totalUrl += "tests/filter/published"
+        }
+
         $.ajax({
             type: 'GET',
-            url: api + 'tests',
+            url: totalUrl,
             success: function (data, textstatus) {
                 if (data.length > 0) {
                     $.each(data, function (index, item) {
                         spawnTests(item);
-                    } )
+                    })
+                }
+                else {
+                    spawnZeroTestsResult();
                 }
 
                 _inCallback = false;
@@ -51,7 +62,7 @@ function loadAllTestsByRequest() {
     if (!_inCallback) {
 
         var searchRequest = document.getElementById(searchInputId).value.replace(/\s+/, " ");
-        if (isWhiteSpaceString(searchRequest)) { return; }
+        if (isWhiteSpaceString(searchRequest)) { loadAllTests(); }
 
         document.getElementById(testListId).innerHTML = "";
         $('div#' + loadingImgId).show();
@@ -69,20 +80,28 @@ function loadAllTestsByRequest() {
                     } )
                 }
                 else {
-                    _inCallback = false;
-                    loadAllTests();
+                    spawnEmptyResult();
                 }
 
                 _inCallback = false;
                 $("div#" + loadingImgId).hide();
-            },
-            error: function (e) {
-                loadAllTests();
-            },
+            }
         });
     }
 }
 
+
+function spawnZeroTestsResult() {
+    let htmlLine = '<div class="text-center my-5" style="font-weight: bold; font-size: 35px; opacity: 70%;">NO TESTS AVAILABLE</div>';
+
+    $("#" + testListId).append(htmlLine);
+}
+
+function spawnEmptyResult() {
+    let htmlLine = '<div class="text-center my-5" style="font-weight: bold; font-size: 35px; opacity: 70%;">NO RESULTS FOUND</div>';
+
+    $("#" + testListId).append(htmlLine);
+}
 
 function spawnTests(item) {
     let htmlLine = '';

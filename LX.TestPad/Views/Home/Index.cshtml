@@ -7,12 +7,12 @@
     <h1 class="display-4">Welcome</h1>
 </div>
 
-<div class="m-lg-5 text-lg-center">
-    <input id="SearchTextBar" class="m-lg-0" type="search" style="width: 200px" maxlength="50" name="query" placeholder="Search test" />
+<div class="my-3 text-center">
+    <input id="SearchTextBar" class="mx-3" type="search" style="width: 200px; height: 33.5px;" maxlength="50" name="query" placeholder="Search test" />
     <button class="btn btn-primary" onclick="loadAllTestsByRequest()">Search</button>
 </div>
 
-<div>
+<div class="text-center my-5">
     <div id="loadingTests" class="mb-3"><img class="mx-auto mt-3" width="30" height="30" src='@Url.Content("~/Content/loading_spinner.gif")'></div>
 
     <div id="TestsList">

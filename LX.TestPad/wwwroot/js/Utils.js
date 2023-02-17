@@ -1,7 +1,9 @@
 ﻿function isWhiteSpaceString(str) {
-    var reWhiteSpace = new RegExp("/^\s+$/");
-    if (reWhiteSpace.test(str)) {
+
+    var strReplaced = document.getElementById(searchInputId).value.replace(/^\s+$/, '');
+    if (strReplaced == '') {
         return true;
     }
+
     return false;
 }

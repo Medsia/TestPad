@@ -28,7 +28,7 @@
                       asp-route-TestId="@testQuestion.TestId" method="post">
                         <div class="question-header">
                             <p id="Question-text-@questionId">@testQuestion.Question.Text</p>
-                            <input type="text" name="Text" asp-for="@testQuestion.Question.Text" id="Question-@questionId" style="display:none" required />
+                            <input maxlength="300" type="text" name="Text" asp-for="@testQuestion.Question.Text" id="Question-@questionId" style="display:none" required />
                             <div>
                                 <input type="submit" value="Save" id="saveButton-@questionId" style="display:none" />
                                 <input type="button" value="Edit" id="editButton-@questionId" onclick="toggleEditingById(@questionId)" />

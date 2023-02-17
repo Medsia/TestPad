@@ -105,7 +105,7 @@ namespace LX.TestPad.Controllers
             return View(testQuestions[firstQuestionNumber].Question);
         }
 
-        [Route("SendUserAnswer")]
+        [Route("[action]")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendUserAnswer(UserAnswerModel UserAnswerModel)

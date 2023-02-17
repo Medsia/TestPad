@@ -117,18 +117,13 @@ namespace LX.TestPad.Business.Services
         public async Task UpdateAsync(TestModel testModel)
         {
             var item = Mapper.TestModelToEntity(testModel);
-
             await _testRepository.UpdateAsync(item);
         }
-        public async Task UpdatePublishAsync(TestModel testModel)
+        public async Task<bool> CheckPublishAsync(TestModel testModel)
         {
             var item = Mapper.TestModelToEntity(testModel);
-            if (!(await IsValidToPublish(item.Id)))
-            {
-                item.IsPublished = false;
-
-            }
-            await _testRepository.UpdateAsync(item);
+            var isValid = await IsValidToPublish(item.Id);
+            return isValid;
         }
 
         public async Task DeleteAsync(int id)

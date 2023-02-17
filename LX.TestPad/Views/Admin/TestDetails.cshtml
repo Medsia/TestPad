@@ -4,6 +4,23 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Test is invalid to publish!</h5>
+            </div>
+            <div class="modal-body">
+                Test have no questions or test question have no answers. Fix it and back later.
+            </div>
+            <div class="modal-footer">
+                <a asp-action="TestQuestions" asp-route-testId="@Model.Id" class="btn btn-outline-info">Edit Questions</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <h1>Test Information</h1>
 
 <form asp-action="UpdateTest" asp-route-id="@Model.Id" method="post">
@@ -51,6 +68,13 @@
 <a asp-action="DeleteTest" asp-route-id="@Model.Id" class="text-danger">Delete Test</a>
 <br>
 @section scripts{
+    <script>
+        var valid = "@ViewBag.isValid";
+        valid = valid.toString().toLowerCase();
+        $(document).ready(function () {
+            if (valid === "false") $('#exampleModalCenter').modal('toggle');
+        });
+    </script>
     <script>
         const inputName = "Name";
         const inputDescription = "Description";

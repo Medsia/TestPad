@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace LX.TestPad.Business.Models
 {
-    public struct QuestionConstants
+    public static class QuestionConstants
     {
         private const int firstQuestionNumber = 0;
         private const string questionNumberKey = "questionNumber";
-        public int GetFirstQuestionNumber
+        public static int FirstQuestionNumber
         {
             get { return firstQuestionNumber; }
         }
-        public string GetQuestionNumberKey
+        public static string QuestionNumberKey
         {
             get { return questionNumberKey; }
         }

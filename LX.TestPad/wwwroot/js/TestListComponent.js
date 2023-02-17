@@ -51,7 +51,7 @@ function loadAllTestsByRequest() {
     if (!_inCallback) {
 
         var searchRequest = document.getElementById(searchInputId).value.replace(/\s+/, " ");
-        if (!hasWhiteSpace(searchRequest)) { return; }
+        if (isWhiteSpaceString(searchRequest)) { return; }
 
         document.getElementById(testListId).innerHTML = "";
         $('div#' + loadingImgId).show();
@@ -61,7 +61,7 @@ function loadAllTestsByRequest() {
 
         $.ajax({
             type: 'GET',
-            url: api + 'tests/' + encodedURL,
+            url: api + 'tests/filter?request=' + encodedURL,
             success: function (data, textstatus) {
                 if (data.length > 0) {
                     $.each(data, function (index, item) {
@@ -89,7 +89,7 @@ function spawnTests(item) {
 
     if (isAdmin) {
         htmlLine = '<div class="test" style="border: 0">' +
-            '<ul class="list-group" style="height: 235px;  max-width: 250px; ">' +
+            '<ul class="list-group" style="height: 285px;  max-width: 250px; ">' +
             '<li class="list-group-item" style="height: 40px">' +
             '<p class="test-title">' + item.name + '</p>' +
             '</li>' +
@@ -112,7 +112,7 @@ function spawnTests(item) {
     }
     else {
         htmlLine = '<div class="test" style="border: 0">' +
-            '<ul class="list-group" style="height: 235px;  max-width: 250px; ">' +
+            '<ul class="list-group" style="height: 230px;  max-width: 250px; ">' +
             '<li class="list-group-item" style="height: 40px">' +
             '<p class="test-title">' + item.name + '</p>' +
             '</li>' +

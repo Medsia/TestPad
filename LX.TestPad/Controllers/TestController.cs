@@ -16,8 +16,6 @@ namespace LX.TestPad.Controllers
         private readonly IResultAnswerService _resultAnswerService;
         private readonly IEncoder _encoder;
 
-        private const string questionNumberKey = "questionNumber";
-        private const int firstQuestionNumber = 0;
         public TestController(ITestQuestionService testQuestionService, ITestService testService,
             IResultService resultService, IQuestionService questionService,
             IResultAnswerService resultAnswerService, IEncoder encoder)
@@ -89,6 +87,9 @@ namespace LX.TestPad.Controllers
         [Route("Questions/{resultId}")]
         public async Task<IActionResult> Question(string resultId)
         {
+            QuestionConstants questionConstants = new QuestionConstants();
+            string questionNumberKey = questionConstants.GetQuestionNumberKey;
+            int firstQuestionNumber = questionConstants.GetFirstQuestionNumber;
             if (!TempData.ContainsKey(questionNumberKey))
             {
                 RedirectToAction(nameof(Index));
@@ -110,6 +111,8 @@ namespace LX.TestPad.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendUserAnswer(UserAnswerModel UserAnswerModel)
         {
+            QuestionConstants questionConstants = new QuestionConstants();
+            string questionNumberKey = questionConstants.GetQuestionNumberKey;
             if (!TempData.ContainsKey(questionNumberKey))
             {
                 RedirectToAction(nameof(Index));

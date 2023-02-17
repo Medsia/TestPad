@@ -138,9 +138,11 @@ namespace LX.TestPad.Controllers
             ViewBag.ResultId = resultIdDecoded;
             ViewBag.IsExpired = isExpired ? 1 : 0;
 
-            ResultModel result = await _resultService.GetByIdAndCalculateAsync(resultIdDecoded);
+            var result = await _resultService.GetByIdAndCalculateAsync(resultIdDecoded);
+            var test = await _testService.GetByIdAsync(result.TestId);
 
-            ViewBag.TestData = await _testService.GetByIdAsync(result.TestId);
+            ViewBag.TestData = test;
+            ViewBag.TestIdEncoded = _encoder.Encode(test.Id.ToString());
 
             return View("Result", result);
         }

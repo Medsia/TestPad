@@ -60,7 +60,7 @@ namespace LX.TestPad.DataAccess.Repositories
         public async Task<List<Test>> GetByRequestAsync(string request)
         {
             var items = await dbContext.Tests.Where(x => x.Name.ToLower().Contains(request)).ToListAsync();
-            if (items.Count == 0)
+            if (!items.Any())
             {
                 items = await dbContext.Tests.Where(x => x.Description.ToLower().Contains(request)).ToListAsync();
             }

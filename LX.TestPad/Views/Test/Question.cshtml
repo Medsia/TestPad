@@ -35,7 +35,7 @@
 
 @section scripts {
     <script>
-        var currentQuestion = @ViewBag.questionNumber;
+        var currentQuestion = 1;
         var questionCount = @ViewBag.questionCount;
         var countDownDate = new Date("@ViewBag.endedAt").getTime();
         var elem = document.getElementById("progressBar");

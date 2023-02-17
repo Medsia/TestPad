@@ -115,11 +115,11 @@ namespace LX.TestPad.Controllers
             return RedirectToAction(nameof(TestDetails), new { id = test.Id });
         }
 
-        private async Task MakeTestPrivate(int testId)
+        public async Task<IActionResult> MakeTestPrivate(TestModel test)
         {
-            var test = await _testService.GetByIdAsync(testId);
             test.IsPublished = false;
             await _testService.UpdateAsync(test);
+            return RedirectToAction(nameof(TestQuestions), new { testId = test.Id });
         }
 
         public async Task<IActionResult> TestQuestions(int testId)

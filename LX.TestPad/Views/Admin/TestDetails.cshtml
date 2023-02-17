@@ -4,26 +4,9 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Test is invalid to publish!</h5>
-            </div>
-            <div class="modal-body">
-                Test have no questions or test question have no answers. Fix it and back later.
-            </div>
-            <div class="modal-footer">
-                <a asp-action="TestQuestions" asp-route-testId="@Model.Id" class="btn btn-outline-info">Edit Questions</a>
-            </div>
-        </div>
-    </div>
-</div>
-
 <h1>Test Information</h1>
 
-<form asp-action="UpdateTest" asp-route-id="@Model.Id" method="post">
+<form id="test" asp-action="UpdateTest" asp-route-id="@Model.Id" method="post">
     <div>
         <label asp-for="Name" style="font-weight:bold">Test Name:</label>
         <p id="Name-text">@Model.Name</p>
@@ -61,12 +44,32 @@
         </p>
         <input asp-for="IsPublished" id="IsPublished" style="display:none" />
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Test is invalid to publish!</h5>
+                </div>
+                <div class="modal-body">
+                    Test have no questions or test question have no answers. Fix it and back later.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" asp-action="MakeTestPrivate" asp-route-id="@Model.Id">
+                        Edit Questions
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </form>
 <a asp-action="TestQuestions" asp-route-testId="@Model.Id" class="btn btn-outline-info">Edit Questions</a>
 <br />
 
 <a asp-action="DeleteTest" asp-route-id="@Model.Id" class="text-danger">Delete Test</a>
 <br>
+
 @section scripts{
     <script>
         var valid = "@ViewBag.isValid";

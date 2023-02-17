@@ -16,7 +16,6 @@ namespace LX.TestPad.Controllers
         private readonly IResultAnswerService _resultAnswerService;
         private readonly IEncoder _encoder;
 
-        private const string questionNumberKey = "questionNumber";
         public TestController(ITestQuestionService testQuestionService, ITestService testService,
             IResultService resultService, IQuestionService questionService,
             IResultAnswerService resultAnswerService, IEncoder encoder)
@@ -82,57 +81,59 @@ namespace LX.TestPad.Controllers
                 StartedAt = DateTime.Now.ToUniversalTime(),
                 FinishedAt = DateTime.MinValue
             });
-            TempData[questionNumberKey] = 0;
             return RedirectToAction(nameof(Question), new { resultId = _encoder.Encode(emptyUserResult.Id.ToString()) });
         }
 
         [Route("Questions/{resultId}")]
         public async Task<IActionResult> Question(string resultId)
         {
+            string questionNumberKey = QuestionConstants.QuestionNumberKey;
+            int firstQuestionNumber = QuestionConstants.FirstQuestionNumber;
             if (!TempData.ContainsKey(questionNumberKey))
             {
                 RedirectToAction(nameof(Index));
             }
-
             var result = await _resultService.GetByIdAsync(int.Parse(_encoder.Decode(resultId)));
             var testQuestions = await _testQuestionService.GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(result.TestId);
-            int questionNumber = (int)TempData[questionNumberKey];
 
-            if (questionNumber >= testQuestions.Count)
-            {
-                TempData.Clear();
-                return RedirectToAction(nameof(Result), new { resultId = _encoder.Encode(result.Id.ToString()) });
-            }
-
+            TempData[questionNumberKey] = firstQuestionNumber;
+            ViewBag.resultIdEncoded = resultId;
             ViewBag.resultId = result.Id;
+            ViewBag.testId = result.TestId;
             ViewBag.questionCount = testQuestions.Count;
-            ViewBag.questionNumber = questionNumber + 1;
-            TempData[questionNumberKey] = questionNumber;
             ViewBag.endedAt = result.StartedAt.AddSeconds(Mapper.FromMinutesToSeconds(testQuestions.First().Test.TestDuration)).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
-
-            return View(testQuestions[questionNumber].Question);
+            return View(testQuestions[firstQuestionNumber].Question);
         }
 
+        [Route("[action]")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendUserAnswer(UserAnswerModel UserAnswerModel)
         {
+            string questionNumberKey = QuestionConstants.QuestionNumberKey;
             if (!TempData.ContainsKey(questionNumberKey))
             {
                 RedirectToAction(nameof(Index));
             }
+
             int questionNumber = (int)TempData[questionNumberKey];
             TempData[questionNumberKey] = ++questionNumber;
 
             await _resultAnswerService.AddUserResultAnswersAsync(UserAnswerModel.ResultId,
                 UserAnswerModel.AnswersIds);
 
-            return RedirectToAction(nameof(Question), new { resultId = _encoder.Encode(UserAnswerModel.ResultId.ToString()) });
+            var testQuestions = await _testQuestionService.GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(UserAnswerModel.TestId);
+            if (questionNumber >= testQuestions.Count)
+            {
+                return PartialView("PreResultPartial", _encoder.Encode(UserAnswerModel.ResultId.ToString()));
+            }
+
+            return PartialView("QuestionPartial", testQuestions[questionNumber].Question);
         }
 
         [Route("Result/{resultId}")]
         [HttpGet]
-        public async Task<IActionResult> Result(string resultId, bool isExpired)
+        public async Task<IActionResult> Result(string resultId, [FromQuery] bool isExpired)
         {
             var resultIdDecoded = int.Parse(_encoder.Decode(resultId));
             ViewBag.ResultId = resultIdDecoded;

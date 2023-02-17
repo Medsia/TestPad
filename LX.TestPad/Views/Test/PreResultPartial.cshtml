@@ -1,0 +1,19 @@
+﻿@model string
+
+@{
+    ViewData["Title"] = "The test is completed";
+}
+
+<div class="border">
+    <div class="text-center border">
+        <h1 class="display-4">The test is completed</h1>
+        <a asp-action="Result" asp-route-resultId="@Model" asp-route-isExpired="@false" class="btn btn-outline-primary mx-3 my-3">Show Result</a>
+        <script type='text/javascript' id="hideButtonProgressBarTimer">
+            document.getElementById("timer").style.display = "none";
+            document.getElementById("Nextbtn").style.display = "none";
+            document.getElementById("myProgressBackGround").style.display = "none";
+            document.getElementById("progressShow").style.display = "none";
+
+            clearInterval(updateTimer);
+        </script>
+    </div>

@@ -60,7 +60,7 @@
             return Math.round((progressMod - progress) * colorCoefficient);
         }
         function currentQuestionUp() {
-            currentQuestion++;
+            if (currentQuestion < questionCount) currentQuestion++;
         }
         function updateTestTimerText() {
             var now = new Date(new Date().toISOString()).getTime();
@@ -82,7 +82,7 @@
         var startTimer = setInterval(updateTestTimerText, 1000);
     </script>
     <script>
-        $(document).on('change', 'input[type="checkbox"]', function() {
+        $(document).on('change', 'input[type="checkbox"]', function () {
             if ($('input[type="checkbox"]:checked').length > 0) {
                 $('#Nextbtn').prop('disabled', false);
             } else {

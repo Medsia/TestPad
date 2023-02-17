@@ -2,34 +2,41 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
 <div>
     <a asp-action="CreateTest" class="btn btn-outline-info">Create Test</a>
 </div>
 
-<form class="m-lg-5 text-lg-center" action="@Url.Action("SearchTest", "Test")" method="get">
-                <input class="m-lg-0" type="search" style="width: 200px" maxlength="50" name="query" placeholder="Search test"/>
-                <button class="btn btn-primary" type="submit">Search</button>
-</form>
-@foreach (var test in Model)
-{
-    <div class="test" style="border: 0">
-        <ul class="list-group" style="height: 235px;  max-width: 250px; ">
-            <li class="list-group-item" style="height: 40px">
-                <p class="test-title">@test.Name</p>
-            </li>
-            <li class="list-group-item" style="text-overflow: ellipsis; max-width: 250px; min-height: 135px">
-                <p class="product-desc" style="word-wrap: break-word; width: 200px; max-height: 100%; text-overflow: ellipsis; overflow: hidden;">@test.Description</p>
-            </li>
-            <li class="list-group-item">
-                <form asp-action="TestDetails" asp-route-id="@test.Id">
-                    <button type="submit" class="btn btn-success">Show</button>
-                </form>
-            </li>
-            <li class="list-group-item">
-                <form asp-action="CopyTest" asp-route-selectedTestId="@test.Id">
-                    <button type="submit" class="btn btn-success">Copy and Edit as new</button>
-                </form>
-            </li>
-        </ul>
+<div class="m-lg-5 text-lg-center">
+    <input id="SearchTextBar" class="m-lg-0" type="search" style="width: 200px" maxlength="50" name="query" placeholder="Search test" />
+    <button class="btn btn-primary" onclick="loadAllTestsByRequest()">Search</button>
+</div>
+
+<div>
+    <div id="loadingTests" class="mb-3"><img class="mx-auto mt-3" width="30" height="30" src='@Url.Content("~/Content/loading_spinner.gif")'></div>
+
+    <div id="TestsList">
+
     </div>
+</div>
+
+
+@section scripts{
+
+    <script src="~/js/Utils.js"></script>
+    
+    <script src="~/js/TestListComponent.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready( testListInit("loadingTests", "TestsList", "SearchTextBar", true) )
+
+        $(window).keypress(function (event) {
+            if (event.keyCode === 13) {
+                loadAllTestsByRequest();
+            }
+        });
+
+    </script>
+
 }

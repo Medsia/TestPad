@@ -12,36 +12,41 @@ namespace LX.TestPad.Business.Services
         public static void SQLKeyIdCheck(int id)
         {
             if (id < MinimalSQLKeyId)
-                throw new ArgumentOutOfRangeException("id", id, "Id cannot have a value of 0 or be negative.");
+                throw new ArgumentOutOfRangeException("id", id, ExceptionMessage.SqlId);
         }
         public static void ListOfSQLKeyIdsCheck(List<int> ids)
         {
             if (ids.Any(id => id < 1))
-                throw new ArgumentOutOfRangeException("ids", ids, "Id cannot have a value of 0 or be negative.");
+                throw new ArgumentOutOfRangeException("ids", ids, ExceptionMessage.SqlId);
         }
 
         public static void PageNumberCheck(int pageNumber)
         {
             if (pageNumber < MinimalPageNumber)
-                throw new ArgumentOutOfRangeException("pageNumber", pageNumber, "Page number cannot be 0 or negative.");
+                throw new ArgumentOutOfRangeException("pageNumber", pageNumber, ExceptionMessage.PageNumber);
         }
         public static void TestPerPageCountCheck(int count)
         {
             if (count < MinimalTestCount)
-                throw new ArgumentOutOfRangeException("count", count, "Quantity of tests per page cannot be 0 or negative.");
+                throw new ArgumentOutOfRangeException("count", count, ExceptionMessage.TestPerPageCount);
         }
         public static void IsAnswersRelatedToOneQuestionCheck(int questionId, List<Answer> answers)
         {
             foreach (var answer in answers)
             {
                 if (questionId != answer.QuestionId)
-                    throw new ArgumentException("Answer cannot be matched with question.", "answers[i].QuestionId");
+                    throw new ArgumentException(ExceptionMessage.IsAnswersRelatedToOneQuestion, "answers[i].QuestionId");
             }
         }
         public static void IsItemNullCheck<T>(T entity)
         {
             if (entity == null)
-                throw new ArgumentNullException("entity", "Entity, received from repository, is null.");
+                throw new ArgumentNullException("entity", ExceptionMessage.IsItemNull + entity.GetType().ToString());
+        }
+        public static void IsRequestAValidString(string request)
+        {
+            if (string.IsNullOrWhiteSpace(request))
+                throw new ArgumentException(ExceptionMessage.IsRequestAValidString, "request");
         }
     }
 }

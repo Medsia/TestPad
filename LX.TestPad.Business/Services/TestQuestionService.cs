@@ -13,7 +13,7 @@ namespace LX.TestPad.Business.Services
         private readonly ITestRepository _testRepository;
         private readonly IAnswerRepository _answerRepository;
 
-        public TestQuestionService(ITestQuestionRepository testQuestionRepository, IQuestionRepository questionRepository, 
+        public TestQuestionService(ITestQuestionRepository testQuestionRepository, IQuestionRepository questionRepository,
                                         ITestRepository testRepository, IAnswerRepository answerRepository)
         {
             _testQuestionRepository = testQuestionRepository;
@@ -53,7 +53,7 @@ namespace LX.TestPad.Business.Services
             ExceptionChecker.SQLKeyIdCheck(testId);
 
             var testQuestions = await _testQuestionRepository.GetAllByTestIdIncludeQuestionAndAnswersAsync(testId);
-            foreach(var testQuestion in testQuestions)
+            foreach (var testQuestion in testQuestions)
             {
                 testQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(testQuestion.Question);
             }
@@ -72,6 +72,16 @@ namespace LX.TestPad.Business.Services
                         .ToList();
         }
 
+        public async Task<List<TestQuestionModel>> GetAllByTestIdExceptTestIncludeQuestionsWithAnswersAsync(int testId)
+        {
+            ExceptionChecker.SQLKeyIdCheck(testId);
+
+            var testQuestions = await _testQuestionRepository.GetAllByTestIdExceptTestIncludeQuestionAndAnswersAsync(testId);
+
+            return testQuestions.Select(Mapper.TestQuestionWithAnswersAndTestToModel)
+                        .ToList();
+        }
+
         private async Task<int> GetNewQuestionSequenceNumberByTestIdAsync(int testId)
         {
             var lastQuestion = (await _testQuestionRepository.GetAllByTestIdAsync(testId)).LastOrDefault();
@@ -83,7 +93,7 @@ namespace LX.TestPad.Business.Services
         {
             var items = await _questionRepository.GetAllUnusedAsync();
 
-            if (items.Count== 0) return new List<QuestionModel>();
+            if (items.Count == 0) return new List<QuestionModel>();
 
             return items.Select(Mapper.QuestionToModel)
                         .ToList();

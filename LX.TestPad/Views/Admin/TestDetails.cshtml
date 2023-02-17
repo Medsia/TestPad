@@ -6,73 +6,80 @@
 
 <h1>Test Information</h1>
 
-<form id="test" asp-action="UpdateTest" asp-route-id="@Model.Id" method="post">
-    <div>
-        <label asp-for="Name" style="font-weight:bold">Test Name:</label>
-        <p id="Name-text">@Model.Name</p>
-        <input type="text" asp-for="Name" id="Name" style="display:none" required />
-    </div>
-    <div>
-        <label asp-for="Description" style="font-weight:bold">Description:</label>
-        <p id="Description-text">@Model.Description</p>
-        <input type="text" asp-for="Description" id="Description" style="display:none" required />
-    </div>
-    <div>
-        <label asp-for="TestDuration" style="font-weight:bold">Test Duration:</label>
-        <p id="TestDuration-text">@Model.TestDuration</p>
-        <input asp-for="TestDuration" id="TestDuration" style="display:none" required />
-    </div>
-    <div>
-        <input type="submit" value="Save" id="saveButton" style="display:none" />
-        <input type="button" value="Edit" id="editButton" onclick="toggleEditing()" />
-        <input type="button" value="Cancel" id="cancelButton" onclick="cancelEditing()" style="display:none" />
-    </div>
-    <div>
-        <p id="IsPublished-text">
-            @if (@Model.IsPublished)
-            {
-                <button class="btn btn-danger" asp-action="ChangeIsPublishedTest" asp-route-id="@Model.Id">
-                    Make test private
-                </button>
-            }
-            else
-            {
-                <button class="btn btn-success" asp-action="ChangeIsPublishedTest" asp-route-id="@Model.Id">
-                    Make test public
-                </button>
-            }
-        </p>
-        <input asp-for="IsPublished" id="IsPublished" style="display:none" />
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Test is invalid to publish!</h5>
-                </div>
-                <div class="modal-body">
-                    Test have no questions or test question have no answers. Fix it and back later.
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-outline-info" asp-action="MakeTestPrivate" asp-route-id="@Model.Id">
-                        Edit Questions
-                    </button>
+<div class="card">
+    <div class="card-body">
+        <form asp-action="UpdateTest" asp-route-id="@Model.Id" method="post">
+            <div class="form-group">
+                <label asp-for="Name" class="font-weight-bold">Test Name:</label>
+                <p id="Name-text">@Model.Name</p>
+                <input type="text" asp-for="Name" id="Name" class="form-control" style="display:none" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="font-weight-bold">Description:</label>
+                <p id="Description-text">@Model.Description</p>
+                <input type="text" asp-for="Description" id="Description" class="form-control" style="display:none" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="TestDuration" class="font-weight-bold">Test Duration:</label>
+                <p id="TestDuration-text">@Model.TestDuration min.</p>
+                <input asp-for="TestDuration" id="TestDuration" class="form-control" style="display:none" required />
+            </div>
+            <div class="my-2">
+                <input type="submit" value="Save" id="saveButton" class="btn btn-primary" style="display:none" />
+                <input type="button" value="Edit" id="editButton" class="btn btn-secondary" onclick="toggleEditing()" />
+                <input type="button" value="Cancel" id="cancelButton" class="btn btn-secondary" onclick="cancelEditing()" style="display:none" />
+            </div>
+            <div class="form-group">
+                <p id="IsPublished-text">
+                    @if (@Model.IsPublished)
+                    {
+                        <button class="btn btn-danger" asp-action="ChangeIsPublishedTest" asp-route-id="@Model.Id">
+                            Make test private
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-success" asp-action="ChangeIsPublishedTest" asp-route-id="@Model.Id">
+                            Make test public
+                        </button>
+                    }
+                </p>
+                <input asp-for="IsPublished" id="IsPublished" style="display:none" />
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Test is invalid to publish!</h5>
+                        </div>
+                        <div class="modal-body">
+                            Test have no questions or test question have no answers. Fix it and back later.
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-info text-white" asp-action="MakeTestPrivate" asp-route-id="@Model.Id">
+                                Edit Questions
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
+        <a asp-action="TestQuestions" asp-route-testId="@Model.Id" style="width: 150px" class="btn btn-info text-white">
+            Edit Questions
+        </a>
+        <a asp-action="DeleteTest" asp-route-id="@Model.Id" class="btn text-danger mx-1">Delete Test</a>
     </div>
-
-</form>
-<a asp-action="TestQuestions" asp-route-testId="@Model.Id" class="btn btn-outline-info">Edit Questions</a>
+</div>
 <br />
 
-<a asp-action="DeleteTest" asp-route-id="@Model.Id" class="text-danger">Delete Test</a>
-<br>
+<div class="my-3">
+    <a class="btn btn-outline-danger mx-1" style="width: 130px;" href="@Url.Action("Index", "Admin")">Back to tests</a>
+</div>
 
 @section scripts{
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             if ("@ViewBag.isValid" === "False") $('#exampleModalCenter').modal('toggle');
         });
     </script>

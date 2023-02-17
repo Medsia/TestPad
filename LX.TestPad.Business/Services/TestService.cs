@@ -106,6 +106,18 @@ namespace LX.TestPad.Business.Services
             return true;
         }
 
+        public async Task<List<TestModel>> GetAllByRequestAsync(string request)
+        {
+            ExceptionChecker.IsRequestAValidString(request);
+
+            var items = await _testRepository.GetByRequestAsync(request.ToLower());
+            ExceptionChecker.IsItemNullCheck(items);
+
+            return items.Select(Mapper.TestToModel)
+                        .ToList();
+        }
+
+
         public async Task<TestModel> CreateAsync(TestModel testModel)
         {
             var item = Mapper.TestModelToEntity(testModel);

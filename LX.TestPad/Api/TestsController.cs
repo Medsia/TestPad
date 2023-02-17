@@ -4,12 +4,12 @@ using LX.TestPad.Business.Models;
 using LX.TestPad.Business.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace LX.TestPad.Api
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
     public class TestsController : ControllerBase
     {
         private readonly ITestService _testService;
@@ -29,13 +29,30 @@ namespace LX.TestPad.Api
             return Ok(items);
         }
 
+        [HttpGet("filter")]
+        public async Task<IActionResult> GetAllTestsBySearchRequest([FromQuery, Required] string request)
+        {
+            try
+            {
+                var items = await _testService.GetAllByRequestAsync(request);
+                return Ok(items);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+        }
+
         [HttpPut("{questionId}/{testId}")]
+        [Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
         public async Task AddQuestionToTest(int questionId, int testId)
         {
             await _testQuestionService.CreateAsync(questionId, testId);
         }
 
         [HttpDelete("{questionId}/{testId}")]
+        [Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
         public async Task RemoveQuestionFromTest(int questionId, int testId)
         {
             await _testQuestionService.DeleteAsync(testId, questionId);

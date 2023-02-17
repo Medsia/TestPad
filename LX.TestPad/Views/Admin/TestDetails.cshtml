@@ -55,7 +55,7 @@
                     Test have no questions or test question have no answers. Fix it and back later.
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" asp-action="MakeTestPrivate" asp-route-id="@Model.Id">
+                    <button class="btn btn-outline-info" asp-action="MakeTestPrivate" asp-route-id="@Model.Id">
                         Edit Questions
                     </button>
                 </div>
@@ -72,10 +72,8 @@
 
 @section scripts{
     <script>
-        var valid = "@ViewBag.isValid";
-        valid = valid.toString().toLowerCase();
         $(document).ready(function () {
-            if (valid === "false") $('#exampleModalCenter').modal('toggle');
+            if ("@ViewBag.isValid" === "False") $('#exampleModalCenter').modal('toggle');
         });
     </script>
     <script>

@@ -22,7 +22,15 @@ namespace LX.TestPad.Api
         }
 
 
+        [HttpGet("filter/published")]
+        public async Task<IActionResult> GetAllPublishedTests()
+        {
+            var items = await _testService.GetAllPublishedAsync();
+            return Ok(items);
+        }
+
         [HttpGet]
+        [Authorize(AuthenticationSchemes = AuthenticationSchemes.Schema, Roles = AuthenticationSchemes.Role)]
         public async Task<IActionResult> GetAllTests()
         {
             var items = await _testService.GetAllAsync();

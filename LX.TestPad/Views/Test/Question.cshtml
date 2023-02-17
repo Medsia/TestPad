@@ -61,6 +61,8 @@
         }
         function currentQuestionUp() {
             if (currentQuestion < questionCount) currentQuestion++;
+            else window.location.replace(window.location.origin + "/Test/Result/@ViewBag.resultIdEncoded");
+
         }
         function updateTestTimerText() {
             var now = new Date(new Date().toISOString()).getTime();

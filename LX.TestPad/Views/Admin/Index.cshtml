@@ -1,16 +1,23 @@
 ﻿@model List<LX.TestPad.Business.Models.TestModel>
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Admin home";
 }
 
-<div>
-    <a asp-action="CreateTest" class="btn btn-outline-info">Create Test</a>
+
+<div class="my-3 row">
+    <div class="text-start col-1"></div>
+
+    <div class="text-start col-6">
+        <a asp-action="CreateTest" class="btn btn-outline-info">Create Test</a>
+    </div>
+
+    <div class="text-end col-5 text-center">
+        <input id="SearchTextBar" class="mx-3 mb-2" type="search" style="width: 200px; height: 33.5px;" maxlength="50" name="query" placeholder="Search test" />
+        <button class="btn btn-primary" onclick="loadAllTestsByRequest()">Search</button>
+    </div>
 </div>
 
-<div class="my-3 text-center">
-    <input id="SearchTextBar" class="mx-3" type="search" style="width: 200px; height: 33.5px;" maxlength="50" name="query" placeholder="Search test" />
-    <button class="btn btn-primary" onclick="loadAllTestsByRequest()">Search</button>
-</div>
 
 <div class="text-center my-5">
     <div id="loadingTests" class="mb-3"><img class="mx-auto mt-3" width="30" height="30" src='@Url.Content("~/Content/loading_spinner.gif")'></div>

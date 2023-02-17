@@ -1,6 +1,7 @@
 ﻿@model List<LX.TestPad.Business.Models.TestQuestionModel>
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Test editor";
 }
 
 <h2 style="font-weight:bold; margin-top:20px;">Questions</h2>
@@ -30,7 +31,7 @@
                           asp-route-TestId="@testQuestion.TestId" method="post">
                             <div>
                                 <p id="Question-text-@questionId" class="question-text mb-2">@testQuestion.Question.Text</p>
-                                <input type="text" class="mb-2" name="Text" asp-for="@testQuestion.Question.Text" id="Question-@questionId" style="display:none" required />
+                                <input maxlength="300" type="text" class="mb-2" name="Text" asp-for="@testQuestion.Question.Text" id="Question-@questionId" style="display:none" required />
                                 <div>
                                     <input type="submit" value="Save" id="saveButton-@questionId" style="display:none" class="btn btn-sm btn-success" />
                                     <input type="button" value="Edit" id="editButton-@questionId" onclick="toggleEditingById(@questionId)" class="btn btn-secondary" />

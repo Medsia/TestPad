@@ -1,6 +1,7 @@
 ﻿@model LX.TestPad.Business.Models.QuestionModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Test in process";
 }
 <ul class="list-group">
     <li class="list-group-item">
@@ -61,6 +62,8 @@
         }
         function currentQuestionUp() {
             if (currentQuestion < questionCount) currentQuestion++;
+            else window.location.replace(window.location.origin + "/Test/Result/@ViewBag.resultIdEncoded");
+
         }
         function updateTestTimerText() {
             var now = new Date(new Date().toISOString()).getTime();

@@ -13,28 +13,30 @@
         <div class="col-md-5 col-md-auto mx-auto">
             <div class="form-group">
                 <label asp-for="Name" class="control-label">Test Name</label>
-                <input asp-for="Name" class="form-control" required/>
+                <input maxlength="30" asp-for="Name" class="form-control" required />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group ml-auto">
                 <label asp-for="Description" class="control-label">Description</label>
-                <textarea asp-for="Description" style="min-height: 40px; max-height: 200px;" rows="3" class="form-control"></textarea>
+                <textarea maxlength="115" asp-for="Description" style="min-height: 40px; max-height: 200px;" rows="3" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-                <div class="form-group ml-auto">
+            <div class="form-group ml-auto">
                 <label asp-for="TestDuration" class="control-label">Test Duration(minutes)</label>
-                <input asp-for="TestDuration" class="form-control" type="number" min="0" required/>
+                <input maxlength="3" asp-for="TestDuration" class="form-control" type="number" min="0" required />
                 <span asp-validation-for="TestDuration" class="text-danger"></span>
             </div>
             <div class="my-3 text-center">
                 <a class="btn btn-outline-danger mx-1" style="width: 130px;" href="@Url.Action("Index", "Admin")">Back to tests</a>
-                <input type="submit" value="Create" class="btn btn-primary mx-1" style="width: 80px;"/>
-            </div>       
+                <input type="submit" value="Create" class="btn btn-primary mx-1" style="width: 80px;" />
+            </div>
         </div>
     </div>
 </form>
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

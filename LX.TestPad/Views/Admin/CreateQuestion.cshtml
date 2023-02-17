@@ -8,26 +8,27 @@
 <h4 class="text-center">@ViewData["Title"]</h4>
 <hr />
 
-
 <form asp-action="CreateQuestion" asp-route-TestId="@Model.TestId" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row mb-3">
         <div class="col-md-5 col-md-auto mx-auto">
             <div class="form-group ml-auto">
                 <label class="control-label">Text</label>
-                <textarea asp-for="Text" style="min-height: 40px; max-height: 200px;" rows="3" class="form-control" required></textarea>
-                <span asp-validation-for="Text" class="text-danger"></span><br>               
+                <textarea maxlength="300" asp-for="Text" style="min-height: 40px; max-height: 200px;" rows="3" class="form-control" required></textarea>
+                <span asp-validation-for="Text" class="text-danger"></span><br>
             </div>
 
             <div class="my-3 text-center">
                 <a class="btn btn-outline-danger mx-1" style="width: 80px;" href="@Url.Action("TestQuestions", "Admin", new { testId=Model.TestId })">Back</a>
-                <input type="submit" value="Create" class="btn btn-primary mx-1" style="width: 80px;"/>
-            </div>       
+                <input type="submit" value="Create" class="btn btn-primary mx-1" style="width: 80px;" />
+            </div>
         </div>
     </div>
 </form>
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

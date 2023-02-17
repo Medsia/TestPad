@@ -2,6 +2,7 @@
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Test details";
 }
 
 <h1>Test Information</h1>
@@ -12,17 +13,17 @@
             <div class="form-group">
                 <label asp-for="Name" class="font-weight-bold">Test Name:</label>
                 <p id="Name-text">@Model.Name</p>
-                <input type="text" asp-for="Name" id="Name" class="form-control" style="display:none" required />
+                <input maxlength="30" type="text" asp-for="Name" id="Name" class="form-control" style="display:none" required />
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="font-weight-bold">Description:</label>
                 <p id="Description-text">@Model.Description</p>
-                <input type="text" asp-for="Description" id="Description" class="form-control" style="display:none" required />
+                <input maxlength="115" type="text" asp-for="Description" id="Description" class="form-control" style="display:none" required />
             </div>
             <div class="form-group">
                 <label asp-for="TestDuration" class="font-weight-bold">Test Duration:</label>
                 <p id="TestDuration-text">@Model.TestDuration min.</p>
-                <input asp-for="TestDuration" id="TestDuration" class="form-control" style="display:none" required />
+                <input maxlength="3" asp-for="TestDuration" id="TestDuration" class="form-control" style="display:none" required />
             </div>
             <div class="my-2">
                 <input type="submit" value="Save" id="saveButton" class="btn btn-primary" style="display:none" />

@@ -4,75 +4,83 @@
     ViewData["Title"] = "Test editor";
 }
 
-<h2>Questions</h2>
+<h2 style="font-weight:bold; margin-top:20px;">Questions</h2>
 
-<div class="header-buttons my-2">
+<div>
     <a class="btn btn-outline-danger mx-1" style="width: 80px;" href="@Url.Action("TestDetails", "Admin" , new { id=ViewBag.TestId })">Back</a>
     <a asp-action="CreateQuestion" asp-route-testId="@ViewBag.TestId" class="btn btn-outline-info">Create Question</a>
-    <a href="/Admin/ExistingQuestions?testId=@ViewBag.TestId" class="btn btn-outline-info">Add Question from existing test</a><br />
+    <a href="/Admin/ExistingQuestions?testId=@ViewBag.TestId" class="btn btn-outline-info">Add Question from existing test</a>
 </div>
-<table>
-    <thead>
-        <tr>
-            <th>Question</th>
-            <th>Answers</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var testQuestion in Model.OrderByDescending(tq => tq.QuestionId))
-        {
-            var questionId = testQuestion.Id;
-            <tr>
-                <td>
-                    <form asp-action="UpdateQuestion" asp-route-id="@testQuestion.QuestionId"
-                      asp-route-TestId="@testQuestion.TestId" method="post">
-                        <div class="question-header">
-                            <p id="Question-text-@questionId">@testQuestion.Question.Text</p>
-                            <input maxlength="300" type="text" name="Text" asp-for="@testQuestion.Question.Text" id="Question-@questionId" style="display:none" required />
-                            <div>
-                                <input type="submit" value="Save" id="saveButton-@questionId" style="display:none" />
-                                <input type="button" value="Edit" id="editButton-@questionId" onclick="toggleEditingById(@questionId)" />
-                                <input type="button" value="Cancel" id="cancelButton-@questionId" onclick="cancelEditingById(@questionId)" style="display:none" />
-                            </div>
-                        </div>
-                    </form>
-                </td>
-                <td>
-                    <ul>
-                        @foreach (var answer in testQuestion.Question.Answers)
-                        {
-                            <li class="answer-row">
-                                <span class="answer-icon @(answer.IsCorrect ? "correct" : "")">
-                                    @if (answer.IsCorrect)
-                                    {
-                                        <span>&#10003;</span>
-                                    }
-                                </span>
-                                @answer.Text;
-                                <form asp-action="DeleteAnswer" asp-route-id="@answer.Id"
-                              asp-route-testId="@testQuestion.TestId" method="post">
-                                    <button class="delete-answer-button" type="submit">X</button>
-                                </form>
-                            </li>
-                        }
-                    </ul>
-                    <a class="add-answer-button" asp-action="CreateAnswer" asp-route-questionId="@testQuestion.QuestionId"
-                   asp-route-testId="@testQuestion.TestId" class="text-info">Add Answer</a>
-                </td>
-                <td class="delete-question-cell">
-                    <form asp-action="DeleteTestQuestion" asp-route-id="@testQuestion.QuestionId"
-                      asp-route-testId="@testQuestion.TestId" style="display: inline" method="post">
-                        <button type="submit" class="delete-question-button">
-                            <span class="delete-question-cross">&times;</span>
-                        </button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
+<div class="table-responsive my-4">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th style="width:50%">Question</th>
+                <th style="width:35%">Answers</th>
+                <th style="width:15%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var testQuestion in Model.OrderByDescending(tq => tq.QuestionId))
+            {
+                var questionId = testQuestion.Id;
+                <tr>
+                    <td>
+                        <form asp-action="UpdateQuestion" asp-route-id="@testQuestion.QuestionId"
+                          asp-route-TestId="@testQuestion.TestId" method="post">
+                            <div>
+                                <p id="Question-text-@questionId" class="question-text mb-2">@testQuestion.Question.Text</p>
+                                <input maxlength="300" type="text" class="mb-2" name="Text" asp-for="@testQuestion.Question.Text" id="Question-@questionId" style="display:none" required />
+                                <div>
+                                    <input type="submit" value="Save" id="saveButton-@questionId" style="display:none" class="btn btn-sm btn-success" />
+                                    <input type="button" value="Edit" id="editButton-@questionId" onclick="toggleEditingById(@questionId)" class="btn btn-secondary" />
+                                    <input type="button" value="Cancel" id="cancelButton-@questionId" onclick="cancelEditingById(@questionId)" style="display:none" class="btn btn-sm btn-secondary" />
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <table>
+                            @foreach (var answer in testQuestion.Question.Answers)
+                            {
+                                <tr>
+                                    <td class="answer-row">
+                                        <span class="answer-icon @(answer.IsCorrect ? "correct" : "")">
+                                            @if (answer.IsCorrect)
+                                            {
+                                                <span>&#10003;</span>
+                                            }
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="answer-text">@answer.Text;</span>
+                                    </td>
+                                    <td class="answer-row" sty>
+                                        <form asp-action="DeleteAnswer" asp-route-id="@answer.Id"
+                                      asp-route-testId="@testQuestion.TestId" method="post">
+                                            <button class="delete-answer-button" type="submit">X</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                        <a class="add-answer-button" asp-action="CreateAnswer" asp-route-questionId="@testQuestion.QuestionId"
+                       asp-route-testId="@testQuestion.TestId" class="text-info">Add Answer</a>
+                    </td>
+                    <td class="delete-question-cell" style="vertical-align: middle">
+                        <form asp-action="DeleteTestQuestion" asp-route-id="@testQuestion.QuestionId"
+                          asp-route-testId="@testQuestion.TestId" style="display: inline" method="post">
+                            <button type="submit" class="delete-question-button">
+                                <span class="btn btn-danger">delete</span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 <script>
     function applyStyleFor(elements, styleName, value) {
         for (var i = 0; i < elements.length; i++) {
@@ -95,23 +103,47 @@
 </script>
 
 <style>
-    .header-buttons {
-        float: left;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    th, td {
-        border: 1px solid gray;
-        padding: 8px;
-    }
-
-    .correct {
-        color: green;
+    h2 {
         font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .header-buttons {
+        margin-bottom: 1rem;
+    }
+
+        .header-buttons a {
+            width: 120px;
+            margin-right: 1rem;
+        }
+
+    /* Table styles */
+    .table-responsive {
+        margin-top: 20px;
+    }
+
+    .table {
+        border: 1px solid #dee2e6;
+    }
+
+    .thead-dark {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    th {
+        font-weight: bold;
+    }
+
+    td.delete-question-cell {
+        width: 15%;
+        text-align: center;
+    }
+
+    .answer-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
     }
 
     .answer-row {
@@ -120,35 +152,90 @@
     }
 
     .answer-icon {
-        width: 20px;
-        margin-right: 8px;
+        margin-right: 10px;
+        font-size: 1.2rem;
+    }
+
+        .answer-icon.correct {
+            color: green;
+        }
+
+    .answer-text {
+        margin-right: 10px;
     }
 
     .delete-answer-button {
-        margin-left: auto;
+        background-color: transparent;
+        border: none;
+        color: red;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 0;
+        margin-left: 10px;
     }
 
     .add-answer-button {
         display: block;
-        margin-top: 8px;
+        margin-top: 10px;
     }
+
+    /* Form button styles */
+    input[type="submit"], input[type="button"] {
+        background-color: transparent;
+        border: 1px solid #dee2e6;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+        input[type="submit"]:hover, input[type="button"]:hover {
+            background-color: #dee2e6;
+        }
+
+        input[type="submit"].btn-success {
+            color: #fff;
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+            input[type="submit"].btn-success:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+            }
+
+        input[type="button"].btn-primary {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            input[type="button"].btn-primary:hover {
+                background-color: #0069d9;
+                border-color: #0062cc;
+            }
+
+        input[type="button"].btn-secondary {
+            color: #fff;
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+            input[type="button"].btn-secondary:hover {
+                background-color: #5a6268;
+                border-color: #545b62;
+            }
 
     .delete-question-cell {
         text-align: center;
+        padding: 0;
     }
 
     .delete-question-button {
-        background-color: Transparent;
-        background-repeat: no-repeat;
         border: none;
+        background-color: #fff;
         cursor: pointer;
-        overflow: hidden;
-        outline: none;
-    }
-
-    .delete-question-cross {
-        color: red;
-        font-size: 18px;
-        font-weight: bold;
     }
 </style>

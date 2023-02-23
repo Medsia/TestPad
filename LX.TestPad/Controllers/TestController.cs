@@ -105,7 +105,7 @@ namespace LX.TestPad.Controllers
             await _resultAnswerService.AddUserResultAnswersAsync(userAnswerModel.ResultId,
                 userAnswerModel.AnswersIds);
 
-            var nextTestQuestion = await _testQuestionService.GetByTestIdAndQuestionNumberIncludeQuestionAndAnswersWithoutIsCorrectAsync(userAnswerModel.TestId, userAnswerModel.QuestionNumber);
+            var nextTestQuestion = await _testQuestionService.GetNextByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(userAnswerModel.TestId, userAnswerModel.QuestionNumber);
 
             if (nextTestQuestion.Question == null)
             {

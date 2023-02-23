@@ -8,7 +8,7 @@ namespace LX.TestPad.DataAccess.Interfaces
         Task<List<TestQuestion>> GetAllByTestIdAsync(int testId);
         Task<List<TestQuestion>> GetAllByTestIdIncludeQuestionsAsync(int testId);
         Task<List<TestQuestion>> GetAllByTestIdIncludeQuestionAndAnswersAsync(int testId);
-        Task<TestQuestion> GetByTestIdAndQuestionNumberIncludeQuestionAndAnswersAsync(int testId, int questionNumber);
+        Task<TestQuestion> GetNextByTestIdIncludeQuestionAndAnswersAsync(int testId, int questionNumber);
         Task<List<TestQuestion>> GetAllByTestIdExceptTestIncludeQuestionAndAnswersAsync(int testId);
         Task<List<TestQuestion>> GetAllByQuestionIdAsync(int QuestionId);
         Task CreateFromListAsync(List<TestQuestion> testQuestions);

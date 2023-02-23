@@ -28,8 +28,8 @@
             }
 
             <h1 class="mt-5 mb-3" style="font-size: 22px;">@Model.UserName @Model.UserSurname</h1>
-            <p class="my-3" style="font-size: 18px;">Test started: @Model.StartedAt</p>
-            <p class="my-3" style="font-size: 18px;">Test finished: @Model.FinishedAt</p>
+            <p class="my-3" style="font-size: 18px;">Test started(UTC): @Model.StartedAt</p>
+            <p class="my-3" style="font-size: 18px;">Test finished(UTC): @Model.FinishedAt</p>
             <p class="my-3" style="font-size: 18px;">Time spent: @time.ToString(@"hh\:mm\:ss")</p>
         </div>
 
@@ -42,7 +42,7 @@
         <button class="btn btn-outline-secondary mx-3 my-3" onclick="copyResultLink()">Share result</button>
         @if (test != null)
         {
-                <a class="btn btn-outline-primary mx-3 my-3" href="@Url.Action("EnterUserName", "Test", new { testId = ViewBag.TestIdEncoded })">Restart this test</a>
+            <a class="btn btn-outline-primary mx-3 my-3" href="@Url.Action("EnterUserName", "Test", new { testId = ViewBag.TestIdEncoded })">Restart this test</a>
         }
         <a class="btn btn-outline-primary mx-3 my-3" href="@Url.Action("Index", "Home")">Back to tests</a>
     </div>

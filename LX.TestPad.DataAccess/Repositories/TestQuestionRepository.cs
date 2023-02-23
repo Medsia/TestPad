@@ -60,6 +60,15 @@ namespace LX.TestPad.DataAccess.Repositories
                 .ThenInclude(q => q.Answers)
                 .ToListAsync();
         }
+        public async Task<TestQuestion> GetByTestIdAndQuestionNumberIncludeQuestionAndAnswersAsync(int testId, int questionNumber)
+        {
+            return await dbContext.TestQuestion
+                .Include(t => t.Test)
+                .Include(t => t.Question)
+                .ThenInclude(q => q.Answers)
+                .FirstOrDefaultAsync(x => x.TestId == testId && x.Number > questionNumber);
+
+        }
 
         public async Task<List<TestQuestion>> GetAllByTestIdExceptTestIncludeQuestionAndAnswersAsync(int testId)
         {

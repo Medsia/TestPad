@@ -1,4 +1,4 @@
-﻿@model LX.TestPad.Business.Models.QuestionModel
+﻿@model LX.TestPad.Business.Models.TestQuestionModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Test in process";
@@ -26,7 +26,7 @@
         <div id="question-container">
             @await Html.PartialAsync("QuestionPartial", Model)
         </div>
-        <input asp-for="TestId" value="@ViewBag.testId" id="TestId" hidden />
+        <input asp-for="TestId" value="@Model.TestId" id="TestId" hidden />
         <input value="@ViewBag.resultId" name="resultId" id="resultId" hidden />
         <li class="list-group-item" style=" text-align: right;">
             <button type="submit" form="userAnswer" hx-post="/test/SendUserAnswer" hx-target="#question-container" class="btn btn-success btn-lg" id="Nextbtn" onclick="disableButton(), currentQuestionUp()" disabled>Next</button>
@@ -85,7 +85,7 @@
         var startTimer = setInterval(updateTestTimerText, 1000);
     </script>
     <script>
-        $(document).on('change', 'input[type="checkbox"]', function () {
+        $(document).on('change', 'input[type="checkbox"]', function() {
             if ($('input[type="checkbox"]:checked').length > 0) {
                 $('#Nextbtn').prop('disabled', false);
             } else {

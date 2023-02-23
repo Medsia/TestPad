@@ -87,48 +87,32 @@ namespace LX.TestPad.Controllers
         [Route("Questions/{resultId}")]
         public async Task<IActionResult> Question(string resultId)
         {
-            string questionNumberKey = QuestionConstants.QuestionNumberKey;
-            int firstQuestionNumber = QuestionConstants.FirstQuestionNumber;
-            if (!TempData.ContainsKey(questionNumberKey))
-            {
-                RedirectToAction(nameof(Index));
-            }
             var result = await _resultService.GetByIdAsync(int.Parse(_encoder.Decode(resultId)));
             var testQuestions = await _testQuestionService.GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(result.TestId);
 
-            TempData[questionNumberKey] = firstQuestionNumber;
             ViewBag.resultIdEncoded = resultId;
             ViewBag.resultId = result.Id;
-            ViewBag.testId = result.TestId;
             ViewBag.questionCount = testQuestions.Count;
             ViewBag.endedAt = result.StartedAt.AddSeconds(Mapper.FromMinutesToSeconds(testQuestions.First().Test.TestDuration)).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
-            return View(testQuestions[firstQuestionNumber].Question);
+            return View(testQuestions.First());
         }
 
         [Route("[action]")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SendUserAnswer(UserAnswerModel UserAnswerModel)
+        public async Task<IActionResult> SendUserAnswer(UserAnswerModel userAnswerModel)
         {
-            string questionNumberKey = QuestionConstants.QuestionNumberKey;
-            if (!TempData.ContainsKey(questionNumberKey))
+            await _resultAnswerService.AddUserResultAnswersAsync(userAnswerModel.ResultId,
+                userAnswerModel.AnswersIds);
+
+            var nextTestQuestion = await _testQuestionService.GetByTestIdAndQuestionNumberIncludeQuestionAndAnswersWithoutIsCorrectAsync(userAnswerModel.TestId, userAnswerModel.QuestionNumber);
+
+            if (nextTestQuestion.Question == null)
             {
-                RedirectToAction(nameof(Index));
+                return PartialView("PreResultPartial", _encoder.Encode(userAnswerModel.ResultId.ToString()));
             }
 
-            int questionNumber = (int)TempData[questionNumberKey];
-            TempData[questionNumberKey] = ++questionNumber;
-
-            await _resultAnswerService.AddUserResultAnswersAsync(UserAnswerModel.ResultId,
-                UserAnswerModel.AnswersIds);
-
-            var testQuestions = await _testQuestionService.GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(UserAnswerModel.TestId);
-            if (questionNumber >= testQuestions.Count)
-            {
-                return PartialView("PreResultPartial", _encoder.Encode(UserAnswerModel.ResultId.ToString()));
-            }
-
-            return PartialView("QuestionPartial", testQuestions[questionNumber].Question);
+            return PartialView("QuestionPartial", nextTestQuestion);
         }
 
         [Route("Result/{resultId}")]

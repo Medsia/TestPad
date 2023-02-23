@@ -1,19 +1,20 @@
-﻿@model LX.TestPad.Business.Models.QuestionModel
+﻿@model LX.TestPad.Business.Models.TestQuestionModel
 
 <div id="question-container">
     <ul class="list-group">
         <li class="list-group-item">
-            <h1 class="display-4" style=" text-align: left;">@Model.Text</h1>
+            <h1 class="display-4" style=" text-align: left;">@Model.Question.Text</h1>
         </li>
         <li class="list-group-item" style=" text-align: left;">
             <b style=" text-align: center; font-size: 24px; margin-top: 0px;" id="timer"> </b>
         </li>
 
-        @foreach (var answer in Model.Answers)
+        @foreach (var answer in Model.Question.Answers)
         {
             <li class="list-group-item" for="@answer.Id">
                 <input type="checkbox" id="@answer.Id" value="@answer.Id" name="answersIds">  <b style=" text-align: left; font-size: 16px; margin-left: 15px;"> @answer.Text </b>
             </li>
         }
     </ul>
+    <input value="@Model.Number" name="QuestionNumber" id="QuestionNumber" hidden />
 </div>

@@ -185,7 +185,7 @@ namespace LX.TestPad.Business.Services
                 Question = QuestionWithAnswersToModel(entity.Question),
             };
         }
-        public static Question QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(Question question)
+        public static Question QuestionWithAnswersToQuestionWithoutIsCorrect(Question question)
         {
             return new Question
             {

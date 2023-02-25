@@ -55,7 +55,7 @@ namespace LX.TestPad.Business.Services
             var testQuestions = await _testQuestionRepository.GetAllByTestIdIncludeQuestionAndAnswersAsync(testId);
             foreach (var testQuestion in testQuestions)
             {
-                testQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(testQuestion.Question);
+                testQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithoutIsCorrect(testQuestion.Question);
             }
 
             return testQuestions.Select(Mapper.TestQuestionWithAnswersAndTestToModel)
@@ -73,7 +73,7 @@ namespace LX.TestPad.Business.Services
                 return nullTestQuestion;
             }
 
-            testQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(testQuestion.Question);
+            testQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithoutIsCorrect(testQuestion.Question);
 
             return Mapper.TestQuestionWithAnswersAndTestToModel(testQuestion);
         }

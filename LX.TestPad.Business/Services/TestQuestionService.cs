@@ -2,7 +2,8 @@
 using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
-using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace LX.TestPad.Business.Services
 {
@@ -65,7 +66,11 @@ namespace LX.TestPad.Business.Services
         {
             ExceptionChecker.SQLKeyIdCheck(testId);
 
-            var nextTestQuestion = await _testQuestionRepository.GetNextByTestIdIncludeQuestionAndAnswersAsync(testId, questionNumber);
+            var includeProps = new List<Func<IQueryable<TestQuestion>, IIncludableQueryable<TestQuestion, object>>>();
+            includeProps.Add(t => t.Include(t => t.Question.Answers));
+            includeProps.Add(t => t.Include(t => t.Test));
+
+            var nextTestQuestion = await _testQuestionRepository.GetNextByTestIdAsync(testId, questionNumber, includeProps.ToArray());
 
             // return defaultTestQuestion if nextTestQuestion is null
             if (nextTestQuestion == null)

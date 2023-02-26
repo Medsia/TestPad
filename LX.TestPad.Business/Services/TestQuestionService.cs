@@ -65,17 +65,18 @@ namespace LX.TestPad.Business.Services
         {
             ExceptionChecker.SQLKeyIdCheck(testId);
 
-            var testQuestion = await _testQuestionRepository.GetNextByTestIdIncludeQuestionAndAnswersAsync(testId, questionNumber);
+            var nextTestQuestion = await _testQuestionRepository.GetNextByTestIdIncludeQuestionAndAnswersAsync(testId, questionNumber);
 
-            if (testQuestion == null)
+            // return defaultTestQuestion if nextTestQuestion is null
+            if (nextTestQuestion == null)
             {
-                var nullTestQuestion = new TestQuestionModel();
-                return nullTestQuestion;
+                TestQuestionModel defaultTestQuestion = new TestQuestionModel();
+                return defaultTestQuestion;
             }
 
-            testQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithoutIsCorrect(testQuestion.Question);
+            nextTestQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithoutIsCorrect(nextTestQuestion.Question);
 
-            return Mapper.TestQuestionWithAnswersAndTestToModel(testQuestion);
+            return Mapper.TestQuestionWithAnswersAndTestToModel(nextTestQuestion);
         }
         public async Task<List<TestQuestionModel>> GetAllByTestIdIncludeQuestionsWithAnswersAsync(int testId)
         {

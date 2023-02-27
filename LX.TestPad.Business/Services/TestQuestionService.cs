@@ -66,11 +66,9 @@ namespace LX.TestPad.Business.Services
         {
             ExceptionChecker.SQLKeyIdCheck(testId);
 
-            var includeProps = new List<Func<IQueryable<TestQuestion>, IIncludableQueryable<TestQuestion, object>>>();
-            includeProps.Add(t => t.Include(t => t.Question.Answers));
-            includeProps.Add(t => t.Include(t => t.Test));
+            Func<IQueryable<TestQuestion>, IIncludableQueryable<TestQuestion, object>>[] includeProps = { (t => t.Include(t => t.Test)), (t => t.Include(t => t.Question.Answers)) };
 
-            var nextTestQuestion = await _testQuestionRepository.GetNextByTestIdAsync(testId, questionNumber, includeProps.ToArray());
+            var nextTestQuestion = await _testQuestionRepository.GetNextByTestIdAsync(testId, questionNumber, includeProps);
 
             // return defaultTestQuestion if nextTestQuestion is null
             if (nextTestQuestion == null)

@@ -1,6 +1,7 @@
 ﻿using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace LX.TestPad.DataAccess.Repositories
 {
@@ -59,6 +60,17 @@ namespace LX.TestPad.DataAccess.Repositories
                 .Include(t => t.Question)
                 .ThenInclude(q => q.Answers)
                 .ToListAsync();
+        }
+        public async Task<TestQuestion> GetNextByTestIdAsync(int testId, int questionNumber, params Func<IQueryable<TestQuestion>, IIncludableQueryable<TestQuestion, object>>[] includes)
+        {
+            var query = dbContext.TestQuestion.Where(x => x.TestId == testId && x.Number > questionNumber);
+
+            foreach (var include in includes)
+            {
+                query = include(query);
+            }
+
+            return await query.FirstOrDefaultAsync();
         }
 
         public async Task<List<TestQuestion>> GetAllByTestIdExceptTestIncludeQuestionAndAnswersAsync(int testId)

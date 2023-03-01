@@ -2,7 +2,8 @@
 using LX.TestPad.Business.Models;
 using LX.TestPad.DataAccess.Entities;
 using LX.TestPad.DataAccess.Interfaces;
-using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace LX.TestPad.Business.Services
 {
@@ -55,13 +56,31 @@ namespace LX.TestPad.Business.Services
             var testQuestions = await _testQuestionRepository.GetAllByTestIdIncludeQuestionAndAnswersAsync(testId);
             foreach (var testQuestion in testQuestions)
             {
-                testQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(testQuestion.Question);
+                testQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithoutIsCorrect(testQuestion.Question);
             }
 
             return testQuestions.Select(Mapper.TestQuestionWithAnswersAndTestToModel)
                         .ToList();
         }
+        public async Task<TestQuestionModel> GetNextByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(int testId, int questionNumber)
+        {
+            ExceptionChecker.SQLKeyIdCheck(testId);
 
+            Func<IQueryable<TestQuestion>, IIncludableQueryable<TestQuestion, object>>[] includeProps = { (t => t.Include(t => t.Test)), (t => t.Include(t => t.Question.Answers)) };
+
+            var nextTestQuestion = await _testQuestionRepository.GetNextByTestIdAsync(testId, questionNumber, includeProps);
+
+            // return defaultTestQuestion if nextTestQuestion is null
+            if (nextTestQuestion == null)
+            {
+                TestQuestionModel defaultTestQuestion = new TestQuestionModel();
+                return defaultTestQuestion;
+            }
+
+            nextTestQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithoutIsCorrect(nextTestQuestion.Question);
+
+            return Mapper.TestQuestionWithAnswersAndTestToModel(nextTestQuestion);
+        }
         public async Task<List<TestQuestionModel>> GetAllByTestIdIncludeQuestionsWithAnswersAsync(int testId)
         {
             ExceptionChecker.SQLKeyIdCheck(testId);

@@ -10,6 +10,7 @@ namespace LX.TestPad.Business.Interfaces
         Task<List<TestQuestionModel>> GetAllByTestIdAsync(int testId);
         Task<List<TestQuestionModel>> GetAllByTestIdIncludeQuestionsWithAnswersAsync(int testId);
         Task<List<TestQuestionModel>> GetAllByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(int testId);
+        Task<TestQuestionModel> GetNextByTestIdIncludeQuestionAndAnswersWithoutIsCorrectAsync(int testId, int questionNumber);
         Task<List<TestQuestionModel>> GetAllByTestIdExceptTestIncludeQuestionsWithAnswersAsync(int testId);
 
         Task CreateAsync(int questionId, int testId);

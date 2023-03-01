@@ -180,11 +180,12 @@ namespace LX.TestPad.Business.Services
                 Id = entity.Id,
                 TestId = entity.TestId,
                 QuestionId = entity.QuestionId,
+                Number = entity.Number,
                 Test = TestToModel(entity.Test),
                 Question = QuestionWithAnswersToModel(entity.Question),
             };
         }
-        public static Question QuestionWithAnswersToQuestionWithAnswersWithoutIsCorrect(Question question)
+        public static Question QuestionWithAnswersToQuestionWithoutIsCorrect(Question question)
         {
             return new Question
             {

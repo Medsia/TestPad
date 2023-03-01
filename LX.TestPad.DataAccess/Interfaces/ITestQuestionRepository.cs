@@ -1,4 +1,5 @@
 ﻿using LX.TestPad.DataAccess.Entities;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace LX.TestPad.DataAccess.Interfaces
 {
@@ -8,6 +9,7 @@ namespace LX.TestPad.DataAccess.Interfaces
         Task<List<TestQuestion>> GetAllByTestIdAsync(int testId);
         Task<List<TestQuestion>> GetAllByTestIdIncludeQuestionsAsync(int testId);
         Task<List<TestQuestion>> GetAllByTestIdIncludeQuestionAndAnswersAsync(int testId);
+        Task<TestQuestion> GetNextByTestIdAsync(int testId, int questionNumber, params Func<IQueryable<TestQuestion>, IIncludableQueryable<TestQuestion, object>>[] includes);
         Task<List<TestQuestion>> GetAllByTestIdExceptTestIncludeQuestionAndAnswersAsync(int testId);
         Task<List<TestQuestion>> GetAllByQuestionIdAsync(int QuestionId);
         Task CreateFromListAsync(List<TestQuestion> testQuestions);

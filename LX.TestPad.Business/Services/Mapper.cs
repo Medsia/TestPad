@@ -56,6 +56,7 @@ namespace LX.TestPad.Business.Services
                 IsCalculated = entity.IsCalculated,
                 TestId = entity.TestId,
                 UserName = entity.UserName,
+                Email = entity.Email!,
                 StartedAt = entity.StartedAt,
                 FinishedAt = entity.FinishedAt,
                 Test = TestToModel(entity.Test)
@@ -73,7 +74,7 @@ namespace LX.TestPad.Business.Services
                 TestId = entity.TestId,
                 UserName = userName,
                 UserSurname = userSurname,
-                Email = entity.Email,
+                Email = entity.Email!,
                 StartedAt = entity.StartedAt,
                 FinishedAt = entity.FinishedAt,
             };

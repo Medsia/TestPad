@@ -76,6 +76,7 @@ namespace LX.TestPad.Controllers
                 TestId = resultModel.TestId,
                 UserName = resultModel.UserName,
                 UserSurname = resultModel.UserSurname,
+                Email = resultModel.Email,
                 Score = 0,
                 IsCalculated = false,
                 StartedAt = DateTime.Now.ToUniversalTime(),

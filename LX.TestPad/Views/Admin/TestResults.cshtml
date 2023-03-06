@@ -10,51 +10,56 @@
 
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                <div class="text-center">Test name</div>
-            </th>
-            <th>
-                <div class="text-center">UserName</div>
-            </th>
-            <th>
-                <div class="text-center">Score</div>
-            </th>
-            <th>
-                <div class="text-center">Started at (UTC)</div>
-            </th>
-            <th>
-                <div class="text-center">Finished at (UTC)</div>
-            </th>
-            <th>
-                <div class="text-center"></div>
-            </th>
-        </tr>
+    <tr>
+        <th>
+            <div class="text-center">Test name</div>
+        </th>
+        <th>
+            <div class="text-center">UserName</div>
+        </th>
+        <th>
+            <div class="text-center">Email</div>
+        </th>
+        <th>
+            <div class="text-center">Score</div>
+        </th>
+        <th>
+            <div class="text-center">Started at (UTC)</div>
+        </th>
+        <th>
+            <div class="text-center">Finished at (UTC)</div>
+        </th>
+        <th>
+            <div class="text-center"></div>
+        </th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var result in Model)
-        {
-
-            <tr class="box-shadow">
-                <td>
-                    <div class="text-center">@result.Test.Name</div>
-                </td>
-                <td>
-                    <div class="text-center">@result.UserName @result.UserSurname</div>
-                </td>
-                <td>
-                    <div class="text-center">@result.Score</div>
-                </td>
-                <td>
-                    <div class="text-center">@result.StartedAt</div>
-                </td>
-                <td>
-                    <div class="text-center">@result.FinishedAt</div>
-                </td>
-                <td class="text-center">
-                    <a asp-action="ResultDetails" asp-route-resultId="@result.Id" class="text-info">Details</a><br>
-                </td>
-            </tr>
-        }
+    @foreach (var result in Model)
+    {
+        <tr class="box-shadow">
+            <td>
+                <div class="text-center">@result.Test.Name</div>
+            </td>
+            <td>
+                <div class="text-center">@result.UserName @result.UserSurname</div>
+            </td>
+            <td>
+                <div class="text-center">@(result.Email ?? "Not defined")</div>
+            </td>
+            <td>
+                <div class="text-center">@result.Score</div>
+            </td>
+            <td>
+                <div class="text-center">@result.StartedAt</div>
+            </td>
+            <td>
+                <div class="text-center">@result.FinishedAt</div>
+            </td>
+            <td class="text-center">
+                <a asp-action="ResultDetails" asp-route-resultId="@result.Id" class="text-info">Details</a><br>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>

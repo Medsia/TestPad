@@ -58,7 +58,7 @@ namespace LX.TestPad.Business.Services
                 UserName = entity.UserName,
                 StartedAt = entity.StartedAt,
                 FinishedAt = entity.FinishedAt,
-                Test = TestToModel(entity.Test),
+                Test = TestToModel(entity.Test)
             };
         }
         public static ResultModel ResultToModel(Result entity)
@@ -73,6 +73,7 @@ namespace LX.TestPad.Business.Services
                 TestId = entity.TestId,
                 UserName = userName,
                 UserSurname = userSurname,
+                Email = entity.Email,
                 StartedAt = entity.StartedAt,
                 FinishedAt = entity.FinishedAt,
             };
@@ -128,6 +129,7 @@ namespace LX.TestPad.Business.Services
             {
                 Id = model.Id,
                 UserName = model.UserName,
+                Email = model.Email,
                 Score = model.Score,
                 IsCalculated = model.IsCalculated,
                 TestId = model.TestId,
@@ -142,6 +144,7 @@ namespace LX.TestPad.Business.Services
             {
                 Id = model.Id,
                 UserName = model.UserName + ' ' + model.UserSurname,
+                Email = model.Email,
                 Score = model.Score,
                 IsCalculated = model.IsCalculated,
                 TestId = model.TestId,

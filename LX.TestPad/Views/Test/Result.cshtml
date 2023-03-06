@@ -27,7 +27,7 @@
                 <p class="mt-3 mb-5" style="font-size: 18px;">Duration: @testDuration.ToString("HH:mm:ss")</p>
             }
 
-            <h1 class="mt-5 mb-3" style="font-size: 22px;">@Model.UserName @Model.UserSurname</h1>
+            <h1 class="mt-5 mb-3" style="font-size: 22px;">@Model.UserName @Model.UserSurname | @Model.Email</h1>
             <p class="my-3" style="font-size: 18px;">Test started(UTC): @Model.StartedAt</p>
             <p class="my-3" style="font-size: 18px;">Test finished(UTC): @Model.FinishedAt</p>
             <p class="my-3" style="font-size: 18px;">Time spent: @time.ToString(@"hh\:mm\:ss")</p>

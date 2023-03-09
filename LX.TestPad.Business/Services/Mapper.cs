@@ -24,6 +24,7 @@ namespace LX.TestPad.Business.Services
             {
                 Id = entity.Id,
                 Text = entity.Text,
+                CodeSnippet = entity.CodeSnippet
             };
         }
         public static QuestionModel QuestionWithAnswersToModel(Question entity)
@@ -32,6 +33,7 @@ namespace LX.TestPad.Business.Services
             {
                 Id = entity.Id,
                 Text = entity.Text,
+                CodeSnippet = entity.CodeSnippet,
                 Answers = entity.Answers.Select(Mapper.AnswerToModel)
                         .ToList()
             };
@@ -112,6 +114,7 @@ namespace LX.TestPad.Business.Services
             {
                 Id = model.Id,
                 Text = model.Text,
+                CodeSnippet = model.CodeSnippet
             };
         }
         public static Answer AnswerModelToEntity(AnswerModel model)
@@ -187,6 +190,7 @@ namespace LX.TestPad.Business.Services
                 Number = entity.Number,
                 Test = TestToModel(entity.Test),
                 Question = QuestionWithAnswersToModel(entity.Question),
+                IsMultipleCorrectAnswers = entity.Question.Answers.Count(e => e.IsCorrect) > 1
             };
         }
         public static Question QuestionWithAnswersToQuestionWithoutIsCorrect(Question question)
@@ -195,6 +199,7 @@ namespace LX.TestPad.Business.Services
             {
                 Id = question.Id,
                 Text = question.Text,
+                CodeSnippet = question.CodeSnippet,
                 Answers = question.Answers.Select(answer => new Answer
                 {
                     Id = answer.Id,

@@ -7,6 +7,5 @@
         public string Text { get; set; }
         public string? CodeSnippet { get; set; }
         public virtual List<AnswerModel> Answers { get; set; }
-
     }
 }

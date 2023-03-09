@@ -8,5 +8,7 @@
         public int Number { get; set; }
         public TestModel Test { get; set; }
         public QuestionModel Question { get; set; }
+
+        public bool IsMultipleCorrectAnswers { get; set; } = true;
     }
 }

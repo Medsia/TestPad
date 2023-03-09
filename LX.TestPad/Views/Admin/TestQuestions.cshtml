@@ -32,7 +32,7 @@
                             <div>
                                 <p id="Question-text-@questionId" class="question-text mb-2">@testQuestion.Question.Text</p>
                                 <p id="Question-text-@questionId-code" class="question-text mb-2">
-                                    <code>@Html.Encode(testQuestion.Question.CodeSnippet)</code>
+                                    <code>@testQuestion.Question.CodeSnippet</code>
                                 </p>
                                 <input maxlength="300" type="text" class="mb-2" name="Text" asp-for="@testQuestion.Question.Text" id="Question-@questionId" style="display:none" required />
                                 <textarea maxlength="2048" type="text" class="mb-2" name="CodeSnippet" asp-for="@testQuestion.Question.CodeSnippet" id="Question-@questionId-code" style="display:none"></textarea>

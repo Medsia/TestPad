@@ -70,7 +70,7 @@ namespace LX.TestPad.DataAccess.Repositories
                 query = include(query);
             }
 
-            return await query.FirstOrDefaultAsync();
+            return await query.OrderBy(x => x.Number).FirstOrDefaultAsync();
         }
 
         public async Task<List<TestQuestion>> GetAllByTestIdExceptTestIncludeQuestionAndAnswersAsync(int testId)

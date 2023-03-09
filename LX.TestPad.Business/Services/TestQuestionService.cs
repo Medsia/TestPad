@@ -54,10 +54,10 @@ namespace LX.TestPad.Business.Services
             ExceptionChecker.SQLKeyIdCheck(testId);
 
             var testQuestions = await _testQuestionRepository.GetAllByTestIdIncludeQuestionAndAnswersAsync(testId);
-            foreach (var testQuestion in testQuestions)
-            {
-                testQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithoutIsCorrect(testQuestion.Question);
-            }
+            // foreach (var testQuestion in testQuestions)
+            // {
+            //     testQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithoutIsCorrect(testQuestion.Question);
+            // }
 
             return testQuestions.Select(Mapper.TestQuestionWithAnswersAndTestToModel)
                         .ToList();
@@ -77,7 +77,7 @@ namespace LX.TestPad.Business.Services
                 return defaultTestQuestion;
             }
 
-            nextTestQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithoutIsCorrect(nextTestQuestion.Question);
+            //nextTestQuestion.Question = Mapper.QuestionWithAnswersToQuestionWithoutIsCorrect(nextTestQuestion.Question);
 
             return Mapper.TestQuestionWithAnswersAndTestToModel(nextTestQuestion);
         }

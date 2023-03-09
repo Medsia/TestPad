@@ -1,4 +1,21 @@
-﻿@model LX.TestPad.Business.Models.TestQuestionModel
+﻿@using LX.TestPad.Business.Models
+@model LX.TestPad.Business.Models.TestQuestionModel
+
+@{
+
+    string GetInputType(TestQuestionModel model)
+    {
+        return model.IsMultipleCorrectAnswers ? "checkbox" : "radio";
+    }
+
+}
+
+<style>
+        code {
+            font-family: "Courier New", monospace;
+            font-size: 10pt;
+        }
+</style>
 
 <div id="question-container">
     <ul class="list-group">
@@ -8,7 +25,9 @@
         @if (!string.IsNullOrWhiteSpace(Model.Question.CodeSnippet))
         {
             <li class="list-group-item">
-                <pre><h6 style="text-align: left; font-family: 'Courier New', monospace;">@Model.Question.CodeSnippet</h6></pre>
+                <code>
+                    <pre>@Model.Question.CodeSnippet</pre>
+                </code>
             </li>
         }
         <li class="list-group-item" style=" text-align: left;">
@@ -18,9 +37,10 @@
         @foreach (var answer in Model.Question.Answers)
         {
             <li class="list-group-item" for="@answer.Id">
-                <input type="checkbox" id="@answer.Id" value="@answer.Id" name="answersIds">  <b style=" text-align: left; font-size: 16px; margin-left: 15px;"> @answer.Text </b>
+                <input type="@GetInputType(Model)" id="@answer.Id" value="@answer.Id" name="answersIds"> <b style=" text-align: left; font-size: 16px; margin-left: 15px;"> @answer.Text </b>
             </li>
         }
     </ul>
-    <input value="@Model.Number" name="QuestionNumber" id="QuestionNumber" hidden />
+    <input value="@Model.Number" name="QuestionNumber" id="QuestionNumber" hidden/>
 </div>
+

@@ -147,7 +147,7 @@ namespace LX.TestPad.Controllers
         public async Task<IActionResult> UpdateQuestion(QuestionModel question)
         {
             await _questionService.UpdateAsync(question);
-            return RedirectToAction(nameof(TestQuestions), new { testId = question.TestId }); ;
+            return RedirectToAction(nameof(TestQuestions), new { testId = question.TestId });
         }
 
         public IActionResult CreateQuestion(int testId)

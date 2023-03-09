@@ -92,6 +92,14 @@
                 $('#Nextbtn').prop('disabled', true);
             }
         });
+        
+        $(document).on('change', 'input[type="radio"]', function() {
+                    if ($('input[type="radio"]:checked').length > 0) {
+                        $('#Nextbtn').prop('disabled', false);
+                    } else {
+                        $('#Nextbtn').prop('disabled', true);
+                    }
+                });
     </script>
     <script>
         function disableButton() {

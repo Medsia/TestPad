@@ -5,8 +5,14 @@
         <li class="list-group-item">
             <h3 style=" text-align: left;">@Model.Question.Text</h3>
         </li>
+        @if (!string.IsNullOrWhiteSpace(Model.Question.CodeSnippet))
+        {
+            <li class="list-group-item">
+                <pre><h6 style="text-align: left; font-family: 'Courier New', monospace;">@Model.Question.CodeSnippet</h6></pre>
+            </li>
+        }
         <li class="list-group-item" style=" text-align: left;">
-            <b style=" text-align: center; font-size: 24px; margin-top: 0px;" id="timer"> </b>
+            <b style=" text-align: center; font-size: 24px; margin-top: 0;" id="timer"> </b>
         </li>
 
         @foreach (var answer in Model.Question.Answers)

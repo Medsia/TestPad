@@ -22,7 +22,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var testQuestion in Model.OrderByDescending(tq => tq.QuestionId))
+            @foreach (var testQuestion in Model.OrderBy(tq => tq.QuestionId))
             {
                 var questionId = testQuestion.Id;
                 <tr>
@@ -31,7 +31,11 @@
                           asp-route-TestId="@testQuestion.TestId" method="post">
                             <div>
                                 <p id="Question-text-@questionId" class="question-text mb-2">@testQuestion.Question.Text</p>
+                                <p id="Question-text-@questionId-code" class="question-text mb-2">
+                                    <code>@Html.Encode(testQuestion.Question.CodeSnippet)</code>
+                                </p>
                                 <input maxlength="300" type="text" class="mb-2" name="Text" asp-for="@testQuestion.Question.Text" id="Question-@questionId" style="display:none" required />
+                                <textarea maxlength="2048" type="text" class="mb-2" name="CodeSnippet" asp-for="@testQuestion.Question.CodeSnippet" id="Question-@questionId-code" style="display:none"></textarea>
                                 <div>
                                     <input type="submit" value="Save" id="saveButton-@questionId" style="display:none" class="btn btn-sm btn-success" />
                                     <input type="button" value="Edit" id="editButton-@questionId" onclick="toggleEditingById(@questionId)" class="btn btn-secondary" />
@@ -92,13 +96,13 @@
     }
 
     function toggleEditingById(id) {
-        applyStyleFor(["Question-" + id, "saveButton-" + id, "cancelButton-" + id], "display", "inline");
-        applyStyleFor(["Question-text-" + id, "editButton-" + id], "display", "none");
+        applyStyleFor(["Question-" + id, `Question-${id}-code`, "saveButton-" + id, "cancelButton-" + id], "display", "inline");
+        applyStyleFor(["Question-text-" + id, `Question-text-${id}-code`, "editButton-" + id], "display", "none");
     }
 
     function cancelEditingById(id) {
-        applyStyleFor(["Question-text-" + id, "editButton-" + id], "display", "inline");
-        applyStyleFor(["saveButton-" + id, "cancelButton-" + id, "Question-" + id], "display", "none");
+        applyStyleFor(["Question-text-" + id, `Question-text-${id}-code`, "editButton-" + id], "display", "inline");
+        applyStyleFor(["saveButton-" + id, "cancelButton-" + id, "Question-" + id, `Question-${id}-code`], "display", "none");
     }
 </script>
 
@@ -237,5 +241,10 @@
         border: none;
         background-color: #fff;
         cursor: pointer;
+    }
+    
+    code {
+        font-family: "Courier New", monospace;
+        font-size: 10pt;
     }
 </style>

@@ -3,7 +3,7 @@ A knowledge testing application created during LeverX pre-diploma internship, al
 
 ASP.NET MVC, Entity framework, HTMX, SQL Server, JS
 
-#To access the admin panel, add /admin to the URL.
+# To access the admin panel, add /admin to the URL.
 Admin Login - LX.TestPad.Admin.Access
 Admin password - TheVeryStrongPasswordToLx.TestPad.Admin.Access
 # ! update MS SQL SERVER migrations(UPDATE-DATABASE) before using

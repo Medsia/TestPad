@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LX.TestPad.Business\LX.TestPad.Business.csproj" />
+    <ProjectReference Include="..\TestPad.Business\TestPad.Business.csproj" />
   </ItemGroup>
 
 </Project>

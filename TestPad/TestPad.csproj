@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LX.TestPad.Business\LX.TestPad.Business.csproj" />
-    <ProjectReference Include="..\LX.TestPad.DataAccess\LX.TestPad.DataAccess.csproj" />
+    <ProjectReference Include="..\TestPad.Business\TestPad.Business.csproj" />
+    <ProjectReference Include="..\TestPad.DataAccess\TestPad.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

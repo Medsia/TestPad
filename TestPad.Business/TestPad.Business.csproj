@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LX.TestPad.DataAccess\LX.TestPad.DataAccess.csproj" />
+    <ProjectReference Include="..\TestPad.DataAccess\TestPad.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
